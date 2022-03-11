@@ -4,7 +4,7 @@ use crate::{requests, responses};
 
 use crate::errors::SpaceTradersClientError;
 use reqwest::header::{HeaderName, HeaderValue};
-use reqwest::{Method, StatusCode, Url};
+use reqwest::{Method, Url};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::fmt::{Debug, Formatter};

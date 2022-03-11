@@ -1,5 +1,5 @@
 //! The shared module contains all common structs and enums used in the API
-use chrono::{DateTime, Utc};
+// use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::error::Error;
@@ -43,9 +43,13 @@ pub struct ErrorMessageData {
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct AgentInformation {
     #[serde(rename = "accountId")]
+    /// The unique account id of the agent
     pub account_id: String,
+    /// The given agent symbol/name
     pub symbol: String,
+    /// The agent's headquarters location
     pub headquarters: String,
+    /// The agent's current credit balance
     pub credits: u64,
 }
 
@@ -53,10 +57,15 @@ pub struct AgentInformation {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct FactionInformation {
+    /// The faction's symbol
     pub symbol: String,
+    /// The faction's name
     pub name: String,
+    /// A short description of the faction
     pub description: String,
+    /// The faction's headquarters location
     pub headquarters: String,
+    /// A list of faction traits
     pub traits: Vec<String>,
 }
 
@@ -64,13 +73,20 @@ pub struct FactionInformation {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct Contract {
+    /// The unique contract id
     pub id: String,
+    /// The faction giving the contract
     pub faction: String,
+    /// The type of contract
     #[serde(rename = "type")]
     pub contract_type: String,
+    /// The contract's terms
     pub terms: ContractTerms,
-    pub accepted: String,
-    pub fulfilled: String,
+    /// Whether the contract has been accepted
+    pub accepted: bool,
+    /// Whether the contract has been fulfilled
+    pub fulfilled: bool,
+    /// The expiry timestamp for the contract (must accept before)
     #[serde(rename = "expiresAt")]
     pub expires_at: String,
 }
@@ -79,8 +95,11 @@ pub struct Contract {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ContractTerms {
+    /// The deadline for the contract (must fulfill before)
     pub deadline: String,
+    /// The payment terms for the contract
     pub payment: ContractPaymentTerms,
+    /// The delivery terms for the contract
     pub deliver: Vec<ContractDeliveryTerms>,
 }
 
@@ -88,8 +107,10 @@ pub struct ContractTerms {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ContractPaymentTerms {
+    /// The payment upon contract acceptance
     #[serde(rename = "onAccepted")]
     pub on_accepted: u64,
+    /// The payment upon contract fulfillment
     #[serde(rename = "onFulfilled")]
     pub on_fulfilled: u64,
 }
@@ -98,10 +119,14 @@ pub struct ContractPaymentTerms {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ContractDeliveryTerms {
+    /// The trade symbol of the good requested by the contract
     #[serde(rename = "tradeSymbol")]
     pub trade_symbol: String,
+    /// The delivery destination for the contract
     pub destination: String,
+    /// The number of units required by the contract
     pub units: u64,
+    /// The number of already delivered units for this contract
     pub fulfilled: u64,
 }
 
@@ -109,19 +134,33 @@ pub struct ContractDeliveryTerms {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct Ship {
+    /// The ship's unique symbol
     pub symbol: String,
-    pub crew: Option<String>,     // Appears unimplemented 3/11/22
-    pub officers: Option<String>, // Appears unimplemented 3/11/22
+    /// Appears to be unimplemented 3/11/22
+    pub crew: Option<String>,
+    /// Appears to be unimplemented 3/11/22
+    pub officers: Option<String>,
+    /// The fuel remaining
     pub fuel: u64,
+    /// The installed frame
     pub frame: String,
+    /// The installed reactor
     pub reactor: String,
+    /// The installed engine
     pub engine: String,
+    /// A list of the installed modules
     pub modules: Vec<String>,
+    /// A list of the installed mounts
     pub mounts: Vec<String>,
+    /// The ship's registration information
     pub registration: ShipRegistration,
+    /// The ship's integrity information
     pub integrity: ShipIntegrity,
+    /// The ship's status/activity
     pub status: String,
+    /// The ship's current location
     pub location: String,
+    /// The ship's stored cargo
     pub cargo: Vec<Cargo>,
 }
 
@@ -129,11 +168,15 @@ pub struct Ship {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ShipRegistration {
+    /// The faction symbol that issued the registration
     #[serde(rename = "factionSymbol")]
     pub faction_symbol: String,
+    /// The agent symbol whom the ship is registered to
     #[serde(rename = "agentSymbol")]
     pub agent_symbol: String,
+    /// The registration fee
     pub fee: u64,
+    /// The registered role
     pub role: String,
 }
 
@@ -141,8 +184,11 @@ pub struct ShipRegistration {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ShipIntegrity {
+    /// The ship frame integrity
     pub frame: u16,
+    /// The ship reactor integrity
     pub reactor: u16,
+    /// The ship engine integrity
     pub engine: u16,
 }
 
@@ -150,7 +196,9 @@ pub struct ShipIntegrity {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct Cargo {
+    /// The good's trade symbol
     #[serde(rename = "tradeSymbol")]
     pub trade_symbol: String,
+    /// The number of units
     pub units: u64,
 }

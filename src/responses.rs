@@ -22,7 +22,7 @@ pub struct ClaimAgentData {
     /// The agent's starting faction info
     pub faction: FactionInformation,
     /// The agent's starting contract info
-    pub contact: Contract,
+    pub contract: Contract,
     /// The agent's starting ship info
     pub ship: Ship,
 }
