@@ -253,7 +253,7 @@ pub async fn claim_agent(
         .execute_request(
             "POST",
             &"https://v2-0-0.alpha.spacetraders.io/agents",
-            Some(&serde_kson::to_string(&claim_agent_request).unwrap()),
+            Some(&serde_json::to_string(&claim_agent_request).unwrap()),
             None,
         )
         .await?;

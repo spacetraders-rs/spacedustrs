@@ -1,7 +1,6 @@
 //! All responses that come back from the API are in this module
-use crate::shared;
-use crate::shared::Loan;
-use chrono::{DateTime, Utc};
+use crate::shared::*;
+// use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 
 /// The representation of a claim agent response
@@ -9,7 +8,7 @@ use serde::{Deserialize, Serialize};
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ClaimAgent {
     /// The data of the response
-    pub data: ClaimAgentData
+    pub data: ClaimAgentData,
 }
 
 /// The representation of the response data from claiming and agent

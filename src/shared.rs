@@ -1,10 +1,10 @@
 //! The shared module contains all common structs and enums used in the API
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
 use std::error::Error;
 use std::fmt;
 use std::fmt::Formatter;
-use std::collections::HashMap;
 
 /// An error response returned from the API
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -18,8 +18,8 @@ impl fmt::Display for ErrorMessage {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(
             f,
-            "Error Code: {} Error Message: {} Error Data: {}",
-            self.error.code, self.error.message
+            "Error Code: {} Error Message: {} Error Data: {:#?}",
+            self.error.code, self.error.message, self.error.data
         )
     }
 }
@@ -29,13 +29,13 @@ impl Error for ErrorMessage {}
 /// A representation of an error message
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
-pub struct ErrorMessageData<T> {
+pub struct ErrorMessageData {
     /// The API sent error code
     pub code: i32,
     /// The message sent from the API about the error
     pub message: String,
     /// The data sent from the API server about the error in detail
-    pub data: HashMap<String, Vec<String>>
+    pub data: HashMap<String, Vec<String>>,
 }
 
 /// The representation of agent information
@@ -46,7 +46,7 @@ pub struct AgentInformation {
     pub account_id: String,
     pub symbol: String,
     pub headquarters: String,
-    pub credits: uint64,
+    pub credits: u64,
 }
 
 /// The representation of faction information
@@ -81,7 +81,7 @@ pub struct Contract {
 pub struct ContractTerms {
     pub deadline: String,
     pub payment: ContractPaymentTerms,
-    pub deliver: Vec<ContractDeliveryTerms>
+    pub deliver: Vec<ContractDeliveryTerms>,
 }
 
 /// The representation of contract payment terms
@@ -89,9 +89,9 @@ pub struct ContractTerms {
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ContractPaymentTerms {
     #[serde(rename = "onAccepted")]
-    pub on_accepted: uint64,
+    pub on_accepted: u64,
     #[serde(rename = "onFulfilled")]
-    pub on_fulfilled: uint64,
+    pub on_fulfilled: u64,
 }
 
 /// The representation of contract delivery terms
@@ -101,8 +101,8 @@ pub struct ContractDeliveryTerms {
     #[serde(rename = "tradeSymbol")]
     pub trade_symbol: String,
     pub destination: String,
-    pub units: uint64,
-    pub fulfilled: uint64,
+    pub units: u64,
+    pub fulfilled: u64,
 }
 
 /// The representation of a ship
@@ -110,9 +110,9 @@ pub struct ContractDeliveryTerms {
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct Ship {
     pub symbol: String,
-    pub crew: Option<String>, // Appears unimplemented 3/11/22
+    pub crew: Option<String>,     // Appears unimplemented 3/11/22
     pub officers: Option<String>, // Appears unimplemented 3/11/22
-    pub fuel: uint64,
+    pub fuel: u64,
     pub frame: String,
     pub reactor: String,
     pub engine: String,
@@ -125,11 +125,32 @@ pub struct Ship {
     pub cargo: Vec<Cargo>,
 }
 
+/// The representation of ship registration
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ShipRegistration {
+    #[serde(rename = "factionSymbol")]
+    pub faction_symbol: String,
+    #[serde(rename = "agentSymbol")]
+    pub agent_symbol: String,
+    pub fee: u64,
+    pub role: String,
+}
+
+/// The representation of ship integrity
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ShipIntegrity {
+    pub frame: u16,
+    pub reactor: u16,
+    pub engine: u16,
+}
+
 /// The representation of cargo
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct Cargo {
     #[serde(rename = "tradeSymbol")]
     pub trade_symbol: String,
-    pub units: uint64,
+    pub units: u64,
 }
