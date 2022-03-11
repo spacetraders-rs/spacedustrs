@@ -194,3 +194,31 @@ pub struct SystemsWaypointResponse {
     /// The data of the response
     pub data: WaypointInformation,
 }
+
+/// The representation of a system shipyards response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SystemsShipyardsResponse {
+    /// The data of the response
+    pub data: Vec<ShipyardInformation>,
+    /// Meta information about the response
+    pub meta: Meta,
+}
+
+/// The representation of a system shipyard response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SystemsShipyardResponse {
+    /// The data of the response
+    pub data: ShipyardInformation,
+}
+
+/// The representation of a shipyard ships response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ShipyardShipsResponse {
+    /// The data of the response
+    pub data: Vec<ShipListing>,
+    /// Meta information about the response
+    pub meta: Meta,
+}

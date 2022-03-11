@@ -720,4 +720,63 @@ impl Client {
 
         parse_response::<responses::SystemsWaypointResponse>(&response.response_text)
     }
+    /// Get list of all system shipyards
+    pub async fn get_system_shipyards(
+        &self,
+        system_symbol: String,
+    ) -> Result<responses::SystemsShipyardsResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/systems/{}/shipyards", &self.base_url, system_symbol),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::SystemsShipyardsResponse>(&response.response_text)
+    }
+    /// Get system shipyard
+    pub async fn get_system_shipyard(
+        &self,
+        system_symbol: String,
+        shipyard_symbol: String,
+    ) -> Result<responses::SystemsShipyardResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!(
+                    "{}/systems/{}/shipyards/{}",
+                    &self.base_url, &system_symbol, &shipyard_symbol
+                ),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::SystemsShipyardResponse>(&response.response_text)
+    }
+    /// Get shipyard ships
+    pub async fn get_shipyard_ships(
+        &self,
+        system_symbol: String,
+        shipyard_symbol: String,
+    ) -> Result<responses::ShipyardShipsResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!(
+                    "{}/systems/{}/shipyards/{}/ships",
+                    &self.base_url, &system_symbol, &shipyard_symbol
+                ),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::ShipyardShipsResponse>(&response.response_text)
+    }
 }

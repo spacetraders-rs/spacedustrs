@@ -70,12 +70,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - `GET` /systems/{systemSymbol}/waypoints/{waypointSymbol}
 - - `Client.get_system_waypoint(system_symbol: String, waypoint_symbol: String) -> responses::SystemWaypointResponse`
 - `GET` /systems/{systemSymbol}/shipyards # view all shipyards in a system
-- - `` NOTE has meta
-- `GET` /systems/{systemSymbol}/shipyards/{waypointSymbol}/ships # view all ships for sell at a shipyard
-- - ``
+- - `Client.get_system_shipyards(system_symbol: String) -> responses::SystemShipyardsResponse`
+- `GET` /systems/{systemSymbol}/shipyards/{shipyardSymbol}
+- - `Client.get_system_shipyard(system_symbol: String, shipyard_symbol: String) -> responses::SystemShipyardResponse`
+- `GET` /systems/{systemSymbol}/shipyards/{shipyardSymbol}/ships # view all ships for sell at a shipyard
+- - `Client.get_shipyard_ships(system_symbol: String, shipyard_symbol: String) -> responses::ShipyardShipsResponse`
 - `GET` /systems/{systemSymbol}/markets # view all markets in a system
 - - `` NOTE has meta
-- `GET` /systems/{systemSymbol}/markets/{waypointSymbol} # view all trades at a given market
+- `GET` /systems/{systemSymbol}/markets/{marketSymbol} # view all trades at a given market
 - - ``
 
 ### Agent Specific Endpoints

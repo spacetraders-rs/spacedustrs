@@ -417,3 +417,41 @@ pub struct WaypointInformation {
     #[serde(rename = "chartedBy")]
     pub charted_by: Option<String>,
 }
+
+/// The representation of shipyard information
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ShipyardInformation {
+    /// The symbol for the shipyard
+    pub symbol: String,
+    /// The symbol for the system
+    pub system: String,
+    /// The faction that controls the shipyard
+    pub faction: String,
+    /// Ship types available
+    pub ships: u64,
+}
+
+/// The representation of a ship listing
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ShipListing {
+    /// The ship listing's id
+    pub id: String,
+    /// The waypoint the listing corresponds to
+    pub waypoint: String,
+    /// The price of the listing
+    pub price: i64,
+    /// The role of the ship
+    pub role: String,
+    /// The installed frame
+    pub frame: String,
+    /// The installed reactor
+    pub reactor: String,
+    /// The installed engine
+    pub engine: String,
+    /// A list of the installed modules
+    pub modules: Vec<String>,
+    /// A list of the installed mounts
+    pub mounts: Vec<String>,
+}
