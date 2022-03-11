@@ -240,6 +240,7 @@ fn parse_response<'a, T: Deserialize<'a>>(
 /// * `agent_faction` - Use COMMERCE_REPUBLIC if you don't know any other factions to choose from
 pub async fn claim_agent(
     http_client: HttpClient,
+    base_url: String,
     agent_symbol: String,
     agent_faction: String,
 ) -> Result<responses::ClaimAgent, SpaceTradersClientError> {
@@ -252,7 +253,7 @@ pub async fn claim_agent(
     let response = http_client
         .execute_request(
             "POST",
-            &"https://v2-0-0.alpha.spacetraders.io/agents",
+            &format!("{}/agents", base_url),
             Some(&serde_json::to_string(&claim_agent_request).unwrap()),
             None,
         )
@@ -265,6 +266,7 @@ pub async fn claim_agent(
 #[derive(Debug, Clone)]
 pub struct Client {
     http_client: HttpClient,
+    base_url: String,
     /// The agent's name/symbol
     pub agentname: String,
     /// The uses access token
@@ -277,9 +279,15 @@ impl Client {
     /// # Arguments
     ///
     /// * `token` - A string containing the access token for the username provided
-    pub fn new(http_client: HttpClient, agentname: String, token: String) -> Client {
+    pub fn new(
+        http_client: HttpClient,
+        base_url: String,
+        agentname: String,
+        token: String,
+    ) -> Client {
         Client {
             http_client,
+            base_url,
             agentname,
             token,
         }
@@ -296,7 +304,7 @@ impl Client {
         let response = http_client
             .execute_request(
                 "GET",
-                "https://api.spacetraders.io/my/agent",
+                &format!("{}/my/agent", &self.base_url),
                 None,
                 Some(&self.token),
             )

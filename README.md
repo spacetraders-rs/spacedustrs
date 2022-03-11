@@ -20,6 +20,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Register agent
     let claim_agent_response = spacedustrs::client::claim_agent(
         http_client,
+        "https://v2-0-0.alpha.spacetraders.io".to_string(),
         "<4-8 character string>".to_string(),
         "COMMERCE_REPUBLIC".to_string(),
     )
@@ -27,6 +28,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let client = Client::new(
         http_client,
+        "https://v2-0-0.alpha.spacetraders.io".to_string(),
         claim_agent_response.data.agent.symbol,
         claim_agent_response.token,
     );
@@ -47,6 +49,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 ## Supported Endpoints
 
  - `POST: /agents`
- - - `spacedustrs::client::claim_agent(http_client: http_client, agent_symbol: String, agent_faction: String) -> responses::ClaimAgent`
+ - - `spacedustrs::client::claim_agent(base_url: String, http_client: http_client, agent_symbol: String, agent_faction: String) -> responses::ClaimAgent`
  - `GET: /my/agent`
  - - `Client.get_my_agent_details() -> responses::AgentDetails`
