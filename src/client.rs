@@ -313,6 +313,26 @@ impl Client {
         parse_response::<responses::AgentDetails>(&response.response_text)
     }
 
+    //////////////////////////////////////////////
+    ///// CONTRACTS
+    //////////////////////////////////////////////
+    /// Get list of my contracts
+    pub async fn get_my_contracts(
+        &self,
+    ) -> Result<responses::ContractsResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/my/contracts", &self.base_url),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::ContractsResponse>(&response.response_text)
+    }
+
     // //////////////////////////////////////////////
     // ///// ACCOUNT
     // //////////////////////////////////////////////

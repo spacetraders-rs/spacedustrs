@@ -202,3 +202,15 @@ pub struct Cargo {
     /// The number of units
     pub units: u64,
 }
+
+/// The representation of response meta info
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct Meta {
+    /// The total
+    pub total: u16,
+    /// The page
+    pub page: u16,
+    /// The limit
+    pub limit: u16,
+}

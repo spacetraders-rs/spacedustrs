@@ -26,6 +26,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     )
     .await.unwrap();
 
+    // Setup client using claimed agent
     let client = Client::new(
         http_client,
         "https://v2-0-0.alpha.spacetraders.io".to_string(),
@@ -33,6 +34,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         claim_agent_response.token,
     );
 
+    // Get agent details to confirm working
     match client.get_my_agent_details().await {
         Ok(res) => {
             println!("{:#?}", res);
@@ -48,7 +50,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ## Supported Endpoints
 
- - `POST: /agents`
- - - `spacedustrs::client::claim_agent(base_url: String, http_client: http_client, agent_symbol: String, agent_faction: String) -> responses::ClaimAgent`
- - `GET: /my/agent`
- - - `Client.get_my_agent_details() -> responses::AgentDetails`
+- `POST: /agents`
+- - `spacedustrs::client::claim_agent(base_url: String, http_client: http_client, agent_symbol: String, agent_faction: String) -> responses::ClaimAgent`
+- `GET: /my/agent`
+- - `Client.get_my_agent_details() -> responses::AgentDetails`
+- `GET: /my/contracts`
+- - `Client.get_my_contracts() -> responses::ContractsResponse`

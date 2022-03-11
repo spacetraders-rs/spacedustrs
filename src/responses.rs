@@ -34,3 +34,13 @@ pub struct AgentDetails {
     /// The data of the response
     pub data: AgentInformation,
 }
+
+/// The representation of a my contracts response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ContractsResponse {
+    /// The data of the response
+    pub data: Vec<Contract>,
+    /// Meta information about the response
+    pub meta: Meta,
+}
