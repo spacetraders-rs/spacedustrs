@@ -52,3 +52,19 @@ pub struct ContractResponse {
     /// The data of the response
     pub data: Contract,
 }
+
+/// The representation of an accept contract response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct AcceptedContractResponse {
+    /// The data of the response
+    pub data: AcceptedContractResponseResult,
+}
+
+/// The representation of the data from an accept contract response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct AcceptedContractResponseResult {
+    /// New contract status
+    pub accepted: bool,
+}

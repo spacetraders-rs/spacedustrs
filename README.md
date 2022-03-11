@@ -58,3 +58,5 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - - `Client.get_my_contracts() -> responses::ContractsResponse`
 - `GET: /my/contracts/{contractId}`
 - - `Client.get_my_contract(contract_id: String) -> responses::ContractResponse`
+- `POST: /my/contracts/{contractId}/accept`
+- - `Client.get_my_contract(contract_id: String) -> responses::AcceptedContractResponse`

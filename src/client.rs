@@ -101,6 +101,12 @@ impl SpaceTradersClient {
                 HeaderValue::from_static("application/json"),
             );
             request_builder = request_builder.body(body.to_owned());
+        } else if method == "POST" {
+            // If body empty, set content-length to 0
+            request_builder = request_builder.header(
+                HeaderName::from_lowercase(b"content-length").unwrap(),
+                HeaderValue::from_static("0"),
+            );
         }
 
         let mut attempts = 0;
@@ -349,6 +355,24 @@ impl Client {
             .await?;
 
         parse_response::<responses::ContractResponse>(&response.response_text)
+    }
+
+    /// Accept a specific contract
+    pub async fn accept_my_contract(
+        &self,
+        contract_id: String,
+    ) -> Result<responses::AcceptedContractResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/contracts/{}/accept", &self.base_url, contract_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::AcceptedContractResponse>(&response.response_text)
     }
 
     // /// Create a flight plan.
