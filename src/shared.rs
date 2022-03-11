@@ -214,3 +214,22 @@ pub struct Meta {
     /// The limit
     pub limit: u16,
 }
+
+/// The representation of navigation information
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct NavigationInformation {
+    /// The symbol of the ship navigating
+    #[serde(rename = "shipSymbol")]
+    pub ship_symbol: String,
+    /// The departure location
+    pub departure: String,
+    /// The destination location
+    pub destination: String,
+    /// Duration remaining as of call
+    #[serde(rename = "durationRemaining")]
+    pub duration_remaining: Option<u64>,
+    /// Timestamp of arrival
+    #[serde(rename = "arrivedAt")]
+    pub arrived_at: Option<String>,
+}

@@ -10,3 +10,10 @@ pub struct ClaimAgentRequest {
     /// The faction to join
     pub faction: String,
 }
+
+/// The representation of a navigate request
+#[derive(Serialize, Debug)]
+pub struct NavigateRequest {
+    /// The requested destination
+    pub destination: String,
+}

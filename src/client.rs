@@ -375,32 +375,80 @@ impl Client {
         parse_response::<responses::AcceptedContractResponse>(&response.response_text)
     }
 
-    // /// Create a flight plan.
-    // ///
-    // /// # Arguments
-    // ///
-    // /// * `ship_id` - A string containing the ship_id to create the flight plan for
-    // /// * `destination` - A string containing the location to send the ship to
-    // pub async fn create_flight_plan(
-    //     &self,
-    //     ship_id: String,
-    //     destination: String,
-    // ) -> Result<responses::FlightPlan, SpaceTradersClientError> {
-    //     let flight_plan_request = requests::FlightPlanRequest {
-    //         ship_id: ship_id.clone(),
-    //         destination: destination.clone(),
-    //     };
+    //////////////////////////////////////////////
+    ///// SHIPS
+    //////////////////////////////////////////////
+    /// Get list of my ships
+    pub async fn get_my_ships(&self) -> Result<responses::ShipsResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/my/ships", &self.base_url),
+                None,
+                Some(&self.token),
+            )
+            .await?;
 
-    //     let http_client = self.http_client.lock().await;
-    //     let response = http_client
-    //         .execute_request(
-    //             "POST",
-    //             "https://api.spacetraders.io/my/flight-plans",
-    //             Some(&serde_json::to_string(&flight_plan_request).unwrap()),
-    //             Some(&self.token),
-    //         )
-    //         .await?;
+        parse_response::<responses::ShipsResponse>(&response.response_text)
+    }
 
-    //     parse_response::<responses::FlightPlan>(&response.response_text)
-    // }
+    /// Get info on specific ship
+    pub async fn get_my_ship(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::ShipResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/my/ships/{}", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::ShipResponse>(&response.response_text)
+    }
+
+    /// Navigate specific ship to target location
+    pub async fn navigate_ship(
+        &self,
+        ship_id: String,
+        destination_symbol: String,
+    ) -> Result<responses::NavigateResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let navigate_request = requests::NavigateRequest {
+            destination: destination_symbol.clone(),
+        };
+
+        let response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/navigate", &self.base_url, ship_id),
+                Some(&serde_json::to_string(&navigate_request).unwrap()),
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::NavigateResponse>(&response.response_text)
+    }
+
+    /// Get the status of the specified ship's last navigation
+    pub async fn ship_navigation_status(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::NavigateResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/my/ships/{}/navigate", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::NavigateResponse>(&response.response_text)
+    }
 }

@@ -68,3 +68,29 @@ pub struct AcceptedContractResponseResult {
     /// New contract status
     pub accepted: bool,
 }
+
+/// The representation of a my ships response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ShipsResponse {
+    /// The data of the response
+    pub data: Vec<Ship>,
+    /// Meta information about the response
+    pub meta: Meta,
+}
+
+/// The representation of a my ship response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ShipResponse {
+    /// The data of the response
+    pub data: Ship,
+}
+
+/// The representation of a navigate response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct NavigateResponse {
+    /// The data of the response
+    pub data: NavigationInformation,
+}
