@@ -242,6 +242,16 @@ pub struct SurveyCooldownData {
     pub cooldown: u64,
 }
 
+/// The representation of survey data
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SurveyData {
+    /// The cooldown data
+    pub cooldown: u64,
+    /// List of surveys (extraction locations) available
+    pub surveys: Vec<Survey>,
+}
+
 /// The representation of a survey
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
@@ -252,4 +262,30 @@ pub struct Survey {
     pub deposits: Vec<String>,
     /// The expiration timestamp for the survey
     pub expiration: String,
+}
+
+/// The representation of system information
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SystemInformation {
+    /// The symbol for the system
+    pub symbol: String,
+    /// The sector that contains this system
+    pub sector: String,
+    /// The type of system
+    #[serde(rename = "type")]
+    pub system_type: String,
+    /// The system x coordinate
+    pub x: i64,
+    /// The system y coordinate
+    pub y: i64,
+    /// A list of waypoints in the system
+    pub waypoints: Vec<String>,
+    /// A list of factions in the system
+    pub factions: Vec<String>,
+    /// Whether the system has been charted
+    pub charted: bool,
+    /// Who charted the system
+    #[serde(rename = "chartedBy")]
+    pub charted_by: Option<String>,
 }

@@ -487,4 +487,41 @@ impl Client {
 
         parse_response::<responses::SurveyResponse>(&response.response_text)
     }
+
+    //////////////////////////////////////////////
+    ///// Systems
+    //////////////////////////////////////////////
+    /// Get system information
+    pub async fn get_system_info(
+        &self,
+        system_symbol: String,
+    ) -> Result<responses::SystemInformationResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/systems/{}", &self.base_url, &system_symbol),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::SystemInformationResponse>(&response.response_text)
+    }
+    /// Get list of all systems
+    pub async fn get_systems(
+        &self,
+    ) -> Result<responses::SystemsListResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/systems", &self.base_url),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::SystemsListResponse>(&response.response_text)
+    }
 }

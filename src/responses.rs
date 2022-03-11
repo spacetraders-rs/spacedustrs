@@ -107,8 +107,24 @@ pub struct SurveyCooldownResponse {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct SurveyResponse {
-    /// The cooldown data
-    pub cooldown: SurveyCooldownData,
-    /// List of surveys (extraction locations) available
-    pub surveys: Vec<Survey>,
+    /// The data of the response
+    pub data: SurveyData,
+}
+
+/// The representation of a system information response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SystemInformationResponse {
+    /// The data of the response
+    pub data: SystemInformation,
+}
+
+/// The representation of a system information response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SystemsListResponse {
+    /// The data of the response
+    pub data: Vec<SystemInformation>,
+    /// Meta information about the response
+    pub meta: Meta,
 }

@@ -72,3 +72,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - - `Client.get_survey_cooldown(ship_id: String) -> responses::SurveyCooldownResponse`
 - `POST: /my/ships/{shipSymbol}/survey`
 - - `Client.survey_surroundings(ship_id: String) -> responses::SurveyResponse`
+- `GET: /systems/{systemSymbol}`
+- - `Client.get_system_info(system_symbol: String) -> responses::SystemInformationResponse`
+- `GET: /systems`
+- - `Client.get_systems() -> responses::SystemsListResponse`
