@@ -100,15 +100,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - - `Client.get_extract_cooldown(ship_id: String) -> responses::ExtractCooldownResponse`
 - `POST` /my/ships/{shipSymbol}/extract ?survey{}=survey
 - - `Client.extract_resources(ship_id: String, survey: Option<Survey>) -> responses::ExtractResourcesResponse`
+- `POST` /my/ships/{shipSymbol}/dock
+- - `Client.dock_ship(ship_id: String) -> responses::StatusResponse`
+- `POST` /my/ships/{shipSymbol}/orbit
+- - `Client.orbit_ship(ship_id: String) -> responses::StatusResponse`
+- `POST` /my/ships/{shipSymbol}/deliver
+- - `Client.deliver_goods(ship_id: String, contract_id: String, trade_symbol: String, units: u64) -> responses::DeliveryResponse`
 
 ## Unsupported Endpoints
 
-- `POST` /my/ships/{shipSymbol}/deliver # delivery goods on a contract
-- - ``
-- `POST` /my/ships/{shipSymbol}/dock # dock at a waypoint if permitted
-- - ``
-- `POST` /my/ships/{shipSymbol}/orbit # put your ship into orbit around a waypoint
-- - ``
 - `POST` /my/ships/{shipSymbol}/jettison symbol=HEAVY_MACHINERY quantity=99999
 - - ``
 - `POST` /my/ships/{shipSymbol}/refuel

@@ -25,3 +25,17 @@ pub struct ExtractRequest {
     /// The requested destination
     pub survey: shared::Survey,
 }
+
+/// The representation of a contract delivery request
+#[derive(Serialize, Debug)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ContractDeliveryRequest {
+    /// The target contract id
+    #[serde(rename = "contractId")]
+    pub contract_id: String,
+    /// The trade symbol for the good to be delivered
+    #[serde(rename = "tradeSymbol")]
+    pub trade_symbol: String,
+    /// The amount of said good to deliver
+    pub units: u64,
+}

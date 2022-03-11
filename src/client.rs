@@ -516,7 +516,7 @@ impl Client {
         let response: SpaceTradersClientResponse;
         match survey {
             Some(survey) => {
-                let extract_request = requests::ExtractRequest { survey: survey };
+                let extract_request = requests::ExtractRequest { survey };
 
                 response = http_client
                     .execute_request(
@@ -540,6 +540,70 @@ impl Client {
         }
 
         parse_response::<responses::ExtractResourcesResponse>(&response.response_text)
+    }
+
+    /// Dock the ship on the entity it orbits
+    pub async fn dock_ship(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::StatusResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/dock", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::StatusResponse>(&response.response_text)
+    }
+
+    /// Orbit the ship around the entity it's docked at
+    pub async fn orbit_ship(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::StatusResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/orbit", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::StatusResponse>(&response.response_text)
+    }
+
+    /// Deliver specified goods for a corresponding contract
+    pub async fn deliver_goods(
+        &self,
+        ship_id: String,
+        contract_id: String,
+        trade_symbol: String,
+        units: u64,
+    ) -> Result<responses::DeliveryResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response: SpaceTradersClientResponse;
+        let contract_delivery_request = requests::ContractDeliveryRequest {
+            contract_id,
+            trade_symbol,
+            units,
+        };
+
+        response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/deliver", &self.base_url, ship_id),
+                Some(&serde_json::to_string(&contract_delivery_request).unwrap()),
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::DeliveryResponse>(&response.response_text)
     }
 
     //////////////////////////////////////////////

@@ -303,3 +303,26 @@ pub struct ExtractData {
     #[serde(rename = "yield")]
     pub extract_yield: Cargo,
 }
+
+/// The representation of status data
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct StatusData {
+    /// The cooldown remaining in seconds
+    pub status: String,
+}
+
+/// The representation of delivery data
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct DeliveryData {
+    /// The trade symbol delivered
+    #[serde(rename = "tradeSymbol")]
+    pub trade_symbol: String,
+    /// The destination delivered to
+    pub destination: String,
+    /// The number of units needed to fulfill the contract
+    pub units: u64,
+    /// The number of units fulfilled, after delivery
+    pub fulfilled: u64,
+}

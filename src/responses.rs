@@ -144,3 +144,19 @@ pub struct ExtractResourcesResponse {
     /// The data of the response
     pub data: ExtractData,
 }
+
+/// The representation of a status response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct StatusResponse {
+    /// The data of the response
+    pub data: StatusData,
+}
+
+/// The representation of a delivery response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct DeliveryResponse {
+    /// The data of the response
+    pub data: DeliveryData,
+}
