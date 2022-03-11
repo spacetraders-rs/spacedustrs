@@ -285,6 +285,26 @@ impl Client {
         }
     }
 
+    //////////////////////////////////////////////
+    ///// AGENT
+    //////////////////////////////////////////////
+    /// Get agent information
+    pub async fn get_my_agent_details(
+        &self,
+    ) -> Result<responses::AgentDetails, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                "https://api.spacetraders.io/my/agent",
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::AgentDetails>(&response.response_text)
+    }
+
     // //////////////////////////////////////////////
     // ///// ACCOUNT
     // //////////////////////////////////////////////

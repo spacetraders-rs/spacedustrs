@@ -11,7 +11,7 @@ pub struct ClaimAgent {
     pub data: ClaimAgentData,
 }
 
-/// The representation of the response data from claiming and agent
+/// The representation of the response data from claiming an agent
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ClaimAgentData {
@@ -25,4 +25,12 @@ pub struct ClaimAgentData {
     pub contract: Contract,
     /// The agent's starting ship info
     pub ship: Ship,
+}
+
+/// The representation of a my agent response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct AgentDetails {
+    /// The data of the response
+    pub data: AgentInformation,
 }
