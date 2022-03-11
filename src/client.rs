@@ -333,53 +333,23 @@ impl Client {
         parse_response::<responses::ContractsResponse>(&response.response_text)
     }
 
-    // //////////////////////////////////////////////
-    // ///// ACCOUNT
-    // //////////////////////////////////////////////
+    /// Get info on specific contract
+    pub async fn get_my_contract(
+        &self,
+        contract_id: String,
+    ) -> Result<responses::ContractResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/my/contracts/{}", &self.base_url, contract_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
 
-    // /// Get all information about the current user
-    // pub async fn get_my_info(&self) -> Result<responses::UserInfo, SpaceTradersClientError> {
-    //     let http_client = self.http_client.lock().await;
-    //     let response = http_client
-    //         .execute_request(
-    //             "GET",
-    //             "https://api.spacetraders.io/my/account",
-    //             None,
-    //             Some(&self.token),
-    //         )
-    //         .await?;
-
-    //     parse_response::<responses::UserInfo>(&response.response_text)
-    // }
-
-    // //////////////////////////////////////////////
-    // ///// FLIGHT PLANS
-    // //////////////////////////////////////////////
-
-    // /// Get the current details of a flight plan
-    // ///
-    // /// # Arguments
-    // ///
-    // /// * `flight_plan_id` - A string containing the flight plan id
-    // pub async fn get_flight_plan(
-    //     &self,
-    //     flight_plan_id: String,
-    // ) -> Result<responses::FlightPlan, SpaceTradersClientError> {
-    //     let http_client = self.http_client.lock().await;
-    //     let response = http_client
-    //         .execute_request(
-    //             "GET",
-    //             &format!(
-    //                 "https://api.spacetraders.io/my/flight-plans/{}",
-    //                 flight_plan_id
-    //             ),
-    //             None,
-    //             Some(&self.token),
-    //         )
-    //         .await?;
-
-    //     parse_response::<responses::FlightPlan>(&response.response_text)
-    // }
+        parse_response::<responses::ContractResponse>(&response.response_text)
+    }
 
     // /// Create a flight plan.
     // ///
