@@ -682,4 +682,42 @@ impl Client {
 
         parse_response::<responses::SystemsListResponse>(&response.response_text)
     }
+    /// Get list of all system waypoints
+    pub async fn get_system_waypoints(
+        &self,
+        system_symbol: String,
+    ) -> Result<responses::SystemsWaypointsResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/systems/{}/waypoints", &self.base_url, system_symbol),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::SystemsWaypointsResponse>(&response.response_text)
+    }
+    /// Get system waypoint
+    pub async fn get_system_waypoint(
+        &self,
+        system_symbol: String,
+        waypoint_symbol: String,
+    ) -> Result<responses::SystemsWaypointResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!(
+                    "{}/systems/{}/waypoints/{}",
+                    &self.base_url, &system_symbol, &waypoint_symbol
+                ),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::SystemsWaypointResponse>(&response.response_text)
+    }
 }

@@ -176,3 +176,21 @@ pub struct ScanResponse {
     /// The data of the response
     pub data: ScanData,
 }
+
+/// The representation of a system waypoints response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SystemsWaypointsResponse {
+    /// The data of the response
+    pub data: Vec<WaypointInformation>,
+    /// Meta information about the response
+    pub meta: Meta,
+}
+
+/// The representation of a system waypoint response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SystemsWaypointResponse {
+    /// The data of the response
+    pub data: WaypointInformation,
+}

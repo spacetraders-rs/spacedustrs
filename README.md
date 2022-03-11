@@ -65,6 +65,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - - `Client.get_systems() -> responses::SystemsListResponse`
 - `GET` /systems/{systemSymbol}
 - - `Client.get_system_info(system_symbol: String) -> responses::SystemInformationResponse`
+- `GET` /systems/{systemSymbol}/waypoints
+- - `Client.get_system_waypoints(system_symbol: String) -> responses::SystemWaypointsResponse`
+- `GET` /systems/{systemSymbol}/waypoints/{waypointSymbol}
+- - `Client.get_system_waypoint(system_symbol: String, waypoint_symbol: String) -> responses::SystemWaypointResponse`
+- `GET` /systems/{systemSymbol}/shipyards # view all shipyards in a system
+- - `` NOTE has meta
+- `GET` /systems/{systemSymbol}/shipyards/{waypointSymbol}/ships # view all ships for sell at a shipyard
+- - ``
+- `GET` /systems/{systemSymbol}/markets # view all markets in a system
+- - `` NOTE has meta
+- `GET` /systems/{systemSymbol}/markets/{waypointSymbol} # view all trades at a given market
+- - ``
 
 ### Agent Specific Endpoints
 
@@ -120,16 +132,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - `POST` /my/ships/{shipSymbol}/purchase symbol=HEAVY_MACHINERY quantity=99999
 - - ``
 - `POST` /my/ships/{shipSymbol}/sell symbol=HEAVY_MACHINERY quantity=99999
-- - ``
-- `GET` /systems/X1-OE/waypoints/X1-OE-001A # view waypoint details
-- - ``
-- `GET` /systems/X1-OE/shipyards # view all shipyards in a system
-- - ``
-- `GET` /systems/X1-OE/shipyards/X1-OE-001A/ships # view all ships for sell at a shipyard
-- - ``
-- `GET` /systems/X1-OE/markets # view all markets in a system
-- - ``
-- `GET` /systems/X1-OE/markets/X1-OE-001A # view all trades at a given market
 - - ``
 
 ## Notes from Roadmap

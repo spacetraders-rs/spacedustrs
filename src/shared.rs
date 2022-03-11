@@ -387,3 +387,33 @@ pub struct ShipScanRegistration {
     /// Role of scanned ship
     pub role: String,
 }
+
+/// The representation of waypoint information
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct WaypointInformation {
+    /// The symbol for the system
+    pub system: String,
+    /// The symbol for the waypoint
+    pub symbol: String,
+    /// The type of waypoint
+    #[serde(rename = "type")]
+    pub system_type: String,
+    /// The waypoint x coordinate
+    pub x: i64,
+    /// The waypoint y coordinate
+    pub y: i64,
+    /// A list of celestial bodies orbiting the waypoint
+    pub orbitals: Vec<String>,
+    /// The faction that controls the waypoint
+    pub faction: String,
+    /// Waypoint features
+    pub features: Vec<String>,
+    /// Waypoint traits
+    pub traits: Vec<String>,
+    /// Whether the waypoint has been charted
+    pub charted: bool,
+    /// Who charted the system
+    #[serde(rename = "chartedBy")]
+    pub charted_by: Option<String>,
+}
