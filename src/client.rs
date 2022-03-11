@@ -451,4 +451,40 @@ impl Client {
 
         parse_response::<responses::NavigateResponse>(&response.response_text)
     }
+
+    /// Navigate specific ship to target location
+    pub async fn get_survey_cooldown(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::SurveyCooldownResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/my/ships/{}/survey", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::SurveyCooldownResponse>(&response.response_text)
+    }
+
+    /// Get the status of the specified ship's last navigation
+    pub async fn survey_surroundings(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::SurveyResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/survey", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::SurveyResponse>(&response.response_text)
+    }
 }

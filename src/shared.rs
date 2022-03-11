@@ -233,3 +233,23 @@ pub struct NavigationInformation {
     #[serde(rename = "arrivedAt")]
     pub arrived_at: Option<String>,
 }
+
+/// The representation of survey cooldown data
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SurveyCooldownData {
+    /// The cooldown remaining in seconds
+    pub cooldown: u64,
+}
+
+/// The representation of a survey
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct Survey {
+    /// The signature of the survey
+    pub signature: String,
+    /// The list of deposits that the survey found
+    pub deposits: Vec<String>,
+    /// The expiration timestamp for the survey
+    pub expiration: String,
+}
