@@ -297,8 +297,8 @@ pub struct ExtractData {
     /// The symbol of the ship that completed extraction
     #[serde(rename = "shipSymbol")]
     pub ship_symbol: String,
-    /// Seems like expiration should be cooldown...
-    pub expiration: String,
+    /// The cooldown till next extraction
+    pub cooldown: u64,
     /// The materials yielded from the extraction
     #[serde(rename = "yield")]
     pub extract_yield: Cargo,

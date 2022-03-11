@@ -52,7 +52,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ### Public Endpoints
 
-**Agent**
+**Agent & Account**
 
 - `POST` /agents
 - - `spacedustrs::client::claim_agent(base_url: String, http_client: http_client, agent_symbol: String, agent_faction: String) -> responses::ClaimAgent`
@@ -100,3 +100,44 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - - `Client.get_extract_cooldown(ship_id: String) -> responses::ExtractCooldownResponse`
 - `POST` /my/ships/{shipSymbol}/extract ?survey{}=survey
 - - `Client.extract_resources(ship_id: String, survey: Option<Survey>) -> responses::ExtractResourcesResponse`
+
+## Unsupported Endpoints
+
+- `POST` /my/ships/{shipSymbol}/deliver # delivery goods on a contract
+- - ``
+- `GET` /my/account
+- - ``
+- `POST` /my/ships/{shipSymbol}/chart
+- - ``
+- `POST` /my/ships/{shipSymbol}/dock # dock at a waypoint if permitted
+- - ``
+- `POST` /my/ships/{shipSymbol}/orbit # put your ship into orbit around a waypoint
+- - ``
+- `POST` /my/ships/{shipSymbol}/jettison symbol=HEAVY_MACHINERY quantity=99999
+- - ``
+- `POST` /my/ships/{shipSymbol}/refuel
+- - ``
+- `POST` /my/ships/{shipSymbol}/scan
+- - ``
+- `POST` /my/ships/{shipSymbol}/jump destination=X1-OE # jump to a target system
+- - ``
+- `POST` /my/ships/{shipSymbol}/purchase symbol=HEAVY_MACHINERY quantity=99999
+- - ``
+- `POST` /my/ships/{shipSymbol}/sell symbol=HEAVY_MACHINERY quantity=99999
+- - ``
+- `GET` /systems/X1-OE/waypoints/X1-OE-001A # view waypoint details
+- - ``
+- `GET` /systems/X1-OE/shipyards # view all shipyards in a system
+- - ``
+- `GET` /systems/X1-OE/shipyards/X1-OE-001A/ships # view all ships for sell at a shipyard
+- - ``
+- `GET` /systems/X1-OE/markets # view all markets in a system
+- - ``
+- `GET` /systems/X1-OE/markets/X1-OE-001A # view all trades at a given market
+- - ``
+
+## Notes from Roadmap
+
+- `/navigate` will support modes
+- `/dock` will support modes
+- `/orbit` will support modes
