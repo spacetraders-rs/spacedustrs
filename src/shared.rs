@@ -159,7 +159,7 @@ pub struct Ship {
     /// The ship's status/activity
     pub status: String,
     /// The ship's current location
-    pub location: String,
+    pub location: Option<String>,
     /// The ship's stored cargo
     pub cargo: Vec<Cargo>,
 }

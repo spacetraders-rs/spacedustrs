@@ -105,10 +105,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 - `POST` /my/ships/{shipSymbol}/deliver # delivery goods on a contract
 - - ``
-- `GET` /my/account
-- - ``
-- `POST` /my/ships/{shipSymbol}/chart
-- - ``
 - `POST` /my/ships/{shipSymbol}/dock # dock at a waypoint if permitted
 - - ``
 - `POST` /my/ships/{shipSymbol}/orbit # put your ship into orbit around a waypoint
@@ -141,3 +137,5 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - `/navigate` will support modes
 - `/dock` will support modes
 - `/orbit` will support modes
+- `GET` /my/account
+- `POST` /my/ships/{shipSymbol}/chart # appears to be incomplete
