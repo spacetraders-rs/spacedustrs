@@ -1,5 +1,6 @@
 //! All requests being sent to the api are in this module
 // use crate::shared;
+use crate::shared;
 use serde::Serialize;
 
 /// The representation of a claim agent request
@@ -16,4 +17,11 @@ pub struct ClaimAgentRequest {
 pub struct NavigateRequest {
     /// The requested destination
     pub destination: String,
+}
+
+/// The representation of a extract request
+#[derive(Serialize, Debug)]
+pub struct ExtractRequest {
+    /// The requested destination
+    pub survey: shared::Survey,
 }

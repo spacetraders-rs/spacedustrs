@@ -452,7 +452,7 @@ impl Client {
         parse_response::<responses::NavigateResponse>(&response.response_text)
     }
 
-    /// Navigate specific ship to target location
+    /// Get the survey cooldown of the given ship
     pub async fn get_survey_cooldown(
         &self,
         ship_id: String,
@@ -470,7 +470,7 @@ impl Client {
         parse_response::<responses::SurveyCooldownResponse>(&response.response_text)
     }
 
-    /// Get the status of the specified ship's last navigation
+    /// Survey the surroundings of the given ship
     pub async fn survey_surroundings(
         &self,
         ship_id: String,
@@ -486,6 +486,60 @@ impl Client {
             .await?;
 
         parse_response::<responses::SurveyResponse>(&response.response_text)
+    }
+
+    /// Get the extraction cooldown of the given ship
+    pub async fn get_extract_cooldown(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::ExtractCooldownResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/my/ships/{}/extract", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::ExtractCooldownResponse>(&response.response_text)
+    }
+
+    /// Extract resources near the given ship, optionally targetting specific yields with a survey signature
+    pub async fn extract_resources(
+        &self,
+        ship_id: String,
+        survey: Option<shared::Survey>,
+    ) -> Result<responses::ExtractResourcesResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response: SpaceTradersClientResponse;
+        match survey {
+            Some(survey) => {
+                let extract_request = requests::ExtractRequest { survey: survey };
+
+                response = http_client
+                    .execute_request(
+                        "POST",
+                        &format!("{}/my/ships/{}/extract", &self.base_url, ship_id),
+                        Some(&serde_json::to_string(&extract_request).unwrap()),
+                        Some(&self.token),
+                    )
+                    .await?;
+            }
+            None => {
+                response = http_client
+                    .execute_request(
+                        "POST",
+                        &format!("{}/my/ships/{}/extract", &self.base_url, ship_id),
+                        None,
+                        Some(&self.token),
+                    )
+                    .await?;
+            }
+        }
+
+        parse_response::<responses::ExtractResourcesResponse>(&response.response_text)
     }
 
     //////////////////////////////////////////////

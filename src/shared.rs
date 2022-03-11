@@ -234,10 +234,10 @@ pub struct NavigationInformation {
     pub arrived_at: Option<String>,
 }
 
-/// The representation of survey cooldown data
+/// The representation of cooldown data
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
-pub struct SurveyCooldownData {
+pub struct CooldownData {
     /// The cooldown remaining in seconds
     pub cooldown: u64,
 }
@@ -288,4 +288,18 @@ pub struct SystemInformation {
     /// Who charted the system
     #[serde(rename = "chartedBy")]
     pub charted_by: Option<String>,
+}
+
+/// The representation of extraction information
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ExtractData {
+    /// The symbol of the ship that completed extraction
+    #[serde(rename = "shipSymbol")]
+    pub ship_symbol: String,
+    /// Seems like expiration should be cooldown...
+    pub expiration: String,
+    /// The materials yielded from the extraction
+    #[serde(rename = "yield")]
+    pub extract_yield: Cargo,
 }
