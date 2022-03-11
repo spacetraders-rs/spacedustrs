@@ -606,6 +606,46 @@ impl Client {
         parse_response::<responses::DeliveryResponse>(&response.response_text)
     }
 
+    /// Refuel the ship
+    pub async fn refuel_ship(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::RefuelResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/refuel", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::RefuelResponse>(&response.response_text)
+    }
+
+    /// Deliver specified goods for a corresponding contract
+    pub async fn scan_ships(
+        &self,
+        ship_id: String,
+        scan_mode: shared::ScanMode,
+    ) -> Result<responses::ScanResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response: SpaceTradersClientResponse;
+        let contract_delivery_request = requests::ScanShipsRequest { mode: scan_mode };
+
+        response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/scan", &self.base_url, ship_id),
+                Some(&serde_json::to_string(&contract_delivery_request).unwrap()),
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::ScanResponse>(&response.response_text)
+    }
+
     //////////////////////////////////////////////
     ///// Systems
     //////////////////////////////////////////////

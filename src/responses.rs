@@ -160,3 +160,19 @@ pub struct DeliveryResponse {
     /// The data of the response
     pub data: DeliveryData,
 }
+
+/// The representation of a delivery response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct RefuelResponse {
+    /// The data of the response
+    pub data: RefuelData,
+}
+
+/// The representation of a scan response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ScanResponse {
+    /// The data of the response
+    pub data: ScanData,
+}

@@ -106,14 +106,14 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - - `Client.orbit_ship(ship_id: String) -> responses::StatusResponse`
 - `POST` /my/ships/{shipSymbol}/deliver
 - - `Client.deliver_goods(ship_id: String, contract_id: String, trade_symbol: String, units: u64) -> responses::DeliveryResponse`
+- `POST` /my/ships/{shipSymbol}/refuel
+- - `Client.refuel_ship(ship_id: String) -> responses::RefuelResponse`
+- `POST` /my/ships/{shipSymbol}/scan mode=scan_mode
+- - `Client.scan_ships(ship_id: String, mode: shared::ScanMode) -> responses::ScanResponse`
 
 ## Unsupported Endpoints
 
 - `POST` /my/ships/{shipSymbol}/jettison symbol=HEAVY_MACHINERY quantity=99999
-- - ``
-- `POST` /my/ships/{shipSymbol}/refuel
-- - ``
-- `POST` /my/ships/{shipSymbol}/scan
 - - ``
 - `POST` /my/ships/{shipSymbol}/jump destination=X1-OE # jump to a target system
 - - ``
@@ -137,5 +137,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - `/navigate` will support modes
 - `/dock` will support modes
 - `/orbit` will support modes
-- `GET` /my/account
+- `GET` /my/account # not implemented
+- `GET` /my/ships/{shipSymbol}/scan # not implemented but should return cooldown
 - `POST` /my/ships/{shipSymbol}/chart # appears to be incomplete

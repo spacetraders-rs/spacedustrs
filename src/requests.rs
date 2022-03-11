@@ -39,3 +39,10 @@ pub struct ContractDeliveryRequest {
     /// The amount of said good to deliver
     pub units: u64,
 }
+
+/// The representation of a scan request
+#[derive(Serialize, Debug)]
+pub struct ScanShipsRequest {
+    /// The requested destination
+    pub mode: shared::ScanMode,
+}

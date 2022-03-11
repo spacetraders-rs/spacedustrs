@@ -50,7 +50,7 @@ pub struct AgentInformation {
     /// The agent's headquarters location
     pub headquarters: String,
     /// The agent's current credit balance
-    pub credits: u64,
+    pub credits: i64,
 }
 
 /// The representation of faction information
@@ -325,4 +325,65 @@ pub struct DeliveryData {
     pub units: u64,
     /// The number of units fulfilled, after delivery
     pub fulfilled: u64,
+}
+
+/// The representation of refuel data
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct RefuelData {
+    /// The amount of credits spent on fuel
+    pub credits: i64,
+    /// The amount of fuel bought
+    pub fuel: u64,
+}
+
+/// The various scan modes
+#[derive(Serialize, Deserialize, Debug, Clone, Copy, PartialEq)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub enum ScanMode {
+    /// Approaching ships scan mode
+    #[serde(rename = "APPROACHING_SHIPS")]
+    ApproachingShips,
+}
+
+/// The representation of scan data
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ScanData {
+    /// Cooldown till next scan available
+    pub cooldown: u64,
+    /// List of ship scan data
+    pub ships: Vec<ShipScan>,
+}
+
+/// The representation of a ship scan
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ShipScan {
+    /// Scanned ship symbol
+    pub symbol: String,
+    /// Scanned ship registration
+    pub registration: ShipScanRegistration,
+    /// Scanned ship frame symbol
+    #[serde(rename = "frameSymbol")]
+    pub frame_symbol: String,
+    /// Scanned ship reactor symbol
+    #[serde(rename = "reactorSymbol")]
+    pub reactor_symbol: String,
+    /// Scanned ship engine symbol
+    #[serde(rename = "engineSymbol")]
+    pub engine_symbol: String,
+    /// Scan expiration
+    pub expiration: String,
+}
+
+/// The representation of a ship scan registration
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ShipScanRegistration {
+    /// Faction symbol of scanned ship
+    #[serde(rename = "factionSymbol")]
+    pub faction_symbol: String,
+    /// Role of scanned ship
+    pub role: String,
 }
