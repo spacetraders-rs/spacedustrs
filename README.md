@@ -50,29 +50,50 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ## Supported Endpoints
 
-- `POST: /agents`
+### Public Endpoints
+
+**Agent**
+
+- `POST` /agents
 - - `spacedustrs::client::claim_agent(base_url: String, http_client: http_client, agent_symbol: String, agent_faction: String) -> responses::ClaimAgent`
-- `GET: /my/agent`
-- - `Client.get_my_agent_details() -> responses::AgentDetails`
-- `GET: /my/contracts`
-- - `Client.get_my_contracts() -> responses::ContractsResponse`
-- `GET: /my/contracts/{contractId}`
-- - `Client.get_my_contract(contract_id: String) -> responses::ContractResponse`
-- `POST: /my/contracts/{contractId}/accept`
-- - `Client.get_my_contract(contract_id: String) -> responses::AcceptedContractResponse`
-- `GET: /my/ships`
-- - `Client.get_my_ships() -> responses::ShipsResponse`
-- `GET: /my/ships/{shipSymbol}`
-- - `Client.get_my_ship(ship_id: String) -> responses::ShipResponse`
-- `GET: /my/ships/{shipSymbol}/navigate`
-- - `Client.ship_navigation_status(ship_id: String) -> responses::NavigateResponse`
-- `POST: /my/ships/{shipSymbol}/navigate destination=destionation_symbol`
-- - `Client.ship_navigation_status(ship_id: String, destination_symbol: String) -> responses::NavigateResponse`
-- `GET: /my/ships/{shipSymbol}/survey`
-- - `Client.get_survey_cooldown(ship_id: String) -> responses::SurveyCooldownResponse`
-- `POST: /my/ships/{shipSymbol}/survey`
-- - `Client.survey_surroundings(ship_id: String) -> responses::SurveyResponse`
-- `GET: /systems/{systemSymbol}`
-- - `Client.get_system_info(system_symbol: String) -> responses::SystemInformationResponse`
-- `GET: /systems`
+
+### Non-Specific Endpoints That Still Require Authentication
+
+**Systems**
+
+- `GET` /systems
 - - `Client.get_systems() -> responses::SystemsListResponse`
+- `GET` /systems/{systemSymbol}
+- - `Client.get_system_info(system_symbol: String) -> responses::SystemInformationResponse`
+
+### Agent Specific Endpoints
+
+**Agent**
+
+- `GET` /my/agent
+- - `Client.get_my_agent_details() -> responses::AgentDetails`
+
+**Contracts**
+
+- `GET` /my/contracts
+- - `Client.get_my_contracts() -> responses::ContractsResponse`
+- `GET` /my/contracts/{contractId}
+- - `Client.get_my_contract(contract_id: String) -> responses::ContractResponse`
+- `POST` /my/contracts/{contractId}/accept
+- - `Client.get_my_contract(contract_id: String) -> responses::AcceptedContractResponse`
+
+**Ships**
+
+- `GET` /my/ships
+- - `Client.get_my_ships() -> responses::ShipsResponse`
+- `GET` /my/ships/{shipSymbol}
+- - `Client.get_my_ship(ship_id: String) -> responses::ShipResponse`
+- `GET` /my/ships/{shipSymbol}/navigate
+- - `Client.ship_navigation_status(ship_id: String) -> responses::NavigateResponse`
+- `POST` /my/ships/{shipSymbol}/navigate destination=destionation_symbol
+- - `Client.ship_navigation_status(ship_id: String, destination_symbol: String) -> responses::NavigateResponse`
+- `GET` /my/ships/{shipSymbol}/survey
+- - `Client.get_survey_cooldown(ship_id: String) -> responses::SurveyCooldownResponse`
+- `POST` /my/ships/{shipSymbol}/survey
+- - `Client.survey_surroundings(ship_id: String) -> responses::SurveyResponse`
+
