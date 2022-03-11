@@ -260,3 +260,105 @@ pub async fn claim_agent(
 
     parse_response::<responses::ClaimAgent>(&response.response_text)
 }
+
+/// A SpaceTraders client that is associated to a specific username
+#[derive(Debug, Clone)]
+pub struct Client {
+    http_client: HttpClient,
+    /// The agent's name/symbol
+    pub agentname: String,
+    /// The uses access token
+    pub token: String,
+}
+
+impl Client {
+    /// Create a new game with a reqwest client that has the Authorization header set
+    ///
+    /// # Arguments
+    ///
+    /// * `token` - A string containing the access token for the username provided
+    pub fn new(http_client: HttpClient, agentname: String, token: String) -> Client {
+        Client {
+            http_client,
+            agentname,
+            token,
+        }
+    }
+
+    // //////////////////////////////////////////////
+    // ///// ACCOUNT
+    // //////////////////////////////////////////////
+
+    // /// Get all information about the current user
+    // pub async fn get_my_info(&self) -> Result<responses::UserInfo, SpaceTradersClientError> {
+    //     let http_client = self.http_client.lock().await;
+    //     let response = http_client
+    //         .execute_request(
+    //             "GET",
+    //             "https://api.spacetraders.io/my/account",
+    //             None,
+    //             Some(&self.token),
+    //         )
+    //         .await?;
+
+    //     parse_response::<responses::UserInfo>(&response.response_text)
+    // }
+
+    // //////////////////////////////////////////////
+    // ///// FLIGHT PLANS
+    // //////////////////////////////////////////////
+
+    // /// Get the current details of a flight plan
+    // ///
+    // /// # Arguments
+    // ///
+    // /// * `flight_plan_id` - A string containing the flight plan id
+    // pub async fn get_flight_plan(
+    //     &self,
+    //     flight_plan_id: String,
+    // ) -> Result<responses::FlightPlan, SpaceTradersClientError> {
+    //     let http_client = self.http_client.lock().await;
+    //     let response = http_client
+    //         .execute_request(
+    //             "GET",
+    //             &format!(
+    //                 "https://api.spacetraders.io/my/flight-plans/{}",
+    //                 flight_plan_id
+    //             ),
+    //             None,
+    //             Some(&self.token),
+    //         )
+    //         .await?;
+
+    //     parse_response::<responses::FlightPlan>(&response.response_text)
+    // }
+
+    // /// Create a flight plan.
+    // ///
+    // /// # Arguments
+    // ///
+    // /// * `ship_id` - A string containing the ship_id to create the flight plan for
+    // /// * `destination` - A string containing the location to send the ship to
+    // pub async fn create_flight_plan(
+    //     &self,
+    //     ship_id: String,
+    //     destination: String,
+    // ) -> Result<responses::FlightPlan, SpaceTradersClientError> {
+    //     let flight_plan_request = requests::FlightPlanRequest {
+    //         ship_id: ship_id.clone(),
+    //         destination: destination.clone(),
+    //     };
+
+    //     let http_client = self.http_client.lock().await;
+    //     let response = http_client
+    //         .execute_request(
+    //             "POST",
+    //             "https://api.spacetraders.io/my/flight-plans",
+    //             Some(&serde_json::to_string(&flight_plan_request).unwrap()),
+    //             Some(&self.token),
+    //         )
+    //         .await?;
+
+    //     parse_response::<responses::FlightPlan>(&response.response_text)
+    // }
+}
