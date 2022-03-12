@@ -222,3 +222,21 @@ pub struct ShipyardShipsResponse {
     /// Meta information about the response
     pub meta: Meta,
 }
+
+/// The representation of a system waypoints response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SystemsMarketsResponse {
+    /// The data of the response
+    pub data: Vec<MarketSummary>,
+    /// Meta information about the response
+    pub meta: Meta,
+}
+
+/// The representation of a system market response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct SystemsMarketResponse {
+    /// The data of the response
+    pub data: MarketInformation,
+}

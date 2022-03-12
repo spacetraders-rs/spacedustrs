@@ -109,10 +109,10 @@ pub struct ContractTerms {
 pub struct ContractPaymentTerms {
     /// The payment upon contract acceptance
     #[serde(rename = "onAccepted")]
-    pub on_accepted: u64,
+    pub on_accepted: i64,
     /// The payment upon contract fulfillment
     #[serde(rename = "onFulfilled")]
-    pub on_fulfilled: u64,
+    pub on_fulfilled: i64,
 }
 
 /// The representation of contract delivery terms
@@ -175,7 +175,7 @@ pub struct ShipRegistration {
     #[serde(rename = "agentSymbol")]
     pub agent_symbol: String,
     /// The registration fee
-    pub fee: u64,
+    pub fee: i64,
     /// The registered role
     pub role: String,
 }
@@ -334,7 +334,7 @@ pub struct RefuelData {
     /// The amount of credits spent on fuel
     pub credits: i64,
     /// The amount of fuel bought
-    pub fuel: u64,
+    pub fuel: i64,
 }
 
 /// The various scan modes
@@ -454,4 +454,42 @@ pub struct ShipListing {
     pub modules: Vec<String>,
     /// A list of the installed mounts
     pub mounts: Vec<String>,
+}
+
+/// The representation of market summary
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct MarketSummary {
+    #[serde(rename = "waypointSymbol")]
+    /// The waypoint symbol
+    pub waypoint_symbol: String,
+    pub imports: Vec<String>,
+    pub exports: Vec<String>,
+}
+
+/// The representation of market information
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct MarketInformation {
+    #[serde(rename = "waypointSymbol")]
+    /// The waypoint symbol
+    pub waypoint_symbol: String,
+    pub imports: Vec<MarketGood>,
+    pub exports: Vec<MarketGood>,
+}
+
+/// The representation of market goods
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct MarketGood {
+    #[serde(rename = "waypointSymbol")]
+    /// The waypoint symbol
+    pub waypoint_symbol: String,
+    #[serde(rename = "tradeSymbol")]
+    /// The trade symbol
+    pub trade_symbol: String,
+    /// The price per unit
+    pub price: i64,
+    /// The tariff per unit
+    pub tariff: i64,
 }

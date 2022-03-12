@@ -779,4 +779,42 @@ impl Client {
 
         parse_response::<responses::ShipyardShipsResponse>(&response.response_text)
     }
+    /// Get list of all system markets
+    pub async fn get_system_markets(
+        &self,
+        system_symbol: String,
+    ) -> Result<responses::SystemsMarketsResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/systems/{}/markets", &self.base_url, system_symbol),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::SystemsMarketsResponse>(&response.response_text)
+    }
+    /// Get system market
+    pub async fn get_system_market(
+        &self,
+        system_symbol: String,
+        market_symbol: String,
+    ) -> Result<responses::SystemsMarketResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!(
+                    "{}/systems/{}/markets/{}",
+                    &self.base_url, &system_symbol, &market_symbol
+                ),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::SystemsMarketResponse>(&response.response_text)
+    }
 }

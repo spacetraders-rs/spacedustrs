@@ -76,9 +76,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - `GET` /systems/{systemSymbol}/shipyards/{shipyardSymbol}/ships # view all ships for sell at a shipyard
 - - `Client.get_shipyard_ships(system_symbol: String, shipyard_symbol: String) -> responses::ShipyardShipsResponse`
 - `GET` /systems/{systemSymbol}/markets # view all markets in a system
-- - `` NOTE has meta
+- - `Client.get_system_markets(system_symbol: String) -> responses::SystemMarketsResponse`
 - `GET` /systems/{systemSymbol}/markets/{marketSymbol} # view all trades at a given market
-- - ``
+- - `Client.get_system_market(system_symbol: String, market_symbol: String) -> responses::SystemMarketResponse`
 
 ### Agent Specific Endpoints
 
@@ -141,6 +141,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - `/navigate` will support modes
 - `/dock` will support modes
 - `/orbit` will support modes
+- `/systems/.../markets` may eventually have commodities
 - `GET` /my/account # not implemented
 - `GET` /my/ships/{shipSymbol}/scan # not implemented but should return cooldown
 - `POST` /my/ships/{shipSymbol}/chart # appears to be incomplete
