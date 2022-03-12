@@ -624,7 +624,7 @@ impl Client {
         parse_response::<responses::RefuelResponse>(&response.response_text)
     }
 
-    /// Deliver specified goods for a corresponding contract
+    /// Scan nearby ships
     pub async fn scan_ships(
         &self,
         ship_id: String,
@@ -632,19 +632,121 @@ impl Client {
     ) -> Result<responses::ScanResponse, SpaceTradersClientError> {
         let http_client = self.http_client.lock().await;
         let response: SpaceTradersClientResponse;
-        let contract_delivery_request = requests::ScanShipsRequest { mode: scan_mode };
+        let scan_request = requests::ScanShipsRequest { mode: scan_mode };
 
         response = http_client
             .execute_request(
                 "POST",
                 &format!("{}/my/ships/{}/scan", &self.base_url, ship_id),
-                Some(&serde_json::to_string(&contract_delivery_request).unwrap()),
+                Some(&serde_json::to_string(&scan_request).unwrap()),
                 Some(&self.token),
             )
             .await?;
 
         parse_response::<responses::ScanResponse>(&response.response_text)
     }
+
+    /// Jettison specified cargo
+    pub async fn jettison_cargo(
+        &self,
+        ship_id: String,
+        trade_symbol: String,
+        units: u64,
+    ) -> Result<responses::JettisonResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response: SpaceTradersClientResponse;
+        let jettison_request = requests::TransactionRequest {
+            trade_symbol,
+            units,
+        };
+
+        response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/jettison", &self.base_url, ship_id),
+                Some(&serde_json::to_string(&jettison_request).unwrap()),
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::JettisonResponse>(&response.response_text)
+    }
+
+    /// Sell specified cargo at the docked market
+    pub async fn sell_cargo(
+        &self,
+        ship_id: String,
+        trade_symbol: String,
+        units: u64,
+    ) -> Result<responses::TransactionResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response: SpaceTradersClientResponse;
+        let sell_request = requests::TransactionRequest {
+            trade_symbol,
+            units,
+        };
+
+        response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/sell", &self.base_url, ship_id),
+                Some(&serde_json::to_string(&sell_request).unwrap()),
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::TransactionResponse>(&response.response_text)
+    }
+
+    /// Buy specified cargo at the docked market
+    pub async fn buy_cargo(
+        &self,
+        ship_id: String,
+        trade_symbol: String,
+        units: u64,
+    ) -> Result<responses::TransactionResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response: SpaceTradersClientResponse;
+        let buy_request = requests::TransactionRequest {
+            trade_symbol,
+            units,
+        };
+
+        response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/purchase", &self.base_url, ship_id),
+                Some(&serde_json::to_string(&buy_request).unwrap()),
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::TransactionResponse>(&response.response_text)
+    }
+
+    // /// Jump specified ship to target destination
+    // pub async fn jump(
+    //     &self,
+    //     ship_id: String,
+    //     destination: String,
+    // ) -> Result<responses::JumpResponse, SpaceTradersClientError> {
+    //     let http_client = self.http_client.lock().await;
+    //     let response: SpaceTradersClientResponse;
+    //     let jump_request = requests::JumpRequest {
+    //         destination
+    //     };
+
+    //     response = http_client
+    //         .execute_request(
+    //             "POST",
+    //             &format!("{}/my/ships/{}/jump", &self.base_url, ship_id),
+    //             Some(&serde_json::to_string(&jump_request).unwrap()),
+    //             Some(&self.token),
+    //         )
+    //         .await?;
+
+    //     parse_response::<responses::JumpResponse>(&response.response_text)
+    // }
 
     //////////////////////////////////////////////
     ///// Systems

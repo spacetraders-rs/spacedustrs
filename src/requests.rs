@@ -46,3 +46,22 @@ pub struct ScanShipsRequest {
     /// The requested destination
     pub mode: shared::ScanMode,
 }
+
+/// The representation of a transaction request
+#[derive(Serialize, Debug)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct TransactionRequest {
+    /// The symbol of the good
+    #[serde(rename = "tradeSymbol")]
+    pub trade_symbol: String,
+    /// The number of units
+    pub units: u64,
+}
+
+// /// The representation of a jump request
+// #[derive(Serialize, Debug)]
+// #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+// pub struct JumpRequest {
+//     /// The destination symbol
+//     pub destination: String,
+// }

@@ -125,9 +125,9 @@ pub struct ContractDeliveryTerms {
     /// The delivery destination for the contract
     pub destination: String,
     /// The number of units required by the contract
-    pub units: u64,
+    pub units: i64,
     /// The number of already delivered units for this contract
-    pub fulfilled: u64,
+    pub fulfilled: i64,
 }
 
 /// The representation of a ship
@@ -141,7 +141,7 @@ pub struct Ship {
     /// Appears to be unimplemented 3/11/22
     pub officers: Option<String>,
     /// The fuel remaining
-    pub fuel: u64,
+    pub fuel: i64,
     /// The installed frame
     pub frame: String,
     /// The installed reactor
@@ -200,7 +200,7 @@ pub struct Cargo {
     #[serde(rename = "tradeSymbol")]
     pub trade_symbol: String,
     /// The number of units
-    pub units: u64,
+    pub units: i64,
 }
 
 /// The representation of response meta info
@@ -228,7 +228,7 @@ pub struct NavigationInformation {
     pub destination: String,
     /// Duration remaining as of call
     #[serde(rename = "durationRemaining")]
-    pub duration_remaining: Option<u64>,
+    pub duration_remaining: Option<i64>,
     /// Timestamp of arrival
     #[serde(rename = "arrivedAt")]
     pub arrived_at: Option<String>,
@@ -239,7 +239,7 @@ pub struct NavigationInformation {
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct CooldownData {
     /// The cooldown remaining in seconds
-    pub cooldown: u64,
+    pub cooldown: i64,
 }
 
 /// The representation of survey data
@@ -247,7 +247,7 @@ pub struct CooldownData {
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct SurveyData {
     /// The cooldown data
-    pub cooldown: u64,
+    pub cooldown: i64,
     /// List of surveys (extraction locations) available
     pub surveys: Vec<Survey>,
 }
@@ -298,7 +298,7 @@ pub struct ExtractData {
     #[serde(rename = "shipSymbol")]
     pub ship_symbol: String,
     /// The cooldown till next extraction
-    pub cooldown: u64,
+    pub cooldown: i64,
     /// The materials yielded from the extraction
     #[serde(rename = "yield")]
     pub extract_yield: Cargo,
@@ -322,9 +322,9 @@ pub struct DeliveryData {
     /// The destination delivered to
     pub destination: String,
     /// The number of units needed to fulfill the contract
-    pub units: u64,
+    pub units: i64,
     /// The number of units fulfilled, after delivery
-    pub fulfilled: u64,
+    pub fulfilled: i64,
 }
 
 /// The representation of refuel data
@@ -351,7 +351,7 @@ pub enum ScanMode {
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ScanData {
     /// Cooldown till next scan available
-    pub cooldown: u64,
+    pub cooldown: i64,
     /// List of ship scan data
     pub ships: Vec<ShipScan>,
 }
@@ -429,7 +429,7 @@ pub struct ShipyardInformation {
     /// The faction that controls the shipyard
     pub faction: String,
     /// Ship types available
-    pub ships: u64,
+    pub ships: i64,
 }
 
 /// The representation of a ship listing
@@ -463,7 +463,9 @@ pub struct MarketSummary {
     #[serde(rename = "waypointSymbol")]
     /// The waypoint symbol
     pub waypoint_symbol: String,
+    /// The list of imported goods
     pub imports: Vec<String>,
+    /// The list of exported goods
     pub exports: Vec<String>,
 }
 
@@ -474,7 +476,9 @@ pub struct MarketInformation {
     #[serde(rename = "waypointSymbol")]
     /// The waypoint symbol
     pub waypoint_symbol: String,
+    /// The list of imported goods
     pub imports: Vec<MarketGood>,
+    /// The list of exported goods
     pub exports: Vec<MarketGood>,
 }
 
@@ -488,8 +492,51 @@ pub struct MarketGood {
     #[serde(rename = "tradeSymbol")]
     /// The trade symbol
     pub trade_symbol: String,
-    /// The price per unit
+    /// The credit delta per unit
     pub price: i64,
-    /// The tariff per unit
+    /// The tariff delta per unit
     pub tariff: i64,
 }
+
+/// The representation of jettison data
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct JettisonData {
+    #[serde(rename = "tradeSymbol")]
+    /// The trade symbol of the good jettisoned
+    pub trade_symbol: String,
+    /// The number of units jettisoned
+    pub units: i64,
+}
+
+/// The representation of transaction data
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct TransactionData {
+    #[serde(rename = "waypointSymbol")]
+    /// The waypoint symbol of the market
+    pub waypoint_symbol: String,
+    #[serde(rename = "tradeSymbol")]
+    /// The trade symbol of the good jettisoned
+    pub trade_symbol: String,
+    /// The delta of credits after TX
+    pub credits: i64,
+    /// The delta units in cargo after TX
+    pub units: i64,
+}
+
+// /// The representation of jump data
+// #[derive(Serialize, Deserialize, Debug, Clone)]
+// #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+// pub struct JumpData {
+//     #[serde(rename = "waypointSymbol")]
+//     /// The waypoint symbol of the market
+//     pub waypoint_symbol: String,
+//     #[serde(rename = "tradeSymbol")]
+//     /// The trade symbol of the good jettisoned
+//     pub trade_symbol: String,
+//     /// The delta of credits after TX
+//     pub credits: i64,
+//     /// The delta units in cargo after TX
+//     pub units: i64,
+// }

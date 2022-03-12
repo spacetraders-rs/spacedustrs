@@ -124,17 +124,18 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - - `Client.refuel_ship(ship_id: String) -> responses::RefuelResponse`
 - `POST` /my/ships/{shipSymbol}/scan mode=scan_mode
 - - `Client.scan_ships(ship_id: String, mode: shared::ScanMode) -> responses::ScanResponse`
+- `POST` /my/ships/{shipSymbol}/jettison symbol=HEAVY_MACHINERY units=99999
+- - `Client.jettison_cargo(ship_id: String, trade_symbol: String, units: u64) -> responses::TransactionResponse`
+- `POST` /my/ships/{shipSymbol}/sell symbol=HEAVY_MACHINERY units=99999
+- - `Client.sell_cargo(ship_id: String, trade_symbol: String, units: u64) -> responses::TransactionResponse`
+- `POST` /my/ships/{shipSymbol}/purchase symbol=HEAVY_MACHINERY units=99999
+- - `Client.buy_cargo(ship_id: String, trade_symbol: String, units: u64) -> responses::TransactionResponse`
+<!-- - `POST` /my/ships/{shipSymbol}/jump destination=X1-OE # jump to a target system
+- - `Client.jump(ship_id: String, destination: String) -> responses::JumpResponse` -->
 
 ## Unsupported Endpoints
 
-- `POST` /my/ships/{shipSymbol}/jettison symbol=HEAVY_MACHINERY quantity=99999
-- - ``
-- `POST` /my/ships/{shipSymbol}/jump destination=X1-OE # jump to a target system
-- - ``
-- `POST` /my/ships/{shipSymbol}/purchase symbol=HEAVY_MACHINERY quantity=99999
-- - ``
-- `POST` /my/ships/{shipSymbol}/sell symbol=HEAVY_MACHINERY quantity=99999
-- - ``
+- 100% Coverage of Documented Endpoints :) (except jump)
 
 ## Notes from Roadmap
 

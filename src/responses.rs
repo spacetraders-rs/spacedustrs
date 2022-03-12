@@ -240,3 +240,27 @@ pub struct SystemsMarketResponse {
     /// The data of the response
     pub data: MarketInformation,
 }
+
+/// The representation of a jettison cargo response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct JettisonResponse {
+    /// The data of the response
+    pub data: JettisonData,
+}
+
+/// The representation of a buy/sell cargo response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct TransactionResponse {
+    /// The data of the response
+    pub data: TransactionData,
+}
+
+// /// The representation of a jump response
+// #[derive(Serialize, Deserialize, Debug, Clone)]
+// #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+// pub struct JumpResponse {
+//     /// The data of the response
+//     pub data: JumpData,
+// }
