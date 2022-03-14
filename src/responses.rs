@@ -95,10 +95,18 @@ pub struct NavigateResponse {
     pub data: NavigationInformation,
 }
 
-/// The representation of a survey cooldown response
+/// The representation of a navigate info response
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
-pub struct SurveyCooldownResponse {
+pub struct NavigateInfoResponse {
+    /// The data of the response
+    pub data: NavigationSummary,
+}
+
+/// The representation of a cooldown response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct CooldownResponse {
     /// The data of the response
     pub data: CooldownData,
 }
@@ -127,14 +135,6 @@ pub struct SystemsListResponse {
     pub data: Vec<SystemInformation>,
     /// Meta information about the response
     pub meta: Meta,
-}
-
-/// The representation of a extract cooldown response
-#[derive(Serialize, Deserialize, Debug, Clone)]
-#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
-pub struct ExtractCooldownResponse {
-    /// The data of the response
-    pub data: CooldownData,
 }
 
 /// The representation of a extract response

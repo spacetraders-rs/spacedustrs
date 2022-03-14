@@ -220,6 +220,25 @@ pub struct Meta {
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct NavigationInformation {
     /// The symbol of the ship navigating
+    pub navigation: Navigation,
+    /// The fuel cost of this flight
+    #[serde(rename = "fuelCost")]
+    pub fuel_cost: i64,
+}
+
+/// The representation of navigation summary
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct NavigationSummary {
+    /// The symbol of the ship navigating
+    pub navigation: Navigation,
+}
+
+/// The representation of a navigation object
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct Navigation {
+    /// The symbol of the ship navigating
     #[serde(rename = "shipSymbol")]
     pub ship_symbol: String,
     /// The departure location
@@ -228,7 +247,7 @@ pub struct NavigationInformation {
     pub destination: String,
     /// Duration remaining as of call
     #[serde(rename = "durationRemaining")]
-    pub duration_remaining: Option<i64>,
+    pub duration_remaining: Option<u64>,
     /// Timestamp of arrival
     #[serde(rename = "arrivedAt")]
     pub arrived_at: Option<String>,
@@ -238,8 +257,18 @@ pub struct NavigationInformation {
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct CooldownData {
-    /// The cooldown remaining in seconds
-    pub cooldown: i64,
+    /// The cooldown object
+    pub cooldown: Cooldown,
+}
+
+/// The representation of a cooldown object
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct Cooldown {
+    /// The duration remaining
+    pub duration: u64,
+    /// The timestamp for the end of the cooldown
+    pub expiration: String,
 }
 
 /// The representation of survey data
@@ -247,7 +276,7 @@ pub struct CooldownData {
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct SurveyData {
     /// The cooldown data
-    pub cooldown: i64,
+    pub cooldown: Cooldown,
     /// List of surveys (extraction locations) available
     pub surveys: Vec<Survey>,
 }
@@ -290,15 +319,23 @@ pub struct SystemInformation {
     pub charted_by: Option<String>,
 }
 
-/// The representation of extraction information
+/// The representation of extract data
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ExtractData {
+    /// The extraction information
+    pub extraction: Extraction,
+    /// The cooldown till next extraction
+    pub cooldown: Cooldown,
+}
+
+/// The representation of extraction information
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct Extraction {
     /// The symbol of the ship that completed extraction
     #[serde(rename = "shipSymbol")]
     pub ship_symbol: String,
-    /// The cooldown till next extraction
-    pub cooldown: i64,
     /// The materials yielded from the extraction
     #[serde(rename = "yield")]
     pub extract_yield: Cargo,
@@ -351,7 +388,7 @@ pub enum ScanMode {
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct ScanData {
     /// Cooldown till next scan available
-    pub cooldown: i64,
+    pub cooldown: Cooldown,
     /// List of ship scan data
     pub ships: Vec<ShipScan>,
 }

@@ -107,11 +107,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - `POST` /my/ships/{shipSymbol}/navigate destination=destination_symbol
 - - `Client.ship_navigation_status(ship_id: String, destination_symbol: String) -> responses::NavigateResponse`
 - `GET` /my/ships/{shipSymbol}/survey
-- - `Client.get_survey_cooldown(ship_id: String) -> responses::SurveyCooldownResponse`
+- - `Client.get_survey_cooldown(ship_id: String) -> responses::CooldownResponse`
 - `POST` /my/ships/{shipSymbol}/survey
 - - `Client.survey_surroundings(ship_id: String) -> responses::SurveyResponse`
 - `GET` /my/ships/{shipSymbol}/extract
-- - `Client.get_extract_cooldown(ship_id: String) -> responses::ExtractCooldownResponse`
+- - `Client.get_extract_cooldown(ship_id: String) -> responses::CooldownResponse`
 - `POST` /my/ships/{shipSymbol}/extract ?survey{}=survey
 - - `Client.extract_resources(ship_id: String, survey: Option<Survey>) -> responses::ExtractResourcesResponse`
 - `POST` /my/ships/{shipSymbol}/dock
@@ -130,8 +130,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - - `Client.sell_cargo(ship_id: String, trade_symbol: String, units: u64) -> responses::TransactionResponse`
 - `POST` /my/ships/{shipSymbol}/purchase symbol=HEAVY_MACHINERY units=99999
 - - `Client.buy_cargo(ship_id: String, trade_symbol: String, units: u64) -> responses::TransactionResponse`
-<!-- - `POST` /my/ships/{shipSymbol}/jump destination=X1-OE # jump to a target system
-- - `Client.jump(ship_id: String, destination: String) -> responses::JumpResponse` -->
+- `GET` /my/ships/{shipSymbol}/jump
+- - `Client.get_jump_cooldown(ship_id: String) -> responses::CooldownResponse`
+- `POST` /my/ships/{shipSymbol}/jump destination=X1-OE
+- - `Client.jump(ship_id: String, destination: String) -> responses::JumpResponse`
 
 ## Unsupported Endpoints
 
@@ -146,3 +148,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - `GET` /my/account # not implemented
 - `GET` /my/ships/{shipSymbol}/scan # not implemented but should return cooldown
 - `POST` /my/ships/{shipSymbol}/chart # appears to be incomplete
+- Once `agent/delete` comes online, each test should create its own agent and check several functions for its lifetime, allowing multiple threads to work simultaneously and ensuring state for state-dependent endpoints
+
+## TODO
+
+- Review changes to jump, extract, survey and scan endpoints
+- Add purchase ship

@@ -438,7 +438,7 @@ impl Client {
     pub async fn ship_navigation_status(
         &self,
         ship_id: String,
-    ) -> Result<responses::NavigateResponse, SpaceTradersClientError> {
+    ) -> Result<responses::NavigateInfoResponse, SpaceTradersClientError> {
         let http_client = self.http_client.lock().await;
         let response = http_client
             .execute_request(
@@ -449,14 +449,14 @@ impl Client {
             )
             .await?;
 
-        parse_response::<responses::NavigateResponse>(&response.response_text)
+        parse_response::<responses::NavigateInfoResponse>(&response.response_text)
     }
 
     /// Get the survey cooldown of the given ship
     pub async fn get_survey_cooldown(
         &self,
         ship_id: String,
-    ) -> Result<responses::SurveyCooldownResponse, SpaceTradersClientError> {
+    ) -> Result<responses::CooldownResponse, SpaceTradersClientError> {
         let http_client = self.http_client.lock().await;
         let response = http_client
             .execute_request(
@@ -467,7 +467,7 @@ impl Client {
             )
             .await?;
 
-        parse_response::<responses::SurveyCooldownResponse>(&response.response_text)
+        parse_response::<responses::CooldownResponse>(&response.response_text)
     }
 
     /// Survey the surroundings of the given ship
@@ -492,7 +492,7 @@ impl Client {
     pub async fn get_extract_cooldown(
         &self,
         ship_id: String,
-    ) -> Result<responses::ExtractCooldownResponse, SpaceTradersClientError> {
+    ) -> Result<responses::CooldownResponse, SpaceTradersClientError> {
         let http_client = self.http_client.lock().await;
         let response = http_client
             .execute_request(
@@ -503,7 +503,7 @@ impl Client {
             )
             .await?;
 
-        parse_response::<responses::ExtractCooldownResponse>(&response.response_text)
+        parse_response::<responses::CooldownResponse>(&response.response_text)
     }
 
     /// Extract resources near the given ship, optionally targetting specific yields with a survey signature
@@ -646,6 +646,24 @@ impl Client {
         parse_response::<responses::ScanResponse>(&response.response_text)
     }
 
+    /// Get the scan cooldown of the given ship
+    pub async fn get_scan_cooldown(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::CooldownResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/my/ships/{}/scan", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::CooldownResponse>(&response.response_text)
+    }
+
     /// Jettison specified cargo
     pub async fn jettison_cargo(
         &self,
@@ -747,6 +765,24 @@ impl Client {
 
     //     parse_response::<responses::JumpResponse>(&response.response_text)
     // }
+
+    /// Get the jump cooldown of the given ship
+    pub async fn get_jump_cooldown(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::CooldownResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "GET",
+                &format!("{}/my/ships/{}/jump", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::CooldownResponse>(&response.response_text)
+    }
 
     //////////////////////////////////////////////
     ///// Systems
