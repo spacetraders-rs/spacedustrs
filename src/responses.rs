@@ -2,6 +2,7 @@
 use crate::shared::*;
 // use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
+// use std::collections::HashMap;
 
 /// The representation of a claim agent response
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -257,10 +258,18 @@ pub struct TransactionResponse {
     pub data: TransactionData,
 }
 
-// /// The representation of a jump response
-// #[derive(Serialize, Deserialize, Debug, Clone)]
-// #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
-// pub struct JumpResponse {
-//     /// The data of the response
-//     pub data: JumpData,
-// }
+/// The representation of a jump response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct JumpResponse {
+    /// The data of the response
+    pub data: JumpDataWithCooldown,
+}
+
+/// The representation of a chart response
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ChartResponse {
+    /// The data of the response
+    pub data: ChartData,
+}

@@ -102,6 +102,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 - - `Client.get_my_ships() -> responses::ShipsResponse`
 - `GET` /my/ships/{shipSymbol}
 - - `Client.get_my_ship(ship_id: String) -> responses::ShipResponse`
+- `POST` /my/ships/{shipSymbol}/chart
+- - `Client.chart(ship_id: String) -> responses::ChartResponse`
 - `GET` /my/ships/{shipSymbol}/navigate
 - - `Client.ship_navigation_status(ship_id: String) -> responses::NavigateResponse`
 - `POST` /my/ships/{shipSymbol}/navigate destination=destination_symbol
@@ -137,7 +139,11 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
 ## Unsupported Endpoints
 
-- 100% Coverage of Documented Endpoints :) (except jump)
+- ships/Jump, Deploy, 
+- trade/symbol/import, export, exchange (appears to lookup what markets are importing/exporting/exchanging that good?)
+- contracts/deliver
+- POST: /my/ships (purchase)
+- scan modes: APPROACHING_SHIPS DEPARTING_SHIPS SYSTEM WAYPOINT
 
 ## Notes from Roadmap
 

@@ -58,10 +58,10 @@ pub struct TransactionRequest {
     pub units: u64,
 }
 
-// /// The representation of a jump request
-// #[derive(Serialize, Debug)]
-// #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
-// pub struct JumpRequest {
-//     /// The destination symbol
-//     pub destination: String,
-// }
+/// The representation of a jump request
+#[derive(Serialize, Debug)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct JumpRequest {
+    /// The destination symbol
+    pub destination: String,
+}

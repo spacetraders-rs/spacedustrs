@@ -152,6 +152,8 @@ pub struct Ship {
     pub modules: Vec<String>,
     /// A list of the installed mounts
     pub mounts: Vec<String>,
+    /// The ship's stats like fuelTank, jumpRange, and cargoLimit
+    pub stats: ShipStats,
     /// The ship's registration information
     pub registration: ShipRegistration,
     /// The ship's integrity information
@@ -190,6 +192,21 @@ pub struct ShipIntegrity {
     pub reactor: u16,
     /// The ship engine integrity
     pub engine: u16,
+}
+
+/// The representation of ship stats
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ShipStats {
+    /// The ship fuel tank size
+    #[serde(rename = "fuelTank")]
+    pub fuel_tank: u16,
+    /// The ship cargo limit
+    #[serde(rename = "cargoLimit")]
+    pub cargo_limit: u16,
+    /// The ship jump range
+    #[serde(rename = "jumpRange")]
+    pub jump_range: u16,
 }
 
 /// The representation of cargo
@@ -562,18 +579,31 @@ pub struct TransactionData {
     pub units: i64,
 }
 
-// /// The representation of jump data
-// #[derive(Serialize, Deserialize, Debug, Clone)]
-// #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
-// pub struct JumpData {
-//     #[serde(rename = "waypointSymbol")]
-//     /// The waypoint symbol of the market
-//     pub waypoint_symbol: String,
-//     #[serde(rename = "tradeSymbol")]
-//     /// The trade symbol of the good jettisoned
-//     pub trade_symbol: String,
-//     /// The delta of credits after TX
-//     pub credits: i64,
-//     /// The delta units in cargo after TX
-//     pub units: i64,
-// }
+/// The representation of jump data with cooldown
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct JumpDataWithCooldown {
+    /// The jump data
+    pub jump: JumpData,
+    /// The cooldown data
+    pub cooldown: CooldownData,
+}
+
+/// The representation of jump data
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct JumpData {
+    #[serde(rename = "shipSymbol")]
+    /// The ship symbol
+    pub ship_symbol: String,
+    /// The destination of the jump
+    pub destination: String,
+}
+
+/// The representation of chart data
+#[derive(Serialize, Deserialize, Debug, Clone)]
+#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
+pub struct ChartData {
+    /// The submitted symbols
+    pub submitted: Option<Vec<String>>,
+}

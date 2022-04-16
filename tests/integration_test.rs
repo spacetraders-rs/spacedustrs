@@ -1,6 +1,6 @@
-// use spacedustrs::errors::*;
-// use spacedustrs::responses::*;
-use spacedustrs::shared::*;
+// use spacedust::errors::*;
+// use spacedust::responses::*;
+use spacedust::shared::*;
 
 use tokio::time::{sleep, Duration};
 
@@ -15,7 +15,7 @@ use crate::common::TestClient;
 // async fn test_claim_agent() {
 //     let tc = TestClient::new();
 //     // TODO: delete agent then recreate
-//     match spacedustrs::client::claim_agent(tc.http_client, tc.client.base_url, tc.client.agentname, tc.client.token).await {
+//     match spacedust::client::claim_agent(tc.http_client, tc.client.base_url, tc.client.agentname, tc.client.token).await {
 //         Ok(_) => assert!(true),
 //         Err(testerr) => {
 //             println!("ERROR: {:?}", testerr);

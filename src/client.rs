@@ -742,29 +742,27 @@ impl Client {
         parse_response::<responses::TransactionResponse>(&response.response_text)
     }
 
-    // /// Jump specified ship to target destination
-    // pub async fn jump(
-    //     &self,
-    //     ship_id: String,
-    //     destination: String,
-    // ) -> Result<responses::JumpResponse, SpaceTradersClientError> {
-    //     let http_client = self.http_client.lock().await;
-    //     let response: SpaceTradersClientResponse;
-    //     let jump_request = requests::JumpRequest {
-    //         destination
-    //     };
+    /// Jump specified ship to target destination
+    pub async fn jump(
+        &self,
+        ship_id: String,
+        destination: String,
+    ) -> Result<responses::JumpResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response: SpaceTradersClientResponse;
+        let jump_request = requests::JumpRequest { destination };
 
-    //     response = http_client
-    //         .execute_request(
-    //             "POST",
-    //             &format!("{}/my/ships/{}/jump", &self.base_url, ship_id),
-    //             Some(&serde_json::to_string(&jump_request).unwrap()),
-    //             Some(&self.token),
-    //         )
-    //         .await?;
+        response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/jump", &self.base_url, ship_id),
+                Some(&serde_json::to_string(&jump_request).unwrap()),
+                Some(&self.token),
+            )
+            .await?;
 
-    //     parse_response::<responses::JumpResponse>(&response.response_text)
-    // }
+        parse_response::<responses::JumpResponse>(&response.response_text)
+    }
 
     /// Get the jump cooldown of the given ship
     pub async fn get_jump_cooldown(
@@ -782,6 +780,24 @@ impl Client {
             .await?;
 
         parse_response::<responses::CooldownResponse>(&response.response_text)
+    }
+
+    /// Chart the waypoint the specified ship is at
+    pub async fn chart(
+        &self,
+        ship_id: String,
+    ) -> Result<responses::ChartResponse, SpaceTradersClientError> {
+        let http_client = self.http_client.lock().await;
+        let response = http_client
+            .execute_request(
+                "POST",
+                &format!("{}/my/ships/{}/chart", &self.base_url, ship_id),
+                None,
+                Some(&self.token),
+            )
+            .await?;
+
+        parse_response::<responses::ChartResponse>(&response.response_text)
     }
 
     //////////////////////////////////////////////
