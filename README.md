@@ -5,7 +5,7 @@ Many of the client functions in this project are based on, or in some cases copi
 
 ## Quickstart
 
-spacedustrs is currently not a published crate, however, if you'd like to use it locally in the meantime, this should get you started:
+Use the following example to get started. 
 
 ```rust
 use spacedustrs::client::Client;
