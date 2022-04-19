@@ -669,7 +669,7 @@ impl Client {
         &self,
         ship_id: String,
         trade_symbol: String,
-        units: u64,
+        units: i64,
     ) -> Result<responses::JettisonResponse, SpaceTradersClientError> {
         let http_client = self.http_client.lock().await;
         let response: SpaceTradersClientResponse;
@@ -695,7 +695,7 @@ impl Client {
         &self,
         ship_id: String,
         trade_symbol: String,
-        units: u64,
+        units: i64,
     ) -> Result<responses::TransactionResponse, SpaceTradersClientError> {
         let http_client = self.http_client.lock().await;
         let response: SpaceTradersClientResponse;
@@ -721,7 +721,7 @@ impl Client {
         &self,
         ship_id: String,
         trade_symbol: String,
-        units: u64,
+        units: i64,
     ) -> Result<responses::TransactionResponse, SpaceTradersClientError> {
         let http_client = self.http_client.lock().await;
         let response: SpaceTradersClientResponse;

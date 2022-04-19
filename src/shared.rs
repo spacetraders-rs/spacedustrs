@@ -571,7 +571,7 @@ pub struct TransactionData {
     /// The waypoint symbol of the market
     pub waypoint_symbol: String,
     #[serde(rename = "tradeSymbol")]
-    /// The trade symbol of the good jettisoned
+    /// The trade symbol of the good traded
     pub trade_symbol: String,
     /// The delta of credits after TX
     pub credits: i64,

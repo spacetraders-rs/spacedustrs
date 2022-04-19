@@ -55,7 +55,7 @@ pub struct TransactionRequest {
     #[serde(rename = "tradeSymbol")]
     pub trade_symbol: String,
     /// The number of units
-    pub units: u64,
+    pub units: i64,
 }
 
 /// The representation of a jump request
