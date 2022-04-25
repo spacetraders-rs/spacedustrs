@@ -35,7 +35,7 @@ pub struct ErrorMessageData {
     /// The message sent from the API about the error
     pub message: String,
     /// The data sent from the API server about the error in detail
-    pub data: HashMap<String, Vec<String>>,
+    pub data: Option<HashMap<String, Vec<String>>>,
 }
 
 /// The representation of agent information
@@ -510,30 +510,16 @@ pub struct ShipListing {
     pub mounts: Vec<String>,
 }
 
-/// The representation of market summary
-#[derive(Serialize, Deserialize, Debug, Clone)]
-#[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
-pub struct MarketSummary {
-    #[serde(rename = "waypointSymbol")]
-    /// The waypoint symbol
-    pub waypoint_symbol: String,
-    /// The list of imported goods
-    pub imports: Vec<String>,
-    /// The list of exported goods
-    pub exports: Vec<String>,
-}
-
 /// The representation of market information
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct MarketInformation {
-    #[serde(rename = "waypointSymbol")]
-    /// The waypoint symbol
-    pub waypoint_symbol: String,
     /// The list of imported goods
     pub imports: Vec<MarketGood>,
     /// The list of exported goods
     pub exports: Vec<MarketGood>,
+    /// The list of exchange goods
+    pub exchange: Vec<MarketGood>,
 }
 
 /// The representation of market goods
