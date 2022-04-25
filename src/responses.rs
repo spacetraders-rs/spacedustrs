@@ -229,7 +229,7 @@ pub struct ShipyardShipsResponse {
 #[cfg_attr(debug_assertions, serde(deny_unknown_fields))]
 pub struct SystemsMarketsResponse {
     /// The data of the response
-    pub data: Vec<MarketSummary>,
+    pub data: Vec<String>,
     /// Meta information about the response
     pub meta: Meta,
 }
