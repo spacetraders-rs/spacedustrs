@@ -1,0 +1,13 @@
+# ShipNavRoute
+
+## Properties
+
+Name | Type | Description | Notes
+------------ | ------------- | ------------- | -------------
+**destination** | [**crate::models::ShipNavRouteWaypoint**](ShipNavRouteWaypoint.md) |  | 
+**departure** | [**crate::models::ShipNavRouteWaypoint**](ShipNavRouteWaypoint.md) |  | 
+**arrival** | **String** | The date time of the ship's arrival. If the ship is in-transit, this is the expected time of arrival. | 
+
+[[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
+
+

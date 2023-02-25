@@ -1,6 +1,6 @@
 [package]
 name = "spacedust"
-version = "0.1.3"
+version = "1.0.0"
 authors = ["James Clague <james.clague@brct.io>"]
 edition = "2021"
 license-file = "LICENSE"
@@ -13,6 +13,8 @@ repository = "https://github.com/brct-james/spacedustrs"
 documentation = "https://docs.rs/spacedust"
 exclude = [
     "tests",
+    "spacetraders-api-docs",
+    "client-dist"
 ]
 
 [lib]
@@ -20,12 +22,12 @@ name = "spacedust"
 path = "src/lib.rs"
 
 [dependencies]
-tokio = { version = "1", features = [ "full", "time" ] }
-reqwest = { version = "0.11", features = [ "json" ] }
-serde = { version = "1.0.123", features = [ "derive" ] }
-serde_json = "1.0.64"
-chrono = { version = "0.4.19", features = [ "serde", "alloc" ] }
-log = "0.4.14"
-
-[dev-dependencies]
-env_logger = "0.9.0"
+serde = "^1.0"
+serde_derive = "^1.0"
+serde_json = "^1.0"
+url = "^2.2"
+uuid = { version = "^1.0", features = ["serde"] }
+reqwest-middleware = "0.1.6"
+[dependencies.reqwest]
+version = "^0.11"
+features = ["json", "multipart"]

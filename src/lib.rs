@@ -1,13 +1,10 @@
-//! This crate is an api wrapper around the [SpaceTraders] API game, version 2.
-//!
-//! The goal is to wrap all available endpoints in strongly typed requests and responses that
-//! we expect from rust.
-//!
-//! [SpaceTraders]: https://spacetraders.io/
-#![warn(missing_docs)]
+#[macro_use]
+extern crate serde_derive;
 
-pub mod client;
-pub mod errors;
-pub mod requests;
-pub mod responses;
-pub mod shared;
+extern crate reqwest;
+extern crate serde;
+extern crate serde_json;
+extern crate url;
+
+pub mod apis;
+pub mod models;
