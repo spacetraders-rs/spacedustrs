@@ -1,0 +1,6 @@
+[submodule "api-docs"]
+	path = api-docs
+	url = https://github.com/SpaceTradersAPI/api-docs/
+[submodule "spacetraders-api-docs"]
+	path = spacetraders-api-docs
+	url = https://github.com/SpaceTradersAPI/api-docs/
