@@ -13,12 +13,15 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct MarketTransaction {
+    /// The symbol of the waypoint where the transaction took place.
+    #[serde(rename = "waypointSymbol")]
+    pub waypoint_symbol: String,
     /// The symbol of the ship that made the transaction.
     #[serde(rename = "shipSymbol")]
     pub ship_symbol: String,
     /// The symbol of the trade good.
-    #[serde(rename = "tradeSymbol", skip_serializing_if = "Option::is_none")]
-    pub trade_symbol: Option<String>,
+    #[serde(rename = "tradeSymbol")]
+    pub trade_symbol: String,
     /// The type of transaction.
     #[serde(rename = "type")]
     pub r#type: RHashType,
@@ -29,22 +32,23 @@ pub struct MarketTransaction {
     #[serde(rename = "pricePerUnit")]
     pub price_per_unit: i32,
     /// The total price of the transaction.
-    #[serde(rename = "totalPrice", skip_serializing_if = "Option::is_none")]
-    pub total_price: Option<i32>,
+    #[serde(rename = "totalPrice")]
+    pub total_price: i32,
     /// The timestamp of the transaction.
     #[serde(rename = "timestamp")]
     pub timestamp: String,
 }
 
 impl MarketTransaction {
-    pub fn new(ship_symbol: String, r#type: RHashType, units: i32, price_per_unit: i32, timestamp: String) -> MarketTransaction {
+    pub fn new(waypoint_symbol: String, ship_symbol: String, trade_symbol: String, r#type: RHashType, units: i32, price_per_unit: i32, total_price: i32, timestamp: String) -> MarketTransaction {
         MarketTransaction {
+            waypoint_symbol,
             ship_symbol,
-            trade_symbol: None,
+            trade_symbol,
             r#type,
             units,
             price_per_unit,
-            total_price: None,
+            total_price,
             timestamp,
         }
     }

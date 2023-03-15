@@ -77,6 +77,7 @@ Class | Method | HTTP request | Description
 *SystemsApi* | [**get_system**](docs/SystemsApi.md#get_system) | **GET** /systems/{systemSymbol} | Get System
 *SystemsApi* | [**get_system_waypoints**](docs/SystemsApi.md#get_system_waypoints) | **GET** /systems/{systemSymbol}/waypoints | List Waypoints
 *SystemsApi* | [**get_systems**](docs/SystemsApi.md#get_systems) | **GET** /systems | List Systems
+*SystemsApi* | [**get_systems_all**](docs/SystemsApi.md#get_systems_all) | **GET** /systems.json | Get All Systems
 *SystemsApi* | [**get_waypoint**](docs/SystemsApi.md#get_waypoint) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol} | Get Waypoint
 
 

@@ -1,7 +1,7 @@
 /*
  * SpaceTraders API
  *
- * SpaceTraders is an open-universe game and learning platform that offers a set of HTTP endpoints to control a fleet of ships and explore a multiplayer universe.  The API is documented using [OpenAPI](https://github.com/SpaceTradersAPI/api-docs). You can send your first request right here in your browser to check the status of the game server.  ```json http {   \"method\": \"GET\",   \"url\": \"https://v2.api.spacetraders.io\", } ```  Unlike a traditional game, SpaceTraders does not have a first-party client or app to play the game. Instead, you can use the API to build your own client, write a script to automate your ships, or try an app built by the community.  We have a [Discord channel](https://discord.com/invite/jh6zurdWk5) where you can share your projects, ask questions, and get help from other players.
+ * SpaceTraders is an open-universe game and learning platform that offers a set of HTTP endpoints to control a fleet of ships and explore a multiplayer universe.  The API is documented using [OpenAPI](https://github.com/SpaceTradersAPI/api-docs). You can send your first request right here in your browser to check the status of the game server.  ```json http {   \"method\": \"GET\",   \"url\": \"https://v2.api.spacetraders.io\", } ```  Unlike a traditional game, SpaceTraders does not have a first-party client or app to play the game. Instead, you can use the API to build your own client, write a script to automate your ships, or try an app built by the community.  We have a [Discord channel](https://discord.com/invite/jh6zurdWk5) where you can share your projects, ask questions, and get help from other players.   
  *
  * The version of the OpenAPI document: 2.0.0
  * Contact: joel@spacetraders.io
@@ -9,6 +9,8 @@
  */
 
 /// ShipFrame : The frame of the ship. The frame determines the number of modules and mounting points of the ship, as well as base fuel capacity. As the condition of the frame takes more wear, the ship will become more sluggish and less maneuverable.
+
+
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShipFrame {
@@ -33,15 +35,7 @@ pub struct ShipFrame {
 
 impl ShipFrame {
     /// The frame of the ship. The frame determines the number of modules and mounting points of the ship, as well as base fuel capacity. As the condition of the frame takes more wear, the ship will become more sluggish and less maneuverable.
-    pub fn new(
-        symbol: Symbol,
-        name: String,
-        description: String,
-        module_slots: i32,
-        mounting_points: i32,
-        fuel_capacity: i32,
-        requirements: crate::models::ShipRequirements,
-    ) -> ShipFrame {
+    pub fn new(symbol: Symbol, name: String, description: String, module_slots: i32, mounting_points: i32, fuel_capacity: i32, requirements: crate::models::ShipRequirements) -> ShipFrame {
         ShipFrame {
             symbol,
             name,
@@ -55,7 +49,7 @@ impl ShipFrame {
     }
 }
 
-///
+/// 
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Symbol {
     #[serde(rename = "FRAME_PROBE")]
@@ -95,3 +89,4 @@ impl Default for Symbol {
         Self::Probe
     }
 }
+

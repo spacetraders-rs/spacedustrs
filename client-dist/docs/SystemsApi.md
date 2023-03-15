@@ -10,6 +10,7 @@ Method | HTTP request | Description
 [**get_system**](SystemsApi.md#get_system) | **GET** /systems/{systemSymbol} | Get System
 [**get_system_waypoints**](SystemsApi.md#get_system_waypoints) | **GET** /systems/{systemSymbol}/waypoints | List Waypoints
 [**get_systems**](SystemsApi.md#get_systems) | **GET** /systems | List Systems
+[**get_systems_all**](SystemsApi.md#get_systems_all) | **GET** /systems.json | Get All Systems
 [**get_waypoint**](SystemsApi.md#get_waypoint) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol} | Get Waypoint
 
 
@@ -187,6 +188,33 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**crate::models::GetSystems200Response**](get_systems_200_response.md)
+
+### Authorization
+
+[AgentToken](../README.md#AgentToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_systems_all
+
+> Vec<crate::models::System> get_systems_all()
+Get All Systems
+
+Return a json file containing all systems
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**Vec<crate::models::System>**](System.md)
 
 ### Authorization
 
