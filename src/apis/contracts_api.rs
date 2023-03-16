@@ -52,7 +52,7 @@ pub enum GetContractsError {
 
 
 /// Accept a contract.
-pub async fn accept_contract(configuration: &configuration::Configuration, contract_id: &str) -> Result<crate::models::AcceptContract200Response, Error<AcceptContractError>> {
+pub async fn accept_contract(configuration: &configuration::Configuration, contract_id: &str, content_length: i32) -> Result<crate::models::AcceptContract200Response, Error<AcceptContractError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -63,6 +63,7 @@ pub async fn accept_contract(configuration: &configuration::Configuration, contr
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
+    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -115,7 +116,7 @@ pub async fn deliver_contract(configuration: &configuration::Configuration, cont
 }
 
 /// Fulfill a contract
-pub async fn fulfill_contract(configuration: &configuration::Configuration, contract_id: &str) -> Result<crate::models::FulfillContract200Response, Error<FulfillContractError>> {
+pub async fn fulfill_contract(configuration: &configuration::Configuration, contract_id: &str, content_length: i32) -> Result<crate::models::FulfillContract200Response, Error<FulfillContractError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -126,6 +127,7 @@ pub async fn fulfill_contract(configuration: &configuration::Configuration, cont
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
+    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };

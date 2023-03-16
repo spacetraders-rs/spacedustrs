@@ -30,7 +30,7 @@ Method | HTTP request | Description
 
 ## create_chart
 
-> crate::models::CreateChart201Response create_chart(ship_symbol)
+> crate::models::CreateChart201Response create_chart(ship_symbol, content_length)
 Create Chart
 
 Command a ship to chart the current waypoint.  Waypoints in the universe are uncharted by default. These locations will not show up in the API until they have been charted by a ship.  Charting a location will record your agent as the one who created the chart.
@@ -41,6 +41,7 @@ Command a ship to chart the current waypoint.  Waypoints in the universe are unc
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ship_symbol** | **String** | The symbol of the ship | [required] |
+**content_length** | **i32** |  | [required] |[default to 0]
 
 ### Return type
 
@@ -60,7 +61,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_ship_ship_scan
 
-> crate::models::CreateShipShipScan201Response create_ship_ship_scan(ship_symbol)
+> crate::models::CreateShipShipScan201Response create_ship_ship_scan(ship_symbol, content_length)
 Scan Ships
 
 Activate your ship's sensor arrays to scan for ship information.
@@ -71,6 +72,7 @@ Activate your ship's sensor arrays to scan for ship information.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ship_symbol** | **String** |  | [required] |
+**content_length** | **f32** |  | [required] |[default to 0]
 
 ### Return type
 
@@ -90,7 +92,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_ship_system_scan
 
-> crate::models::CreateShipSystemScan201Response create_ship_system_scan(ship_symbol)
+> crate::models::CreateShipSystemScan201Response create_ship_system_scan(ship_symbol, content_length)
 Scan Systems
 
 Activate your ship's sensor arrays to scan for system information.
@@ -101,6 +103,7 @@ Activate your ship's sensor arrays to scan for system information.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ship_symbol** | **String** |  | [required] |
+**content_length** | **i32** |  | [required] |[default to 0]
 
 ### Return type
 
@@ -150,7 +153,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_survey
 
-> crate::models::CreateSurvey201Response create_survey(ship_symbol)
+> crate::models::CreateSurvey201Response create_survey(ship_symbol, content_length)
 Create Survey
 
 If you want to target specific yields for an extraction, you can survey a waypoint, such as an asteroid field, and send the survey in the body of the extract request. Each survey may have multiple deposits, and if a symbol shows up more than once, that indicates a higher chance of extracting that resource.  Your ship will enter a cooldown between consecutive survey requests. Surveys will eventually expire after a period of time. Multiple ships can use the same survey for extraction.
@@ -161,6 +164,7 @@ If you want to target specific yields for an extraction, you can survey a waypoi
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ship_symbol** | **String** | The symbol of the ship | [required] |
+**content_length** | **i32** |  | [required] |[default to 0]
 
 ### Return type
 
@@ -180,7 +184,7 @@ Name | Type | Description  | Required | Notes
 
 ## dock_ship
 
-> crate::models::DockShip200Response dock_ship(ship_symbol)
+> crate::models::DockShip200Response dock_ship(ship_symbol, content_length)
 Dock Ship
 
 Attempt to dock your ship at it's current location. Docking will only succeed if the waypoint is a dockable location, and your ship is capable of docking at the time of the request.  The endpoint is idempotent - successive calls will succeed even if the ship is already docked.
@@ -191,6 +195,7 @@ Attempt to dock your ship at it's current location. Docking will only succeed if
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ship_symbol** | **String** | The symbol of the ship | [required] |
+**content_length** | **f32** |  | [required] |[default to 0]
 
 ### Return type
 
@@ -425,7 +430,7 @@ Name | Type | Description  | Required | Notes
 
 ## orbit_ship
 
-> crate::models::OrbitShip200Response orbit_ship(ship_symbol)
+> crate::models::OrbitShip200Response orbit_ship(ship_symbol, content_length)
 Orbit Ship
 
 Attempt to move your ship into orbit at it's current location. The request will only succeed if your ship is capable of moving into orbit at the time of the request.  The endpoint is idempotent - successive calls will succeed even if the ship is already in orbit.
@@ -436,6 +441,7 @@ Attempt to move your ship into orbit at it's current location. The request will 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ship_symbol** | **String** | The symbol of the ship | [required] |
+**content_length** | **i32** |  | [required] |[default to 0]
 
 ### Return type
 
@@ -516,7 +522,7 @@ Name | Type | Description  | Required | Notes
 
 ## refuel_ship
 
-> crate::models::RefuelShip200Response refuel_ship(ship_symbol)
+> crate::models::RefuelShip200Response refuel_ship(ship_symbol, content_length)
 Refuel Ship
 
 Refuel your ship from the local market.
@@ -527,6 +533,7 @@ Refuel your ship from the local market.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ship_symbol** | **String** |  | [required] |
+**content_length** | **i32** |  | [required] |[default to 0]
 
 ### Return type
 
