@@ -1,6 +1,6 @@
 # \FleetApi
 
-All URIs are relative to *https://v2.api.spacetraders.io*
+All URIs are relative to *https://api.spacetraders.io/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,12 +12,15 @@ Method | HTTP request | Description
 [**dock_ship**](FleetApi.md#dock_ship) | **POST** /my/ships/{shipSymbol}/dock | Dock Ship
 [**extract_resources**](FleetApi.md#extract_resources) | **POST** /my/ships/{shipSymbol}/extract | Extract Resources
 [**get_my_ship**](FleetApi.md#get_my_ship) | **GET** /my/ships/{shipSymbol} | Get Ship
+[**get_my_ship_cargo**](FleetApi.md#get_my_ship_cargo) | **GET** /my/ships/{shipSymbol}/cargo | Get Ship Cargo
 [**get_my_ships**](FleetApi.md#get_my_ships) | **GET** /my/ships | List Ships
 [**get_ship_cooldown**](FleetApi.md#get_ship_cooldown) | **GET** /my/ships/{shipSymbol}/cooldown | Get Ship Cooldown
+[**get_ship_nav**](FleetApi.md#get_ship_nav) | **GET** /my/ships/{shipSymbol}/nav | Get Ship Nav
 [**jettison**](FleetApi.md#jettison) | **POST** /my/ships/{shipSymbol}/jettison | Jettison Cargo
 [**jump_ship**](FleetApi.md#jump_ship) | **POST** /my/ships/{shipSymbol}/jump | Jump Ship
 [**navigate_ship**](FleetApi.md#navigate_ship) | **POST** /my/ships/{shipSymbol}/navigate | Navigate Ship
 [**orbit_ship**](FleetApi.md#orbit_ship) | **POST** /my/ships/{shipSymbol}/orbit | Orbit Ship
+[**patch_ship_nav**](FleetApi.md#patch_ship_nav) | **PATCH** /my/ships/{shipSymbol}/nav | Patch Ship Nav
 [**purchase_cargo**](FleetApi.md#purchase_cargo) | **POST** /my/ships/{shipSymbol}/purchase | Purchase Cargo
 [**purchase_ship**](FleetApi.md#purchase_ship) | **POST** /my/ships | Purchase Ship
 [**refuel_ship**](FleetApi.md#refuel_ship) | **POST** /my/ships/{shipSymbol}/refuel | Refuel Ship
@@ -274,6 +277,36 @@ Name | Type | Description  | Required | Notes
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
+## get_my_ship_cargo
+
+> crate::models::GetMyShipCargo200Response get_my_ship_cargo(ship_symbol)
+Get Ship Cargo
+
+Retrieve the cargo of your ship.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**ship_symbol** | **String** | The symbol of the ship | [required] |
+
+### Return type
+
+[**crate::models::GetMyShipCargo200Response**](get_my_ship_cargo_200_response.md)
+
+### Authorization
+
+[AgentToken](../README.md#AgentToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
 ## get_my_ships
 
 > crate::models::GetMyShips200Response get_my_ships(page, limit)
@@ -322,6 +355,36 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**crate::models::GetShipCooldown200Response**](get_ship_cooldown_200_response.md)
+
+### Authorization
+
+[AgentToken](../README.md#AgentToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## get_ship_nav
+
+> crate::models::GetShipNav200Response get_ship_nav(ship_symbol)
+Get Ship Nav
+
+Get the current nav status of a ship.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**ship_symbol** | **String** | The ship symbol | [required] |
+
+### Return type
+
+[**crate::models::GetShipNav200Response**](get_ship_nav_200_response.md)
 
 ### Authorization
 
@@ -454,6 +517,37 @@ Name | Type | Description  | Required | Notes
 ### HTTP request headers
 
 - **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## patch_ship_nav
+
+> crate::models::GetShipNav200Response patch_ship_nav(ship_symbol, patch_ship_nav_request)
+Patch Ship Nav
+
+Update the nav data of a ship, such as the flight mode.
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**ship_symbol** | **String** | The ship symbol | [required] |
+**patch_ship_nav_request** | Option<[**PatchShipNavRequest**](PatchShipNavRequest.md)> |  |  |
+
+### Return type
+
+[**crate::models::GetShipNav200Response**](get_ship_nav_200_response.md)
+
+### Authorization
+
+[AgentToken](../README.md#AgentToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
 - **Accept**: application/json
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)

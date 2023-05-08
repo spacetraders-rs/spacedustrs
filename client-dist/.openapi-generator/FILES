@@ -48,8 +48,10 @@ docs/GetJumpGate200Response.md
 docs/GetMarket200Response.md
 docs/GetMyAgent200Response.md
 docs/GetMyShip200Response.md
+docs/GetMyShipCargo200Response.md
 docs/GetMyShips200Response.md
 docs/GetShipCooldown200Response.md
+docs/GetShipNav200Response.md
 docs/GetShipyard200Response.md
 docs/GetSystem200Response.md
 docs/GetSystemWaypoints200Response.md
@@ -71,6 +73,7 @@ docs/NavigateShip200ResponseData.md
 docs/NavigateShipRequest.md
 docs/OrbitShip200Response.md
 docs/OrbitShip200ResponseData.md
+docs/PatchShipNavRequest.md
 docs/PurchaseCargo201Response.md
 docs/PurchaseCargoRequest.md
 docs/PurchaseShip201Response.md
@@ -185,8 +188,10 @@ src/models/get_jump_gate_200_response.rs
 src/models/get_market_200_response.rs
 src/models/get_my_agent_200_response.rs
 src/models/get_my_ship_200_response.rs
+src/models/get_my_ship_cargo_200_response.rs
 src/models/get_my_ships_200_response.rs
 src/models/get_ship_cooldown_200_response.rs
+src/models/get_ship_nav_200_response.rs
 src/models/get_shipyard_200_response.rs
 src/models/get_system_200_response.rs
 src/models/get_system_waypoints_200_response.rs
@@ -209,6 +214,7 @@ src/models/navigate_ship_200_response_data.rs
 src/models/navigate_ship_request.rs
 src/models/orbit_ship_200_response.rs
 src/models/orbit_ship_200_response_data.rs
+src/models/patch_ship_nav_request.rs
 src/models/purchase_cargo_201_response.rs
 src/models/purchase_cargo_request.rs
 src/models/purchase_ship_201_response.rs

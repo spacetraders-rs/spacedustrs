@@ -1,6 +1,6 @@
 [package]
 name = "spacedust"
-version = "1.0.3"
+version = "1.0.4"
 authors = ["James Clague <james.clague@brct.io>"]
 edition = "2021"
 license-file = "LICENSE"

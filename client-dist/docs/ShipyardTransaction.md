@@ -4,7 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**ship_symbol** | Option<**String**> | The symbol of the ship that was purchased. | [optional]
+**waypoint_symbol** | **String** | The symbol of the waypoint where the transaction took place. | 
+**ship_symbol** | **String** | The symbol of the ship that was purchased. | 
 **price** | **i32** | The price of the transaction. | 
 **agent_symbol** | **String** | The symbol of the agent that made the transaction. | 
 **timestamp** | **String** | The timestamp of the transaction. | 

@@ -7,7 +7,7 @@ The API is documented using [OpenAPI](https://github.com/SpaceTradersAPI/api-doc
 ```json http
 {
   \"method\": \"GET\",
-  \"url\": \"https://v2.api.spacetraders.io\",
+  \"url\": \"https://api.spacetraders.io/v2\",
 }
 ```
 
@@ -37,7 +37,7 @@ spacedust = { path = "./spacedust" }
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://v2.api.spacetraders.io*
+All URIs are relative to *https://api.spacetraders.io/v2*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -58,12 +58,15 @@ Class | Method | HTTP request | Description
 *FleetApi* | [**dock_ship**](docs/FleetApi.md#dock_ship) | **POST** /my/ships/{shipSymbol}/dock | Dock Ship
 *FleetApi* | [**extract_resources**](docs/FleetApi.md#extract_resources) | **POST** /my/ships/{shipSymbol}/extract | Extract Resources
 *FleetApi* | [**get_my_ship**](docs/FleetApi.md#get_my_ship) | **GET** /my/ships/{shipSymbol} | Get Ship
+*FleetApi* | [**get_my_ship_cargo**](docs/FleetApi.md#get_my_ship_cargo) | **GET** /my/ships/{shipSymbol}/cargo | Get Ship Cargo
 *FleetApi* | [**get_my_ships**](docs/FleetApi.md#get_my_ships) | **GET** /my/ships | List Ships
 *FleetApi* | [**get_ship_cooldown**](docs/FleetApi.md#get_ship_cooldown) | **GET** /my/ships/{shipSymbol}/cooldown | Get Ship Cooldown
+*FleetApi* | [**get_ship_nav**](docs/FleetApi.md#get_ship_nav) | **GET** /my/ships/{shipSymbol}/nav | Get Ship Nav
 *FleetApi* | [**jettison**](docs/FleetApi.md#jettison) | **POST** /my/ships/{shipSymbol}/jettison | Jettison Cargo
 *FleetApi* | [**jump_ship**](docs/FleetApi.md#jump_ship) | **POST** /my/ships/{shipSymbol}/jump | Jump Ship
 *FleetApi* | [**navigate_ship**](docs/FleetApi.md#navigate_ship) | **POST** /my/ships/{shipSymbol}/navigate | Navigate Ship
 *FleetApi* | [**orbit_ship**](docs/FleetApi.md#orbit_ship) | **POST** /my/ships/{shipSymbol}/orbit | Orbit Ship
+*FleetApi* | [**patch_ship_nav**](docs/FleetApi.md#patch_ship_nav) | **PATCH** /my/ships/{shipSymbol}/nav | Patch Ship Nav
 *FleetApi* | [**purchase_cargo**](docs/FleetApi.md#purchase_cargo) | **POST** /my/ships/{shipSymbol}/purchase | Purchase Cargo
 *FleetApi* | [**purchase_ship**](docs/FleetApi.md#purchase_ship) | **POST** /my/ships | Purchase Ship
 *FleetApi* | [**refuel_ship**](docs/FleetApi.md#refuel_ship) | **POST** /my/ships/{shipSymbol}/refuel | Refuel Ship
@@ -123,8 +126,10 @@ Class | Method | HTTP request | Description
  - [GetMarket200Response](docs/GetMarket200Response.md)
  - [GetMyAgent200Response](docs/GetMyAgent200Response.md)
  - [GetMyShip200Response](docs/GetMyShip200Response.md)
+ - [GetMyShipCargo200Response](docs/GetMyShipCargo200Response.md)
  - [GetMyShips200Response](docs/GetMyShips200Response.md)
  - [GetShipCooldown200Response](docs/GetShipCooldown200Response.md)
+ - [GetShipNav200Response](docs/GetShipNav200Response.md)
  - [GetShipyard200Response](docs/GetShipyard200Response.md)
  - [GetSystem200Response](docs/GetSystem200Response.md)
  - [GetSystemWaypoints200Response](docs/GetSystemWaypoints200Response.md)
@@ -146,6 +151,7 @@ Class | Method | HTTP request | Description
  - [NavigateShipRequest](docs/NavigateShipRequest.md)
  - [OrbitShip200Response](docs/OrbitShip200Response.md)
  - [OrbitShip200ResponseData](docs/OrbitShip200ResponseData.md)
+ - [PatchShipNavRequest](docs/PatchShipNavRequest.md)
  - [PurchaseCargo201Response](docs/PurchaseCargo201Response.md)
  - [PurchaseCargoRequest](docs/PurchaseCargoRequest.md)
  - [PurchaseShip201Response](docs/PurchaseShip201Response.md)

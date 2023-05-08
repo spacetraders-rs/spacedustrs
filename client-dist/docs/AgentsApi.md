@@ -1,6 +1,6 @@
 # \AgentsApi
 
-All URIs are relative to *https://v2.api.spacetraders.io*
+All URIs are relative to *https://api.spacetraders.io/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------

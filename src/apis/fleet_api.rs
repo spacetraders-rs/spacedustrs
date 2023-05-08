@@ -1,7 +1,7 @@
 /*
  * SpaceTraders API
  *
- * SpaceTraders is an open-universe game and learning platform that offers a set of HTTP endpoints to control a fleet of ships and explore a multiplayer universe.  The API is documented using [OpenAPI](https://github.com/SpaceTradersAPI/api-docs). You can send your first request right here in your browser to check the status of the game server.  ```json http {   \"method\": \"GET\",   \"url\": \"https://v2.api.spacetraders.io\", } ```  Unlike a traditional game, SpaceTraders does not have a first-party client or app to play the game. Instead, you can use the API to build your own client, write a script to automate your ships, or try an app built by the community.  We have a [Discord channel](https://discord.com/invite/jh6zurdWk5) where you can share your projects, ask questions, and get help from other players.   
+ * SpaceTraders is an open-universe game and learning platform that offers a set of HTTP endpoints to control a fleet of ships and explore a multiplayer universe.  The API is documented using [OpenAPI](https://github.com/SpaceTradersAPI/api-docs). You can send your first request right here in your browser to check the status of the game server.  ```json http {   \"method\": \"GET\",   \"url\": \"https://api.spacetraders.io/v2\", } ```  Unlike a traditional game, SpaceTraders does not have a first-party client or app to play the game. Instead, you can use the API to build your own client, write a script to automate your ships, or try an app built by the community.  We have a [Discord channel](https://discord.com/invite/jh6zurdWk5) where you can share your projects, ask questions, and get help from other players.   
  *
  * The version of the OpenAPI document: 2.0.0
  * Contact: joel@spacetraders.io
@@ -71,6 +71,13 @@ pub enum GetMyShipError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`get_my_ship_cargo`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetMyShipCargoError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`get_my_ships`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -82,6 +89,13 @@ pub enum GetMyShipsError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetShipCooldownError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`get_ship_nav`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetShipNavError {
     UnknownValue(serde_json::Value),
 }
 
@@ -110,6 +124,13 @@ pub enum NavigateShipError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum OrbitShipError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`patch_ship_nav`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum PatchShipNavError {
     UnknownValue(serde_json::Value),
 }
 
@@ -417,6 +438,37 @@ pub async fn get_my_ship(configuration: &configuration::Configuration, ship_symb
     }
 }
 
+/// Retrieve the cargo of your ship.
+pub async fn get_my_ship_cargo(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::GetMyShipCargo200Response, Error<GetMyShipCargoError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/cargo", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<GetMyShipCargoError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
 /// Retrieve all of your ships.
 pub async fn get_my_ships(configuration: &configuration::Configuration, page: Option<i32>, limit: Option<i32>) -> Result<crate::models::GetMyShips200Response, Error<GetMyShipsError>> {
     let local_var_configuration = configuration;
@@ -480,6 +532,37 @@ pub async fn get_ship_cooldown(configuration: &configuration::Configuration, shi
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
         let local_var_entity: Option<GetShipCooldownError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Get the current nav status of a ship.
+pub async fn get_ship_nav(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::GetShipNav200Response, Error<GetShipNavError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/nav", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<GetShipNavError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
         Err(Error::ResponseError(local_var_error))
     }
@@ -608,6 +691,38 @@ pub async fn orbit_ship(configuration: &configuration::Configuration, ship_symbo
         serde_json::from_str(&local_var_content).map_err(Error::from)
     } else {
         let local_var_entity: Option<OrbitShipError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Update the nav data of a ship, such as the flight mode.
+pub async fn patch_ship_nav(configuration: &configuration::Configuration, ship_symbol: &str, patch_ship_nav_request: Option<crate::models::PatchShipNavRequest>) -> Result<crate::models::GetShipNav200Response, Error<PatchShipNavError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/nav", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&patch_ship_nav_request);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<PatchShipNavError> = serde_json::from_str(&local_var_content).ok();
         let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
         Err(Error::ResponseError(local_var_error))
     }
