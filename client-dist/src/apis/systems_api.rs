@@ -134,7 +134,7 @@ pub async fn get_market(configuration: &configuration::Configuration, system_sym
     }
 }
 
-/// Get the shipyard for a waypoint.
+/// Get the shipyard for a waypoint. Send a ship to the waypoint to access ships that are currently available for purchase and recent transactions.
 pub async fn get_shipyard(configuration: &configuration::Configuration, system_symbol: &str, waypoint_symbol: &str) -> Result<crate::models::GetShipyard200Response, Error<GetShipyardError>> {
     let local_var_configuration = configuration;
 

@@ -18,18 +18,18 @@ pub struct ShipRegistration {
     #[serde(rename = "name")]
     pub name: String,
     /// The symbol of the faction the ship is registered with
-    #[serde(rename = "factionSymbol", skip_serializing_if = "Option::is_none")]
-    pub faction_symbol: Option<String>,
+    #[serde(rename = "factionSymbol")]
+    pub faction_symbol: String,
     #[serde(rename = "role")]
     pub role: crate::models::ShipRole,
 }
 
 impl ShipRegistration {
     /// The public registration information of the ship
-    pub fn new(name: String, role: crate::models::ShipRole) -> ShipRegistration {
+    pub fn new(name: String, faction_symbol: String, role: crate::models::ShipRole) -> ShipRegistration {
         ShipRegistration {
             name,
-            faction_symbol: None,
+            faction_symbol,
             role,
         }
     }

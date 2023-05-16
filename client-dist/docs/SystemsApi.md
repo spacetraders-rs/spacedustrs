@@ -82,7 +82,7 @@ Name | Type | Description  | Required | Notes
 > crate::models::GetShipyard200Response get_shipyard(system_symbol, waypoint_symbol)
 Get Shipyard
 
-Get the shipyard for a waypoint.
+Get the shipyard for a waypoint. Send a ship to the waypoint to access ships that are currently available for purchase and recent transactions.
 
 ### Parameters
 

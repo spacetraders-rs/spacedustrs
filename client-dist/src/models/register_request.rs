@@ -19,6 +19,9 @@ pub struct RegisterRequest {
     /// How other agents will see your ships and information.
     #[serde(rename = "symbol")]
     pub symbol: String,
+    /// Your email address. This is used if you reserved your call sign between resets.
+    #[serde(rename = "email", skip_serializing_if = "Option::is_none")]
+    pub email: Option<String>,
 }
 
 impl RegisterRequest {
@@ -26,6 +29,7 @@ impl RegisterRequest {
         RegisterRequest {
             faction,
             symbol,
+            email: None,
         }
     }
 }

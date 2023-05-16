@@ -51,20 +51,6 @@ pub enum Symbol {
     Distrustful,
     #[serde(rename = "WELCOMING")]
     Welcoming,
-    #[serde(rename = "ANARCHIST")]
-    Anarchist,
-    #[serde(rename = "CONFLICTED")]
-    Conflicted,
-    #[serde(rename = "AUTHORITARIAN")]
-    Authoritarian,
-    #[serde(rename = "OLIGARCHICAL")]
-    Oligarchical,
-    #[serde(rename = "DYNASTIC")]
-    Dynastic,
-    #[serde(rename = "DEMOCRACTIC")]
-    Democractic,
-    #[serde(rename = "DECENTRALIZED")]
-    Decentralized,
     #[serde(rename = "SMUGGLERS")]
     Smugglers,
     #[serde(rename = "SCAVENGERS")]
