@@ -67,7 +67,7 @@ git clone --recurse-submodules git@github.com:brct-james/spacedustrs.git
 Ensure submodules are initialized and updated:
 
 ```bash
-git submodule update --recursive
+git submodule update --init --recursive
 ```
 
 Clean the output directory:
@@ -93,7 +93,7 @@ Run the following command, which uses the openapi-generator-cli docker image to 
 ```bash
 docker run --rm \
   -v ${PWD}:/local openapitools/openapi-generator-cli:latest-release generate \
-  -i /local/spacetraders-api-docs/reference/SpaceTraders.json \
+  -i /local/spacetraders-api-docs-spacedust-patch/reference/SpaceTraders.json \
   -g rust \
   -o /local/client-dist \
   --additional-properties=packageName=spacedust,supportAsync=true,supportMiddleware=true
