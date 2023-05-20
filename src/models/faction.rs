@@ -24,17 +24,21 @@ pub struct Faction {
     pub headquarters: String,
     #[serde(rename = "traits")]
     pub traits: Vec<crate::models::FactionTrait>,
+    /// Whether or not the faction is currently recruiting new agents.
+    #[serde(rename = "isRecruiting")]
+    pub is_recruiting: bool,
 }
 
 impl Faction {
     /// 
-    pub fn new(symbol: String, name: String, description: String, headquarters: String, traits: Vec<crate::models::FactionTrait>) -> Faction {
+    pub fn new(symbol: String, name: String, description: String, headquarters: String, traits: Vec<crate::models::FactionTrait>, is_recruiting: bool) -> Faction {
         Faction {
             symbol,
             name,
             description,
             headquarters,
             traits,
+            is_recruiting,
         }
     }
 }

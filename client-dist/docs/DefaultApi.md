@@ -4,8 +4,36 @@ All URIs are relative to *https://api.spacetraders.io/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**get_status**](DefaultApi.md#get_status) | **GET** / | Get Status
 [**register**](DefaultApi.md#register) | **POST** /register | Register New Agent
 
+
+
+## get_status
+
+> crate::models::GetStatus200Response get_status()
+Get Status
+
+Return the status of the game server.
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**crate::models::GetStatus200Response**](get_status_200_response.md)
+
+### Authorization
+
+[AgentToken](../README.md#AgentToken)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 
 ## register

@@ -24,16 +24,20 @@ pub struct Agent {
     /// The number of credits the agent has available. Credits can be negative if funds have been overdrawn.
     #[serde(rename = "credits")]
     pub credits: i32,
+    /// The faction the agent started with.
+    #[serde(rename = "startingFaction")]
+    pub starting_faction: String,
 }
 
 impl Agent {
     /// 
-    pub fn new(account_id: String, symbol: String, headquarters: String, credits: i32) -> Agent {
+    pub fn new(account_id: String, symbol: String, headquarters: String, credits: i32, starting_faction: String) -> Agent {
         Agent {
             account_id,
             symbol,
             headquarters,
             credits,
+            starting_faction,
         }
     }
 }

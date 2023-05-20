@@ -29,9 +29,12 @@ pub struct Contract {
     /// Whether the contract has been fulfilled
     #[serde(rename = "fulfilled")]
     pub fulfilled: bool,
-    /// The time at which the contract expires
+    /// Deprecated in favor of deadlineToAccept
     #[serde(rename = "expiration")]
     pub expiration: String,
+    /// The time at which the contract is no longer available to be accepted
+    #[serde(rename = "deadlineToAccept", skip_serializing_if = "Option::is_none")]
+    pub deadline_to_accept: Option<String>,
 }
 
 impl Contract {
@@ -45,6 +48,7 @@ impl Contract {
             accepted,
             fulfilled,
             expiration,
+            deadline_to_accept: None,
         }
     }
 }

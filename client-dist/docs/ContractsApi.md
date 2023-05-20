@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## accept_contract
 
-> crate::models::AcceptContract200Response accept_contract(contract_id, content_length)
+> crate::models::AcceptContract200Response accept_contract(contract_id)
 Accept Contract
 
 Accept a contract.
@@ -25,7 +25,6 @@ Accept a contract.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **contract_id** | **String** |  | [required] |
-**content_length** | **i32** |  | [required] |[default to 0]
 
 ### Return type
 
@@ -76,7 +75,7 @@ Name | Type | Description  | Required | Notes
 
 ## fulfill_contract
 
-> crate::models::FulfillContract200Response fulfill_contract(contract_id, content_length)
+> crate::models::FulfillContract200Response fulfill_contract(contract_id)
 Fulfill Contract
 
 Fulfill a contract
@@ -87,7 +86,6 @@ Fulfill a contract
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **contract_id** | **String** | The ID of the contract | [required] |
-**content_length** | **i32** |  | [required] |
 
 ### Return type
 

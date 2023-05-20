@@ -17,13 +17,16 @@ pub struct RefuelShip200ResponseData {
     pub agent: Box<crate::models::Agent>,
     #[serde(rename = "fuel")]
     pub fuel: Box<crate::models::ShipFuel>,
+    #[serde(rename = "transaction")]
+    pub transaction: Box<crate::models::MarketTransaction>,
 }
 
 impl RefuelShip200ResponseData {
-    pub fn new(agent: crate::models::Agent, fuel: crate::models::ShipFuel) -> RefuelShip200ResponseData {
+    pub fn new(agent: crate::models::Agent, fuel: crate::models::ShipFuel, transaction: crate::models::MarketTransaction) -> RefuelShip200ResponseData {
         RefuelShip200ResponseData {
             agent: Box::new(agent),
             fuel: Box::new(fuel),
+            transaction: Box::new(transaction),
         }
     }
 }
