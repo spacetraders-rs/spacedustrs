@@ -13,7 +13,9 @@ impl Middleware for ContentLengthFixMiddleware {
         next: Next<'_>,
     ) -> Result<Response> {
         if let None = req.body() {
-            req.headers_mut().append("content-length", HeaderValue::from_static("0"));
+            if !req.headers().contains_key("content-length") {
+                req.headers_mut().append("content-length", HeaderValue::from_static("0"));
+            }
         }
         let res = next.run(req, extensions).await;
         res
