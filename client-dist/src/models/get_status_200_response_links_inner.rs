@@ -12,21 +12,18 @@
 
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct RefuelShip200ResponseData {
-    #[serde(rename = "agent")]
-    pub agent: Box<crate::models::Agent>,
-    #[serde(rename = "fuel")]
-    pub fuel: Box<crate::models::ShipFuel>,
-    #[serde(rename = "transaction")]
-    pub transaction: Box<crate::models::MarketTransaction>,
+pub struct GetStatus200ResponseLinksInner {
+    #[serde(rename = "name")]
+    pub name: String,
+    #[serde(rename = "url")]
+    pub url: String,
 }
 
-impl RefuelShip200ResponseData {
-    pub fn new(agent: crate::models::Agent, fuel: crate::models::ShipFuel, transaction: crate::models::MarketTransaction) -> RefuelShip200ResponseData {
-        RefuelShip200ResponseData {
-            agent: Box::new(agent),
-            fuel: Box::new(fuel),
-            transaction: Box::new(transaction),
+impl GetStatus200ResponseLinksInner {
+    pub fn new(name: String, url: String) -> GetStatus200ResponseLinksInner {
+        GetStatus200ResponseLinksInner {
+            name,
+            url,
         }
     }
 }

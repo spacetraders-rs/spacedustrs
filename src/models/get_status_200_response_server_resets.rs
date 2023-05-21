@@ -12,21 +12,20 @@
 
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct RefuelShip200ResponseData {
-    #[serde(rename = "agent")]
-    pub agent: Box<crate::models::Agent>,
-    #[serde(rename = "fuel")]
-    pub fuel: Box<crate::models::ShipFuel>,
-    #[serde(rename = "transaction")]
-    pub transaction: Box<crate::models::MarketTransaction>,
+pub struct GetStatus200ResponseServerResets {
+    /// The date and time when the game server will reset.
+    #[serde(rename = "next")]
+    pub next: String,
+    /// How often we intend to reset the game server.
+    #[serde(rename = "frequency")]
+    pub frequency: String,
 }
 
-impl RefuelShip200ResponseData {
-    pub fn new(agent: crate::models::Agent, fuel: crate::models::ShipFuel, transaction: crate::models::MarketTransaction) -> RefuelShip200ResponseData {
-        RefuelShip200ResponseData {
-            agent: Box::new(agent),
-            fuel: Box::new(fuel),
-            transaction: Box::new(transaction),
+impl GetStatus200ResponseServerResets {
+    pub fn new(next: String, frequency: String) -> GetStatus200ResponseServerResets {
+        GetStatus200ResponseServerResets {
+            next,
+            frequency,
         }
     }
 }

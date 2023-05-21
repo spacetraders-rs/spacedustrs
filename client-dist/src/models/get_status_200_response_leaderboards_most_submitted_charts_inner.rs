@@ -12,21 +12,18 @@
 
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct RefuelShip200ResponseData {
-    #[serde(rename = "agent")]
-    pub agent: Box<crate::models::Agent>,
-    #[serde(rename = "fuel")]
-    pub fuel: Box<crate::models::ShipFuel>,
-    #[serde(rename = "transaction")]
-    pub transaction: Box<crate::models::MarketTransaction>,
+pub struct GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
+    #[serde(rename = "agentSymbol")]
+    pub agent_symbol: String,
+    #[serde(rename = "chartCount")]
+    pub chart_count: i32,
 }
 
-impl RefuelShip200ResponseData {
-    pub fn new(agent: crate::models::Agent, fuel: crate::models::ShipFuel, transaction: crate::models::MarketTransaction) -> RefuelShip200ResponseData {
-        RefuelShip200ResponseData {
-            agent: Box::new(agent),
-            fuel: Box::new(fuel),
-            transaction: Box::new(transaction),
+impl GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
+    pub fn new(agent_symbol: String, chart_count: i32) -> GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
+        GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
+            agent_symbol,
+            chart_count,
         }
     }
 }

@@ -24,18 +24,18 @@ pub struct Cooldown {
     #[serde(rename = "remainingSeconds")]
     pub remaining_seconds: i32,
     /// The date and time when the cooldown expires in ISO 8601 format
-    #[serde(rename = "expiration")]
-    pub expiration: String,
+    #[serde(rename = "expiration", skip_serializing_if = "Option::is_none")]
+    pub expiration: Option<String>,
 }
 
 impl Cooldown {
     /// A cooldown is a period of time in which a ship cannot perform certain actions.
-    pub fn new(ship_symbol: String, total_seconds: i32, remaining_seconds: i32, expiration: String) -> Cooldown {
+    pub fn new(ship_symbol: String, total_seconds: i32, remaining_seconds: i32) -> Cooldown {
         Cooldown {
             ship_symbol,
             total_seconds,
             remaining_seconds,
-            expiration,
+            expiration: None,
         }
     }
 }

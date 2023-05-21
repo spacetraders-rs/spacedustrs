@@ -53,6 +53,14 @@ docs/GetMyShips200Response.md
 docs/GetShipCooldown200Response.md
 docs/GetShipNav200Response.md
 docs/GetShipyard200Response.md
+docs/GetStatus200Response.md
+docs/GetStatus200ResponseAnnouncementsInner.md
+docs/GetStatus200ResponseLeaderboards.md
+docs/GetStatus200ResponseLeaderboardsMostCreditsInner.md
+docs/GetStatus200ResponseLeaderboardsMostSubmittedChartsInner.md
+docs/GetStatus200ResponseLinksInner.md
+docs/GetStatus200ResponseServerResets.md
+docs/GetStatus200ResponseStats.md
 docs/GetSystem200Response.md
 docs/GetSystemWaypoints200Response.md
 docs/GetSystems200Response.md
@@ -71,6 +79,8 @@ docs/Meta.md
 docs/NavigateShip200Response.md
 docs/NavigateShip200ResponseData.md
 docs/NavigateShipRequest.md
+docs/NegotiateContract200Response.md
+docs/NegotiateContract200ResponseData.md
 docs/OrbitShip200Response.md
 docs/OrbitShip200ResponseData.md
 docs/PatchShipNavRequest.md
@@ -193,6 +203,14 @@ src/models/get_my_ships_200_response.rs
 src/models/get_ship_cooldown_200_response.rs
 src/models/get_ship_nav_200_response.rs
 src/models/get_shipyard_200_response.rs
+src/models/get_status_200_response.rs
+src/models/get_status_200_response_announcements_inner.rs
+src/models/get_status_200_response_leaderboards.rs
+src/models/get_status_200_response_leaderboards_most_credits_inner.rs
+src/models/get_status_200_response_leaderboards_most_submitted_charts_inner.rs
+src/models/get_status_200_response_links_inner.rs
+src/models/get_status_200_response_server_resets.rs
+src/models/get_status_200_response_stats.rs
 src/models/get_system_200_response.rs
 src/models/get_system_waypoints_200_response.rs
 src/models/get_systems_200_response.rs
@@ -212,6 +230,8 @@ src/models/mod.rs
 src/models/navigate_ship_200_response.rs
 src/models/navigate_ship_200_response_data.rs
 src/models/navigate_ship_request.rs
+src/models/negotiate_contract_200_response.rs
+src/models/negotiate_contract_200_response_data.rs
 src/models/orbit_ship_200_response.rs
 src/models/orbit_ship_200_response_data.rs
 src/models/patch_ship_nav_request.rs

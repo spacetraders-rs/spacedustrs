@@ -1,12 +1,13 @@
-# RefuelShip200ResponseData
+# GetStatus200ResponseStats
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**agent** | [**crate::models::Agent**](Agent.md) |  | 
-**fuel** | [**crate::models::ShipFuel**](ShipFuel.md) |  | 
-**transaction** | [**crate::models::MarketTransaction**](MarketTransaction.md) |  | 
+**agents** | **i32** |  | 
+**ships** | **i32** |  | 
+**systems** | **i32** |  | 
+**waypoints** | **i32** |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

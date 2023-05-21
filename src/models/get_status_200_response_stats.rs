@@ -12,21 +12,24 @@
 
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct RefuelShip200ResponseData {
-    #[serde(rename = "agent")]
-    pub agent: Box<crate::models::Agent>,
-    #[serde(rename = "fuel")]
-    pub fuel: Box<crate::models::ShipFuel>,
-    #[serde(rename = "transaction")]
-    pub transaction: Box<crate::models::MarketTransaction>,
+pub struct GetStatus200ResponseStats {
+    #[serde(rename = "agents")]
+    pub agents: i32,
+    #[serde(rename = "ships")]
+    pub ships: i32,
+    #[serde(rename = "systems")]
+    pub systems: i32,
+    #[serde(rename = "waypoints")]
+    pub waypoints: i32,
 }
 
-impl RefuelShip200ResponseData {
-    pub fn new(agent: crate::models::Agent, fuel: crate::models::ShipFuel, transaction: crate::models::MarketTransaction) -> RefuelShip200ResponseData {
-        RefuelShip200ResponseData {
-            agent: Box::new(agent),
-            fuel: Box::new(fuel),
-            transaction: Box::new(transaction),
+impl GetStatus200ResponseStats {
+    pub fn new(agents: i32, ships: i32, systems: i32, waypoints: i32) -> GetStatus200ResponseStats {
+        GetStatus200ResponseStats {
+            agents,
+            ships,
+            systems,
+            waypoints,
         }
     }
 }

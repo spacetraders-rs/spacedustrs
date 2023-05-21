@@ -19,6 +19,7 @@ Method | HTTP request | Description
 [**jettison**](FleetApi.md#jettison) | **POST** /my/ships/{shipSymbol}/jettison | Jettison Cargo
 [**jump_ship**](FleetApi.md#jump_ship) | **POST** /my/ships/{shipSymbol}/jump | Jump Ship
 [**navigate_ship**](FleetApi.md#navigate_ship) | **POST** /my/ships/{shipSymbol}/navigate | Navigate Ship
+[**negotiate_contract**](FleetApi.md#negotiate_contract) | **POST** /my/ships/{shipSymbol}/negotiate/contract | Negotiate Contract
 [**orbit_ship**](FleetApi.md#orbit_ship) | **POST** /my/ships/{shipSymbol}/orbit | Orbit Ship
 [**patch_ship_nav**](FleetApi.md#patch_ship_nav) | **PATCH** /my/ships/{shipSymbol}/nav | Patch Ship Nav
 [**purchase_cargo**](FleetApi.md#purchase_cargo) | **POST** /my/ships/{shipSymbol}/purchase | Purchase Cargo
@@ -478,6 +479,37 @@ Name | Type | Description  | Required | Notes
 ### Return type
 
 [**crate::models::NavigateShip200Response**](navigate_ship_200_response.md)
+
+### Authorization
+
+[AgentToken](../README.md#AgentToken)
+
+### HTTP request headers
+
+- **Content-Type**: application/json
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+
+## negotiate_contract
+
+> crate::models::NegotiateContract200Response negotiate_contract(ship_symbol, body)
+Negotiate Contract
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Required | Notes
+------------- | ------------- | ------------- | ------------- | -------------
+**ship_symbol** | **String** |  | [required] |
+**body** | Option<**serde_json::Value**> |  |  |
+
+### Return type
+
+[**crate::models::NegotiateContract200Response**](Negotiate_Contract_200_Response.md)
 
 ### Authorization
 

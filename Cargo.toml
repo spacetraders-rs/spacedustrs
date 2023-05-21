@@ -1,6 +1,6 @@
 [package]
 name = "spacedust"
-version = "1.0.7"
+version = "1.0.8"
 authors = ["James Clague <james.clague@brct.io>", "Allstreamer"]
 edition = "2021"
 license-file = "LICENSE"
