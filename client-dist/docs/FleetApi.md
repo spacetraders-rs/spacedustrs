@@ -127,7 +127,7 @@ Name | Type | Description  | Required | Notes
 
 ## create_ship_waypoint_scan
 
-> crate::models::CreateShipWaypointScan201Response create_ship_waypoint_scan(ship_symbol)
+> crate::models::CreateShipWaypointScan201Response create_ship_waypoint_scan(ship_symbol, content_length)
 Scan Waypoints
 
 Activate your ship's sensor arrays to scan for waypoint information.
@@ -138,6 +138,7 @@ Activate your ship's sensor arrays to scan for waypoint information.
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **ship_symbol** | **String** |  | [required] |
+**content_length** | **i32** |  | [required] |[default to 0]
 
 ### Return type
 
@@ -435,7 +436,7 @@ Name | Type | Description  | Required | Notes
 > crate::models::JumpShip200Response jump_ship(ship_symbol, jump_ship_request)
 Jump Ship
 
-Jump your ship instantly to a target system. Unlike other forms of navigation, jumping requires a unit of antimatter.
+Jump your ship instantly to a target system. When used while in orbit or docked to a jump gate waypoint, any ship can use this command. When used elsewhere, jumping requires a jump drive unit and consumes a unit of antimatter (which needs to be in your cargo).
 
 ### Parameters
 

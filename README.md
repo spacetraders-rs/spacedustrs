@@ -102,8 +102,9 @@ docker run --rm \
 Copy the client-dist/src to src
 
 ```bash
-sudo rm -rf src
-mkdir src
+sudo rm -rf src/apis
+sudo rm -rf src/models
+sudo rm -rf src/lib.rs
 cp -r client-dist/src .
 ```
 

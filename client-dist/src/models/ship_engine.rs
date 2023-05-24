@@ -24,14 +24,14 @@ pub struct ShipEngine {
     #[serde(rename = "condition", skip_serializing_if = "Option::is_none")]
     pub condition: Option<i32>,
     #[serde(rename = "speed")]
-    pub speed: f32,
+    pub speed: i32,
     #[serde(rename = "requirements")]
     pub requirements: Box<crate::models::ShipRequirements>,
 }
 
 impl ShipEngine {
     /// The engine determines how quickly a ship travels between waypoints.
-    pub fn new(symbol: Symbol, name: String, description: String, speed: f32, requirements: crate::models::ShipRequirements) -> ShipEngine {
+    pub fn new(symbol: Symbol, name: String, description: String, speed: i32, requirements: crate::models::ShipRequirements) -> ShipEngine {
         ShipEngine {
             symbol,
             name,

@@ -288,7 +288,7 @@ pub async fn create_ship_system_scan(configuration: &configuration::Configuratio
 }
 
 /// Activate your ship's sensor arrays to scan for waypoint information.
-pub async fn create_ship_waypoint_scan(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateShipWaypointScan201Response, Error<CreateShipWaypointScanError>> {
+pub async fn create_ship_waypoint_scan(configuration: &configuration::Configuration, ship_symbol: &str, content_length: i32) -> Result<crate::models::CreateShipWaypointScan201Response, Error<CreateShipWaypointScanError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -299,6 +299,7 @@ pub async fn create_ship_waypoint_scan(configuration: &configuration::Configurat
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
+    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -607,7 +608,7 @@ pub async fn jettison(configuration: &configuration::Configuration, ship_symbol:
     }
 }
 
-/// Jump your ship instantly to a target system. Unlike other forms of navigation, jumping requires a unit of antimatter.
+/// Jump your ship instantly to a target system. When used while in orbit or docked to a jump gate waypoint, any ship can use this command. When used elsewhere, jumping requires a jump drive unit and consumes a unit of antimatter (which needs to be in your cargo).
 pub async fn jump_ship(configuration: &configuration::Configuration, ship_symbol: &str, jump_ship_request: Option<crate::models::JumpShipRequest>) -> Result<crate::models::JumpShip200Response, Error<JumpShipError>> {
     let local_var_configuration = configuration;
 

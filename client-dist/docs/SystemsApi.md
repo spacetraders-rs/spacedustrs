@@ -36,7 +36,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-[AgentToken](../README.md#AgentToken)
+No authorization required
 
 ### HTTP request headers
 
@@ -67,7 +67,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-[AgentToken](../README.md#AgentToken)
+No authorization required
 
 ### HTTP request headers
 
@@ -98,7 +98,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-[AgentToken](../README.md#AgentToken)
+No authorization required
 
 ### HTTP request headers
 
@@ -128,7 +128,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-[AgentToken](../README.md#AgentToken)
+No authorization required
 
 ### HTTP request headers
 
@@ -191,7 +191,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-[AgentToken](../README.md#AgentToken)
+No authorization required
 
 ### HTTP request headers
 
@@ -249,7 +249,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-[AgentToken](../README.md#AgentToken)
+No authorization required
 
 ### HTTP request headers
 
