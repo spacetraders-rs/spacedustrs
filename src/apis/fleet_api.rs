@@ -398,7 +398,11 @@ pub async fn extract_resources(configuration: &configuration::Configuration, shi
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&extract_resources_request);
+    if let Some(ref local_var_extract_resources) = extract_resources_request {
+        local_var_req_builder = local_var_req_builder.json(&local_var_extract_resources);
+    } else {
+        local_var_req_builder = local_var_req_builder.header("Content-Length", "0")
+    }
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -991,4 +995,3 @@ pub async fn warp_ship(configuration: &configuration::Configuration, ship_symbol
         Err(Error::ResponseError(local_var_error))
     }
 }
-
