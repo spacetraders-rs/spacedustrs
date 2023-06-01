@@ -399,7 +399,11 @@ pub async fn extract_resources(configuration: &configuration::Configuration, shi
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
     if let Some(ref local_var_extract_resources) = extract_resources_request {
-        local_var_req_builder = local_var_req_builder.json(&local_var_extract_resources);
+        if let Some(_) = &local_var_extract_resources.survey {
+            local_var_req_builder = local_var_req_builder.json(&extract_resources_request);
+        } else {
+            local_var_req_builder = local_var_req_builder.header("Content-Length", "0")
+        }
     } else {
         local_var_req_builder = local_var_req_builder.header("Content-Length", "0")
     }
