@@ -112,4 +112,6 @@ git checkout 34a74b36e341444a8dbe6ee979bb0163cbfe3bb9 src/apis/configuration.rs
 git checkout 34a74b36e341444a8dbe6ee979bb0163cbfe3bb9 src/lib.rs
 ```
 
+_Todo:_ Create a better merge strategy - perhaps maintain the content-length-middleware branch and merge it into the local branch after generating a new client?
+
 Update Cargo.toml with any new dependencies, update documentation, tick version, commit changes, and publish to cargo
