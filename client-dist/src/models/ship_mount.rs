@@ -14,14 +14,19 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShipMount {
+    /// Symbo of this mount.
     #[serde(rename = "symbol")]
     pub symbol: Symbol,
+    /// Name of this mount.
     #[serde(rename = "name")]
     pub name: String,
+    /// Description of this mount.
     #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
     pub description: Option<String>,
+    /// Mounts that have this value, such as mining lasers, denote how powerful this mount's capabilities are.
     #[serde(rename = "strength", skip_serializing_if = "Option::is_none")]
     pub strength: Option<i32>,
+    /// Mounts that have this value denote what goods can be produced from using the mount.
     #[serde(rename = "deposits", skip_serializing_if = "Option::is_none")]
     pub deposits: Option<Vec<Deposits>>,
     #[serde(rename = "requirements")]
@@ -42,7 +47,7 @@ impl ShipMount {
     }
 }
 
-/// 
+/// Symbo of this mount.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Symbol {
     #[serde(rename = "MOUNT_GAS_SIPHON_I")]
@@ -82,7 +87,7 @@ impl Default for Symbol {
         Self::GasSiphonI
     }
 }
-/// 
+/// Mounts that have this value denote what goods can be produced from using the mount.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Deposits {
     #[serde(rename = "QUARTZ_SAND")]

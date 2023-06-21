@@ -14,15 +14,19 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShipEngine {
+    /// The symbol of the engine.
     #[serde(rename = "symbol")]
     pub symbol: Symbol,
+    /// The name of the engine.
     #[serde(rename = "name")]
     pub name: String,
+    /// The description of the engine.
     #[serde(rename = "description")]
     pub description: String,
     /// Condition is a range of 0 to 100 where 0 is completely worn out and 100 is brand new.
     #[serde(rename = "condition", skip_serializing_if = "Option::is_none")]
     pub condition: Option<i32>,
+    /// The speed stat of this engine. The higher the speed, the faster a ship can travel from one point to another. Reduces the time of arrival when navigating the ship.
     #[serde(rename = "speed")]
     pub speed: i32,
     #[serde(rename = "requirements")]
@@ -43,7 +47,7 @@ impl ShipEngine {
     }
 }
 
-/// 
+/// The symbol of the engine.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Symbol {
     #[serde(rename = "ENGINE_IMPULSE_DRIVE_I")]

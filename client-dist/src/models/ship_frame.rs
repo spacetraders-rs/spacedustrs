@@ -14,19 +14,25 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShipFrame {
+    /// Symbol of the frame.
     #[serde(rename = "symbol")]
     pub symbol: Symbol,
+    /// Name of the frame.
     #[serde(rename = "name")]
     pub name: String,
+    /// Description of the frame.
     #[serde(rename = "description")]
     pub description: String,
     /// Condition is a range of 0 to 100 where 0 is completely worn out and 100 is brand new.
     #[serde(rename = "condition", skip_serializing_if = "Option::is_none")]
     pub condition: Option<i32>,
+    /// The amount of slots that can be dedicated to modules installed in the ship. Each installed module take up a number of slots, and once there are no more slots, no new modules can be installed.
     #[serde(rename = "moduleSlots")]
     pub module_slots: i32,
+    /// The amount of slots that can be dedicated to mounts installed in the ship. Each installed mount takes up a number of points, and once there are no more points remaining, no new mounts can be installed.
     #[serde(rename = "mountingPoints")]
     pub mounting_points: i32,
+    /// The maximum amount of fuel that can be stored in this ship. When refueling, the ship will be refueled to this amount.
     #[serde(rename = "fuelCapacity")]
     pub fuel_capacity: i32,
     #[serde(rename = "requirements")]
@@ -49,7 +55,7 @@ impl ShipFrame {
     }
 }
 
-/// 
+/// Symbol of the frame.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Symbol {
     #[serde(rename = "FRAME_PROBE")]

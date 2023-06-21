@@ -8,7 +8,7 @@ Method | HTTP request | Description
 [**get_market**](SystemsApi.md#get_market) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol}/market | Get Market
 [**get_shipyard**](SystemsApi.md#get_shipyard) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol}/shipyard | Get Shipyard
 [**get_system**](SystemsApi.md#get_system) | **GET** /systems/{systemSymbol} | Get System
-[**get_system_waypoints**](SystemsApi.md#get_system_waypoints) | **GET** /systems/{systemSymbol}/waypoints | List Waypoints
+[**get_system_waypoints**](SystemsApi.md#get_system_waypoints) | **GET** /systems/{systemSymbol}/waypoints | List Waypoints in System
 [**get_systems**](SystemsApi.md#get_systems) | **GET** /systems | List Systems
 [**get_systems_all**](SystemsApi.md#get_systems_all) | **GET** /systems.json | Get All Systems
 [**get_waypoint**](SystemsApi.md#get_waypoint) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol} | Get Waypoint
@@ -20,7 +20,7 @@ Method | HTTP request | Description
 > crate::models::GetJumpGate200Response get_jump_gate(system_symbol, waypoint_symbol)
 Get Jump Gate
 
-Get jump gate details for a waypoint.
+Get jump gate details for a waypoint. Requires a waypoint of type `JUMP_GATE` to use.  The response will return all systems that are have a Jump Gate in range of this Jump Gate. Those systems can be jumped to from this Jump Gate.
 
 ### Parameters
 
@@ -36,7 +36,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-No authorization required
+[AgentToken](../README.md#AgentToken)
 
 ### HTTP request headers
 
@@ -51,7 +51,7 @@ No authorization required
 > crate::models::GetMarket200Response get_market(system_symbol, waypoint_symbol)
 Get Market
 
-Retrieve imports, exports and exchange data from a marketplace. Imports can be sold, exports can be purchased, and exchange goods can be purchased or sold. Send a ship to the waypoint to access trade good prices and recent transactions.
+Retrieve imports, exports and exchange data from a marketplace. Requires a waypoint that has the `Marketplace` trait to use.  Send a ship to the waypoint to access trade good prices and recent transactions. Refer to the [Market Overview page](https://docs.spacetraders.io/game-concepts/markets) to gain better a understanding of the market in the game.
 
 ### Parameters
 
@@ -67,7 +67,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-No authorization required
+[AgentToken](../README.md#AgentToken)
 
 ### HTTP request headers
 
@@ -82,7 +82,7 @@ No authorization required
 > crate::models::GetShipyard200Response get_shipyard(system_symbol, waypoint_symbol)
 Get Shipyard
 
-Get the shipyard for a waypoint. Send a ship to the waypoint to access ships that are currently available for purchase and recent transactions.
+Get the shipyard for a waypoint. Requires a waypoint that has the `Shipyard` trait to use. Send a ship to the waypoint to access data on ships that are currently available for purchase and recent transactions.
 
 ### Parameters
 
@@ -98,7 +98,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-No authorization required
+[AgentToken](../README.md#AgentToken)
 
 ### HTTP request headers
 
@@ -128,7 +128,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-No authorization required
+[AgentToken](../README.md#AgentToken)
 
 ### HTTP request headers
 
@@ -141,9 +141,9 @@ No authorization required
 ## get_system_waypoints
 
 > crate::models::GetSystemWaypoints200Response get_system_waypoints(system_symbol, page, limit)
-List Waypoints
+List Waypoints in System
 
-Fetch all of the waypoints for a given system. System must be charted or a ship must be present to return waypoint details.
+Return a paginated list of all of the waypoints for a given system.  If a waypoint is uncharted, it will return the `Uncharted` trait instead of its actual traits.
 
 ### Parameters
 
@@ -151,8 +151,8 @@ Fetch all of the waypoints for a given system. System must be charted or a ship 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
 **system_symbol** | **String** | The system symbol | [required] |
-**page** | Option<**i32**> | What entry offset to request |  |
-**limit** | Option<**i32**> | How many entries to return per page |  |
+**page** | Option<**i32**> | What entry offset to request |  |[default to 1]
+**limit** | Option<**i32**> | How many entries to return per page |  |[default to 10]
 
 ### Return type
 
@@ -175,15 +175,15 @@ Name | Type | Description  | Required | Notes
 > crate::models::GetSystems200Response get_systems(page, limit)
 List Systems
 
-Return a list of all systems.
+Return a paginated list of all systems.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**page** | Option<**i32**> | What entry offset to request |  |
-**limit** | Option<**i32**> | How many entries to return per page |  |
+**page** | Option<**i32**> | What entry offset to request |  |[default to 1]
+**limit** | Option<**i32**> | How many entries to return per page |  |[default to 10]
 
 ### Return type
 
@@ -191,7 +191,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-No authorization required
+[AgentToken](../README.md#AgentToken)
 
 ### HTTP request headers
 
@@ -233,7 +233,7 @@ This endpoint does not need any parameter.
 > crate::models::GetWaypoint200Response get_waypoint(system_symbol, waypoint_symbol)
 Get Waypoint
 
-View the details of a waypoint.
+View the details of a waypoint.  If the waypoint is uncharted, it will return the 'Uncharted' trait instead of its actual traits.
 
 ### Parameters
 
@@ -249,7 +249,7 @@ Name | Type | Description  | Required | Notes
 
 ### Authorization
 
-No authorization required
+[AgentToken](../README.md#AgentToken)
 
 ### HTTP request headers
 

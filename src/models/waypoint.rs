@@ -14,16 +14,21 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Waypoint {
+    /// Symbol fo the waypoint.
     #[serde(rename = "symbol")]
     pub symbol: String,
     #[serde(rename = "type")]
     pub r#type: crate::models::WaypointType,
+    /// The symbol of the system this waypoint belongs to.
     #[serde(rename = "systemSymbol")]
     pub system_symbol: String,
+    /// Position in the universe in the x axis.
     #[serde(rename = "x")]
     pub x: i32,
+    /// Position in the universe in the Y axis.
     #[serde(rename = "y")]
     pub y: i32,
+    /// Waypoints that orbit this waypoint.
     #[serde(rename = "orbitals")]
     pub orbitals: Vec<crate::models::WaypointOrbital>,
     #[serde(rename = "faction", skip_serializing_if = "Option::is_none")]

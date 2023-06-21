@@ -15,6 +15,7 @@
 pub struct CreateShipSystemScan201ResponseData {
     #[serde(rename = "cooldown")]
     pub cooldown: Box<crate::models::Cooldown>,
+    /// List of scanned systems.
     #[serde(rename = "systems")]
     pub systems: Vec<crate::models::ScannedSystem>,
 }

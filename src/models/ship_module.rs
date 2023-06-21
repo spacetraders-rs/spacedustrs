@@ -14,35 +14,40 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShipModule {
+    /// The symbol of the module.
     #[serde(rename = "symbol")]
     pub symbol: Symbol,
+    /// Modules that provide capacity, such as cargo hold or crew quarters will show this value to denote how much of a bonus the module grants.
     #[serde(rename = "capacity", skip_serializing_if = "Option::is_none")]
     pub capacity: Option<i32>,
+    /// Modules that have a range will such as a sensor array show this value to denote how far can the module reach with its capabilities.
     #[serde(rename = "range", skip_serializing_if = "Option::is_none")]
     pub range: Option<i32>,
+    /// Name of this module.
     #[serde(rename = "name")]
     pub name: String,
-    #[serde(rename = "description", skip_serializing_if = "Option::is_none")]
-    pub description: Option<String>,
+    /// Description of this module.
+    #[serde(rename = "description")]
+    pub description: String,
     #[serde(rename = "requirements")]
     pub requirements: Box<crate::models::ShipRequirements>,
 }
 
 impl ShipModule {
     /// A module can be installed in a ship and provides a set of capabilities such as storage space or quarters for crew. Module installations are permanent.
-    pub fn new(symbol: Symbol, name: String, requirements: crate::models::ShipRequirements) -> ShipModule {
+    pub fn new(symbol: Symbol, name: String, description: String, requirements: crate::models::ShipRequirements) -> ShipModule {
         ShipModule {
             symbol,
             capacity: None,
             range: None,
             name,
-            description: None,
+            description,
             requirements: Box::new(requirements),
         }
     }
 }
 
-/// 
+/// The symbol of the module.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Symbol {
     #[serde(rename = "MODULE_MINERAL_PROCESSOR_I")]

@@ -13,10 +13,13 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct DeliverContractRequest {
+    /// Symbol of a ship located in the destination to deliver a contract and that has a good to deliver in its cargo.
     #[serde(rename = "shipSymbol")]
     pub ship_symbol: String,
+    /// The symbol of the good to deliver.
     #[serde(rename = "tradeSymbol")]
     pub trade_symbol: String,
+    /// Amount of units to deliver.
     #[serde(rename = "units")]
     pub units: i32,
 }

@@ -4,9 +4,9 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**id** | **String** |  | 
+**id** | **String** | ID of the contract. | 
 **faction_symbol** | **String** | The symbol of the faction that this contract is for. | 
-**r#type** | **String** |  | 
+**r#type** | **String** | Type of contract. | 
 **terms** | [**crate::models::ContractTerms**](ContractTerms.md) |  | 
 **accepted** | **bool** | Whether the contract has been accepted by the agent | [default to false]
 **fulfilled** | **bool** | Whether the contract has been fulfilled | [default to false]

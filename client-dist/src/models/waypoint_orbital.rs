@@ -14,6 +14,7 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct WaypointOrbital {
+    /// The symbol of the orbiting waypoint.
     #[serde(rename = "symbol")]
     pub symbol: String,
 }

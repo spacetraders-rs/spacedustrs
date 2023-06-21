@@ -15,15 +15,15 @@
 pub struct JumpShip200ResponseData {
     #[serde(rename = "cooldown")]
     pub cooldown: Box<crate::models::Cooldown>,
-    #[serde(rename = "nav", skip_serializing_if = "Option::is_none")]
-    pub nav: Option<Box<crate::models::ShipNav>>,
+    #[serde(rename = "nav")]
+    pub nav: Box<crate::models::ShipNav>,
 }
 
 impl JumpShip200ResponseData {
-    pub fn new(cooldown: crate::models::Cooldown) -> JumpShip200ResponseData {
+    pub fn new(cooldown: crate::models::Cooldown, nav: crate::models::ShipNav) -> JumpShip200ResponseData {
         JumpShip200ResponseData {
             cooldown: Box::new(cooldown),
-            nav: None,
+            nav: Box::new(nav),
         }
     }
 }

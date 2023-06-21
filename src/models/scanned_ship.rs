@@ -27,6 +27,7 @@ pub struct ScannedShip {
     pub reactor: Option<Box<crate::models::ScannedShipReactor>>,
     #[serde(rename = "engine")]
     pub engine: Box<crate::models::ScannedShipEngine>,
+    /// List of mounts installed in the ship.
     #[serde(rename = "mounts", skip_serializing_if = "Option::is_none")]
     pub mounts: Option<Vec<crate::models::ScannedShipMountsInner>>,
 }

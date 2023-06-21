@@ -15,6 +15,7 @@
 pub struct CreateShipWaypointScan201ResponseData {
     #[serde(rename = "cooldown")]
     pub cooldown: Box<crate::models::Cooldown>,
+    /// List of scanned waypoints.
     #[serde(rename = "waypoints")]
     pub waypoints: Vec<crate::models::ScannedWaypoint>,
 }

@@ -64,6 +64,13 @@ pub enum ExtractResourcesError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`get_mounts`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetMountsError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`get_my_ship`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -96,6 +103,13 @@ pub enum GetShipCooldownError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetShipNavError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`install_mount`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum InstallMountError {
     UnknownValue(serde_json::Value),
 }
 
@@ -162,6 +176,13 @@ pub enum RefuelShipError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`remove_mount`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RemoveMountError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`sell_cargo`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -191,8 +212,8 @@ pub enum WarpShipError {
 }
 
 
-/// Command a ship to chart the current waypoint.  Waypoints in the universe are uncharted by default. These locations will not show up in the API until they have been charted by a ship.  Charting a location will record your agent as the one who created the chart.
-pub async fn create_chart(configuration: &configuration::Configuration, ship_symbol: &str, content_length: i32) -> Result<crate::models::CreateChart201Response, Error<CreateChartError>> {
+/// Command a ship to chart the waypoint at its current location.  Most waypoints in the universe are uncharted by default. These waypoints have their traits hidden until they have been charted by a ship.  Charting a waypoint will record your agent as the one who created the chart, and all other agents would also be able to see the waypoint's traits.
+pub async fn create_chart(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateChart201Response, Error<CreateChartError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -203,7 +224,6 @@ pub async fn create_chart(configuration: &configuration::Configuration, ship_sym
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -223,8 +243,8 @@ pub async fn create_chart(configuration: &configuration::Configuration, ship_sym
     }
 }
 
-/// Activate your ship's sensor arrays to scan for ship information.
-pub async fn create_ship_ship_scan(configuration: &configuration::Configuration, ship_symbol: &str, content_length: f32) -> Result<crate::models::CreateShipShipScan201Response, Error<CreateShipShipScanError>> {
+/// Scan for nearby ships, retrieving information for all ships in range.  Requires a ship to have the `Sensor Array` mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+pub async fn create_ship_ship_scan(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateShipShipScan201Response, Error<CreateShipShipScanError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -235,7 +255,6 @@ pub async fn create_ship_ship_scan(configuration: &configuration::Configuration,
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -255,8 +274,8 @@ pub async fn create_ship_ship_scan(configuration: &configuration::Configuration,
     }
 }
 
-/// Activate your ship's sensor arrays to scan for system information.
-pub async fn create_ship_system_scan(configuration: &configuration::Configuration, ship_symbol: &str, content_length: i32) -> Result<crate::models::CreateShipSystemScan201Response, Error<CreateShipSystemScanError>> {
+/// Scan for nearby systems, retrieving information on the systems' distance from the ship and their waypoints. Requires a ship to have the `Sensor Array` mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+pub async fn create_ship_system_scan(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateShipSystemScan201Response, Error<CreateShipSystemScanError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -267,7 +286,6 @@ pub async fn create_ship_system_scan(configuration: &configuration::Configuratio
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -287,8 +305,8 @@ pub async fn create_ship_system_scan(configuration: &configuration::Configuratio
     }
 }
 
-/// Activate your ship's sensor arrays to scan for waypoint information.
-pub async fn create_ship_waypoint_scan(configuration: &configuration::Configuration, ship_symbol: &str, content_length: i32) -> Result<crate::models::CreateShipWaypointScan201Response, Error<CreateShipWaypointScanError>> {
+/// Scan for nearby waypoints, retrieving detailed information on each waypoint in range. Scanning uncharted waypoints will allow you to ignore their uncharted state and will list the waypoints' traits.  Requires a ship to have the `Sensor Array` mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
+pub async fn create_ship_waypoint_scan(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateShipWaypointScan201Response, Error<CreateShipWaypointScanError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -299,7 +317,6 @@ pub async fn create_ship_waypoint_scan(configuration: &configuration::Configurat
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -319,8 +336,8 @@ pub async fn create_ship_waypoint_scan(configuration: &configuration::Configurat
     }
 }
 
-/// If you want to target specific yields for an extraction, you can survey a waypoint, such as an asteroid field, and send the survey in the body of the extract request. Each survey may have multiple deposits, and if a symbol shows up more than once, that indicates a higher chance of extracting that resource.  Your ship will enter a cooldown between consecutive survey requests. Surveys will eventually expire after a period of time. Multiple ships can use the same survey for extraction.
-pub async fn create_survey(configuration: &configuration::Configuration, ship_symbol: &str, content_length: i32) -> Result<crate::models::CreateSurvey201Response, Error<CreateSurveyError>> {
+/// Create surveys on a waypoint that can be extracted such as asteroid fields. A survey focuses on specific types of deposits from the extracted location. When ships extract using this survey, they are guaranteed to procure a high amount of one of the goods in the survey.  In order to use a survey, send the entire survey details in the body of the extract request.  Each survey may have multiple deposits, and if a symbol shows up more than once, that indicates a higher chance of extracting that resource.  Your ship will enter a cooldown after surveying in which it is unable to perform certain actions. Surveys will eventually expire after a period of time or will be exhausted after being extracted several times based on the survey's size. Multiple ships can use the same survey for extraction.  A ship must have the `Surveyor` mount installed in order to use this function.
+pub async fn create_survey(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateSurvey201Response, Error<CreateSurveyError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -331,7 +348,6 @@ pub async fn create_survey(configuration: &configuration::Configuration, ship_sy
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -351,8 +367,8 @@ pub async fn create_survey(configuration: &configuration::Configuration, ship_sy
     }
 }
 
-/// Attempt to dock your ship at it's current location. Docking will only succeed if the waypoint is a dockable location, and your ship is capable of docking at the time of the request.  The endpoint is idempotent - successive calls will succeed even if the ship is already docked.
-pub async fn dock_ship(configuration: &configuration::Configuration, ship_symbol: &str, content_length: f32) -> Result<crate::models::DockShip200Response, Error<DockShipError>> {
+/// Attempt to dock your ship at its current location. Docking will only succeed if your ship is capable of docking at the time of the request.  Docked ships can access elements in their current location, such as the market or a shipyard, but cannot do actions that require the ship to be above surface such as navigating or extracting.  The endpoint is idempotent - successive calls will succeed even if the ship is already docked.
+pub async fn dock_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::DockShip200Response, Error<DockShipError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -363,7 +379,6 @@ pub async fn dock_ship(configuration: &configuration::Configuration, ship_symbol
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -383,7 +398,7 @@ pub async fn dock_ship(configuration: &configuration::Configuration, ship_symbol
     }
 }
 
-/// Extract resources from the waypoint into your ship. Send an optional survey as the payload to target specific yields.
+/// Extract resources from a waypoint that can be extracted, such as asteroid fields, into your ship. Send an optional survey as the payload to target specific yields.  The ship must be in orbit to be able to extract and must have mining equipments installed that can extract goods, such as the `Gas Siphon` mount for gas-based goods or `Mining Laser` mount for ore-based goods.
 pub async fn extract_resources(configuration: &configuration::Configuration, ship_symbol: &str, extract_resources_request: Option<crate::models::ExtractResourcesRequest>) -> Result<crate::models::ExtractResources201Response, Error<ExtractResourcesError>> {
     let local_var_configuration = configuration;
 
@@ -415,7 +430,38 @@ pub async fn extract_resources(configuration: &configuration::Configuration, shi
     }
 }
 
-/// Retrieve the details of your ship.
+/// Get the mounts installed on a ship.
+pub async fn get_mounts(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::GetMounts200Response, Error<GetMountsError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/mounts", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<GetMountsError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Retrieve the details of a ship under your agent's ownership.
 pub async fn get_my_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::GetMyShip200Response, Error<GetMyShipError>> {
     let local_var_configuration = configuration;
 
@@ -446,7 +492,7 @@ pub async fn get_my_ship(configuration: &configuration::Configuration, ship_symb
     }
 }
 
-/// Retrieve the cargo of your ship.
+/// Retrieve the cargo of a ship under your agent's ownership.
 pub async fn get_my_ship_cargo(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::GetMyShipCargo200Response, Error<GetMyShipCargoError>> {
     let local_var_configuration = configuration;
 
@@ -477,7 +523,7 @@ pub async fn get_my_ship_cargo(configuration: &configuration::Configuration, shi
     }
 }
 
-/// Retrieve all of your ships.
+/// Return a paginated list of all of ships under your agent's ownership.
 pub async fn get_my_ships(configuration: &configuration::Configuration, page: Option<i32>, limit: Option<i32>) -> Result<crate::models::GetMyShips200Response, Error<GetMyShipsError>> {
     let local_var_configuration = configuration;
 
@@ -576,6 +622,38 @@ pub async fn get_ship_nav(configuration: &configuration::Configuration, ship_sym
     }
 }
 
+/// Install a mount on a ship.  In order to install a mount, the ship must be docked and located in a waypoint that has a `Shipyard` trait. The ship also must have the mount to install in its cargo hold.  An installation fee will be deduced by the Shipyard for installing the mount on the ship. 
+pub async fn install_mount(configuration: &configuration::Configuration, ship_symbol: &str, install_mount_request: Option<crate::models::InstallMountRequest>) -> Result<crate::models::InstallMount201Response, Error<InstallMountError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/mounts/install", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&install_mount_request);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<InstallMountError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
 /// Jettison cargo from your ship's cargo hold.
 pub async fn jettison(configuration: &configuration::Configuration, ship_symbol: &str, jettison_request: Option<crate::models::JettisonRequest>) -> Result<crate::models::Jettison200Response, Error<JettisonError>> {
     let local_var_configuration = configuration;
@@ -608,7 +686,7 @@ pub async fn jettison(configuration: &configuration::Configuration, ship_symbol:
     }
 }
 
-/// Jump your ship instantly to a target system. When used while in orbit or docked to a jump gate waypoint, any ship can use this command. When used elsewhere, jumping requires a jump drive unit and consumes a unit of antimatter (which needs to be in your cargo).
+/// Jump your ship instantly to a target system. The ship must be in orbit to use this function. When used while in orbit of a Jump Gate waypoint, any ship can use this command, jumping to the target system's Jump Gate waypoint.  When used elsewhere, jumping requires the ship to have a `Jump Drive` module installed and consumes a unit of antimatter from the ship's cargo. The command will fail if there is no antimatter to consume. When jumping via the `Jump Drive` module, the ship ends up at its largest source of energy in the system, such as a gas planet or a jump gate.
 pub async fn jump_ship(configuration: &configuration::Configuration, ship_symbol: &str, jump_ship_request: Option<crate::models::JumpShipRequest>) -> Result<crate::models::JumpShip200Response, Error<JumpShipError>> {
     let local_var_configuration = configuration;
 
@@ -640,7 +718,7 @@ pub async fn jump_ship(configuration: &configuration::Configuration, ship_symbol
     }
 }
 
-/// Navigate to a target destination. The destination must be located within the same system as the ship. Navigating will consume the necessary fuel and supplies from the ship's manifest, and will pay out crew wages from the agent's account.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at it's destination.  To travel between systems, see the ship's warp or jump actions.
+/// Navigate to a target destination. The ship must be in orbit to use this function. The destination waypoint must be within the same system as the ship's current location. Navigating will consume the necessary fuel from the ship's manifest based on the distance to the target waypoint.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at it's destination.  To travel between systems, see the ship's Warp or Jump actions.
 pub async fn navigate_ship(configuration: &configuration::Configuration, ship_symbol: &str, navigate_ship_request: Option<crate::models::NavigateShipRequest>) -> Result<crate::models::NavigateShip200Response, Error<NavigateShipError>> {
     let local_var_configuration = configuration;
 
@@ -672,8 +750,8 @@ pub async fn navigate_ship(configuration: &configuration::Configuration, ship_sy
     }
 }
 
-/// 
-pub async fn negotiate_contract(configuration: &configuration::Configuration, ship_symbol: &str, body: Option<serde_json::Value>) -> Result<crate::models::NegotiateContract200Response, Error<NegotiateContractError>> {
+/// Negotiate a new contract with the HQ.  In order to negotiate a new contract, an agent must not have ongoing or offered contracts over the allowed maximum amount. Currently the maximum contracts an agent can have at a time is 1.  Once a contract is negotiated, it is added to the list of contracts offered to the agent, which the agent can then accept.   The ship must be present at a faction's HQ waypoint to negotiate a contract with that faction.
+pub async fn negotiate_contract(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::NegotiateContract200Response, Error<NegotiateContractError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -687,7 +765,6 @@ pub async fn negotiate_contract(configuration: &configuration::Configuration, sh
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&body);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -704,8 +781,8 @@ pub async fn negotiate_contract(configuration: &configuration::Configuration, sh
     }
 }
 
-/// Attempt to move your ship into orbit at it's current location. The request will only succeed if your ship is capable of moving into orbit at the time of the request.  The endpoint is idempotent - successive calls will succeed even if the ship is already in orbit.
-pub async fn orbit_ship(configuration: &configuration::Configuration, ship_symbol: &str, content_length: i32) -> Result<crate::models::OrbitShip200Response, Error<OrbitShipError>> {
+/// Attempt to move your ship into orbit at its current location. The request will only succeed if your ship is capable of moving into orbit at the time of the request.  Orbiting ships are able to do actions that require the ship to be above surface such as navigating or extracting, but cannot access elements in their current waypoint, such as the market or a shipyard.  The endpoint is idempotent - successive calls will succeed even if the ship is already in orbit.
+pub async fn orbit_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::OrbitShip200Response, Error<OrbitShipError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -716,7 +793,6 @@ pub async fn orbit_ship(configuration: &configuration::Configuration, ship_symbo
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -736,7 +812,7 @@ pub async fn orbit_ship(configuration: &configuration::Configuration, ship_symbo
     }
 }
 
-/// Update the nav data of a ship, such as the flight mode.
+/// Update the nav configuration of a ship.  Currently only supports configuring the Flight Mode of the ship, which affects its speed and fuel consumption.
 pub async fn patch_ship_nav(configuration: &configuration::Configuration, ship_symbol: &str, patch_ship_nav_request: Option<crate::models::PatchShipNavRequest>) -> Result<crate::models::GetShipNav200Response, Error<PatchShipNavError>> {
     let local_var_configuration = configuration;
 
@@ -768,7 +844,7 @@ pub async fn patch_ship_nav(configuration: &configuration::Configuration, ship_s
     }
 }
 
-/// Purchase cargo.
+/// Purchase cargo from a market.  The ship must be docked in a waypoint that has `Marketplace` trait, and the market must be selling a good to be able to purchase it.  The maximum amount of units of a good that can be purchased in each transaction are denoted by the `tradeVolume` value of the good, which can be viewed by using the Get Market action.  Purchased goods are added to the ship's cargo hold.
 pub async fn purchase_cargo(configuration: &configuration::Configuration, ship_symbol: &str, purchase_cargo_request: Option<crate::models::PurchaseCargoRequest>) -> Result<crate::models::PurchaseCargo201Response, Error<PurchaseCargoError>> {
     let local_var_configuration = configuration;
 
@@ -800,7 +876,7 @@ pub async fn purchase_cargo(configuration: &configuration::Configuration, ship_s
     }
 }
 
-/// Purchase a ship
+/// Purchase a ship from a Shipyard. In order to use this function, a ship under your agent's ownership must be in a waypoint that has the `Shipyard` trait, and the Shipyard must sell the type of the desired ship.  Shipyards typically offer ship types, which are predefined templates of ships that have dedicated roles. A template comes with a preset of an engine, a reactor, and a frame. It may also include a few modules and mounts.
 pub async fn purchase_ship(configuration: &configuration::Configuration, purchase_ship_request: Option<crate::models::PurchaseShipRequest>) -> Result<crate::models::PurchaseShip201Response, Error<PurchaseShipError>> {
     let local_var_configuration = configuration;
 
@@ -832,8 +908,8 @@ pub async fn purchase_ship(configuration: &configuration::Configuration, purchas
     }
 }
 
-/// Refuel your ship from the local market.
-pub async fn refuel_ship(configuration: &configuration::Configuration, ship_symbol: &str, content_length: i32) -> Result<crate::models::RefuelShip200Response, Error<RefuelShipError>> {
+/// Refuel your ship by buying fuel from the local market.  Requires the ship to be docked in a waypoint that has the `Marketplace` trait, and the market must be selling fuel in order to refuel.  Each fuel bought from the market replenishes 100 units in your ship's fuel.  Ships will always be refuel to their frame's maximum fuel capacity when using this action.
+pub async fn refuel_ship(configuration: &configuration::Configuration, ship_symbol: &str, refuel_ship_request: Option<crate::models::RefuelShipRequest>) -> Result<crate::models::RefuelShip200Response, Error<RefuelShipError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -844,10 +920,10 @@ pub async fn refuel_ship(configuration: &configuration::Configuration, ship_symb
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
+    local_var_req_builder = local_var_req_builder.json(&refuel_ship_request);
 
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
@@ -864,7 +940,39 @@ pub async fn refuel_ship(configuration: &configuration::Configuration, ship_symb
     }
 }
 
-/// Sell cargo.
+/// Remove a mount from a ship.  The ship must be docked in a waypoint that has the `Shipyard` trait, and must have the desired mount that it wish to remove installed.  A removal fee will be deduced from the agent by the Shipyard.
+pub async fn remove_mount(configuration: &configuration::Configuration, ship_symbol: &str, remove_mount_request: Option<crate::models::RemoveMountRequest>) -> Result<crate::models::RemoveMount201Response, Error<RemoveMountError>> {
+    let local_var_configuration = configuration;
+
+    let local_var_client = &local_var_configuration.client;
+
+    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/mounts/remove", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
+    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
+
+    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
+        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    }
+    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
+        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    };
+    local_var_req_builder = local_var_req_builder.json(&remove_mount_request);
+
+    let local_var_req = local_var_req_builder.build()?;
+    let local_var_resp = local_var_client.execute(local_var_req).await?;
+
+    let local_var_status = local_var_resp.status();
+    let local_var_content = local_var_resp.text().await?;
+
+    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
+        serde_json::from_str(&local_var_content).map_err(Error::from)
+    } else {
+        let local_var_entity: Option<RemoveMountError> = serde_json::from_str(&local_var_content).ok();
+        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
+        Err(Error::ResponseError(local_var_error))
+    }
+}
+
+/// Sell cargo in your ship to a market that trades this cargo. The ship must be docked in a waypoint that has the `Marketplace` trait in order to use this function.
 pub async fn sell_cargo(configuration: &configuration::Configuration, ship_symbol: &str, sell_cargo_request: Option<crate::models::SellCargoRequest>) -> Result<crate::models::SellCargo201Response, Error<SellCargoError>> {
     let local_var_configuration = configuration;
 
@@ -896,8 +1004,8 @@ pub async fn sell_cargo(configuration: &configuration::Configuration, ship_symbo
     }
 }
 
-/// Attempt to refine the raw materials on your ship. The request will only succeed if your ship is capable of refining at the time of the request.
-pub async fn ship_refine(configuration: &configuration::Configuration, ship_symbol: &str, ship_refine_request: Option<crate::models::ShipRefineRequest>) -> Result<crate::models::ShipRefine200Response, Error<ShipRefineError>> {
+/// Attempt to refine the raw materials on your ship. The request will only succeed if your ship is capable of refining at the time of the request. In order to be able to refine, a ship must have goods that can be refined and have installed a `Refinery` module that can refine it.  When refining, 30 basic goods will be converted into 10 processed goods.
+pub async fn ship_refine(configuration: &configuration::Configuration, ship_symbol: &str, ship_refine_request: Option<crate::models::ShipRefineRequest>) -> Result<crate::models::ShipRefine201Response, Error<ShipRefineError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -928,7 +1036,7 @@ pub async fn ship_refine(configuration: &configuration::Configuration, ship_symb
     }
 }
 
-/// Transfer cargo between ships.
+/// Transfer cargo between ships.  The receiving ship must be in the same waypoint as the transferring ship, and it must able to hold the additional cargo after the transfer is complete. Both ships also must be in the same state, either both are docked or both are orbiting.  The response body's cargo shows the cargo of the transferring ship after the transfer is complete.
 pub async fn transfer_cargo(configuration: &configuration::Configuration, ship_symbol: &str, transfer_cargo_request: Option<crate::models::TransferCargoRequest>) -> Result<crate::models::TransferCargo200Response, Error<TransferCargoError>> {
     let local_var_configuration = configuration;
 
@@ -960,7 +1068,7 @@ pub async fn transfer_cargo(configuration: &configuration::Configuration, ship_s
     }
 }
 
-/// Warp your ship to a target destination in another system. Warping will consume the necessary fuel and supplies from the ship's manifest, and will pay out crew wages from the agent's account.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at it's destination.
+/// Warp your ship to a target destination in another system. The ship must be in orbit to use this function and must have the `Warp Drive` module installed. Warping will consume the necessary fuel from the ship's manifest.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at its destination.
 pub async fn warp_ship(configuration: &configuration::Configuration, ship_symbol: &str, navigate_ship_request: Option<crate::models::NavigateShipRequest>) -> Result<crate::models::NavigateShip200Response, Error<WarpShipError>> {
     let local_var_configuration = configuration;
 

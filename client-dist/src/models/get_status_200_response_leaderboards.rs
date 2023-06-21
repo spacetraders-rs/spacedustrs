@@ -13,8 +13,10 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct GetStatus200ResponseLeaderboards {
+    /// Top agents with the most credits.
     #[serde(rename = "mostCredits")]
     pub most_credits: Vec<crate::models::GetStatus200ResponseLeaderboardsMostCreditsInner>,
+    /// Top agents with the most charted submitted.
     #[serde(rename = "mostSubmittedCharts")]
     pub most_submitted_charts: Vec<crate::models::GetStatus200ResponseLeaderboardsMostSubmittedChartsInner>,
 }

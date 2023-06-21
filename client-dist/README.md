@@ -41,9 +41,9 @@ All URIs are relative to *https://api.spacetraders.io/v2*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
-*AgentsApi* | [**get_my_agent**](docs/AgentsApi.md#get_my_agent) | **GET** /my/agent | My Agent Details
+*AgentsApi* | [**get_my_agent**](docs/AgentsApi.md#get_my_agent) | **GET** /my/agent | Get Agent
 *ContractsApi* | [**accept_contract**](docs/ContractsApi.md#accept_contract) | **POST** /my/contracts/{contractId}/accept | Accept Contract
-*ContractsApi* | [**deliver_contract**](docs/ContractsApi.md#deliver_contract) | **POST** /my/contracts/{contractId}/deliver | Deliver Contract
+*ContractsApi* | [**deliver_contract**](docs/ContractsApi.md#deliver_contract) | **POST** /my/contracts/{contractId}/deliver | Deliver Cargo to Contract
 *ContractsApi* | [**fulfill_contract**](docs/ContractsApi.md#fulfill_contract) | **POST** /my/contracts/{contractId}/fulfill | Fulfill Contract
 *ContractsApi* | [**get_contract**](docs/ContractsApi.md#get_contract) | **GET** /my/contracts/{contractId} | Get Contract
 *ContractsApi* | [**get_contracts**](docs/ContractsApi.md#get_contracts) | **GET** /my/contracts | List Contracts
@@ -58,11 +58,13 @@ Class | Method | HTTP request | Description
 *FleetApi* | [**create_survey**](docs/FleetApi.md#create_survey) | **POST** /my/ships/{shipSymbol}/survey | Create Survey
 *FleetApi* | [**dock_ship**](docs/FleetApi.md#dock_ship) | **POST** /my/ships/{shipSymbol}/dock | Dock Ship
 *FleetApi* | [**extract_resources**](docs/FleetApi.md#extract_resources) | **POST** /my/ships/{shipSymbol}/extract | Extract Resources
+*FleetApi* | [**get_mounts**](docs/FleetApi.md#get_mounts) | **GET** /my/ships/{shipSymbol}/mounts | Get Mounts
 *FleetApi* | [**get_my_ship**](docs/FleetApi.md#get_my_ship) | **GET** /my/ships/{shipSymbol} | Get Ship
 *FleetApi* | [**get_my_ship_cargo**](docs/FleetApi.md#get_my_ship_cargo) | **GET** /my/ships/{shipSymbol}/cargo | Get Ship Cargo
 *FleetApi* | [**get_my_ships**](docs/FleetApi.md#get_my_ships) | **GET** /my/ships | List Ships
 *FleetApi* | [**get_ship_cooldown**](docs/FleetApi.md#get_ship_cooldown) | **GET** /my/ships/{shipSymbol}/cooldown | Get Ship Cooldown
 *FleetApi* | [**get_ship_nav**](docs/FleetApi.md#get_ship_nav) | **GET** /my/ships/{shipSymbol}/nav | Get Ship Nav
+*FleetApi* | [**install_mount**](docs/FleetApi.md#install_mount) | **POST** /my/ships/{shipSymbol}/mounts/install | Install Mount
 *FleetApi* | [**jettison**](docs/FleetApi.md#jettison) | **POST** /my/ships/{shipSymbol}/jettison | Jettison Cargo
 *FleetApi* | [**jump_ship**](docs/FleetApi.md#jump_ship) | **POST** /my/ships/{shipSymbol}/jump | Jump Ship
 *FleetApi* | [**navigate_ship**](docs/FleetApi.md#navigate_ship) | **POST** /my/ships/{shipSymbol}/navigate | Navigate Ship
@@ -72,6 +74,7 @@ Class | Method | HTTP request | Description
 *FleetApi* | [**purchase_cargo**](docs/FleetApi.md#purchase_cargo) | **POST** /my/ships/{shipSymbol}/purchase | Purchase Cargo
 *FleetApi* | [**purchase_ship**](docs/FleetApi.md#purchase_ship) | **POST** /my/ships | Purchase Ship
 *FleetApi* | [**refuel_ship**](docs/FleetApi.md#refuel_ship) | **POST** /my/ships/{shipSymbol}/refuel | Refuel Ship
+*FleetApi* | [**remove_mount**](docs/FleetApi.md#remove_mount) | **POST** /my/ships/{shipSymbol}/mounts/remove | Remove Mount
 *FleetApi* | [**sell_cargo**](docs/FleetApi.md#sell_cargo) | **POST** /my/ships/{shipSymbol}/sell | Sell Cargo
 *FleetApi* | [**ship_refine**](docs/FleetApi.md#ship_refine) | **POST** /my/ships/{shipSymbol}/refine | Ship Refine
 *FleetApi* | [**transfer_cargo**](docs/FleetApi.md#transfer_cargo) | **POST** /my/ships/{shipSymbol}/transfer | Transfer Cargo
@@ -80,7 +83,7 @@ Class | Method | HTTP request | Description
 *SystemsApi* | [**get_market**](docs/SystemsApi.md#get_market) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol}/market | Get Market
 *SystemsApi* | [**get_shipyard**](docs/SystemsApi.md#get_shipyard) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol}/shipyard | Get Shipyard
 *SystemsApi* | [**get_system**](docs/SystemsApi.md#get_system) | **GET** /systems/{systemSymbol} | Get System
-*SystemsApi* | [**get_system_waypoints**](docs/SystemsApi.md#get_system_waypoints) | **GET** /systems/{systemSymbol}/waypoints | List Waypoints
+*SystemsApi* | [**get_system_waypoints**](docs/SystemsApi.md#get_system_waypoints) | **GET** /systems/{systemSymbol}/waypoints | List Waypoints in System
 *SystemsApi* | [**get_systems**](docs/SystemsApi.md#get_systems) | **GET** /systems | List Systems
 *SystemsApi* | [**get_systems_all**](docs/SystemsApi.md#get_systems_all) | **GET** /systems.json | Get All Systems
 *SystemsApi* | [**get_waypoint**](docs/SystemsApi.md#get_waypoint) | **GET** /systems/{systemSymbol}/waypoints/{waypointSymbol} | Get Waypoint
@@ -118,6 +121,7 @@ Class | Method | HTTP request | Description
  - [Extraction](docs/Extraction.md)
  - [ExtractionYield](docs/ExtractionYield.md)
  - [Faction](docs/Faction.md)
+ - [FactionSymbols](docs/FactionSymbols.md)
  - [FactionTrait](docs/FactionTrait.md)
  - [FulfillContract200Response](docs/FulfillContract200Response.md)
  - [GetContract200Response](docs/GetContract200Response.md)
@@ -126,6 +130,7 @@ Class | Method | HTTP request | Description
  - [GetFactions200Response](docs/GetFactions200Response.md)
  - [GetJumpGate200Response](docs/GetJumpGate200Response.md)
  - [GetMarket200Response](docs/GetMarket200Response.md)
+ - [GetMounts200Response](docs/GetMounts200Response.md)
  - [GetMyAgent200Response](docs/GetMyAgent200Response.md)
  - [GetMyShip200Response](docs/GetMyShip200Response.md)
  - [GetMyShipCargo200Response](docs/GetMyShipCargo200Response.md)
@@ -145,6 +150,9 @@ Class | Method | HTTP request | Description
  - [GetSystemWaypoints200Response](docs/GetSystemWaypoints200Response.md)
  - [GetSystems200Response](docs/GetSystems200Response.md)
  - [GetWaypoint200Response](docs/GetWaypoint200Response.md)
+ - [InstallMount201Response](docs/InstallMount201Response.md)
+ - [InstallMount201ResponseData](docs/InstallMount201ResponseData.md)
+ - [InstallMountRequest](docs/InstallMountRequest.md)
  - [Jettison200Response](docs/Jettison200Response.md)
  - [Jettison200ResponseData](docs/Jettison200ResponseData.md)
  - [JettisonRequest](docs/JettisonRequest.md)
@@ -171,9 +179,13 @@ Class | Method | HTTP request | Description
  - [PurchaseShipRequest](docs/PurchaseShipRequest.md)
  - [RefuelShip200Response](docs/RefuelShip200Response.md)
  - [RefuelShip200ResponseData](docs/RefuelShip200ResponseData.md)
+ - [RefuelShipRequest](docs/RefuelShipRequest.md)
  - [Register201Response](docs/Register201Response.md)
  - [Register201ResponseData](docs/Register201ResponseData.md)
  - [RegisterRequest](docs/RegisterRequest.md)
+ - [RemoveMount201Response](docs/RemoveMount201Response.md)
+ - [RemoveMount201ResponseData](docs/RemoveMount201ResponseData.md)
+ - [RemoveMountRequest](docs/RemoveMountRequest.md)
  - [ScannedShip](docs/ScannedShip.md)
  - [ScannedShipEngine](docs/ScannedShipEngine.md)
  - [ScannedShipFrame](docs/ScannedShipFrame.md)
@@ -192,6 +204,7 @@ Class | Method | HTTP request | Description
  - [ShipFrame](docs/ShipFrame.md)
  - [ShipFuel](docs/ShipFuel.md)
  - [ShipFuelConsumed](docs/ShipFuelConsumed.md)
+ - [ShipModificationTransaction](docs/ShipModificationTransaction.md)
  - [ShipModule](docs/ShipModule.md)
  - [ShipMount](docs/ShipMount.md)
  - [ShipNav](docs/ShipNav.md)
@@ -200,9 +213,9 @@ Class | Method | HTTP request | Description
  - [ShipNavRouteWaypoint](docs/ShipNavRouteWaypoint.md)
  - [ShipNavStatus](docs/ShipNavStatus.md)
  - [ShipReactor](docs/ShipReactor.md)
- - [ShipRefine200Response](docs/ShipRefine200Response.md)
- - [ShipRefine200ResponseData](docs/ShipRefine200ResponseData.md)
- - [ShipRefine200ResponseDataProducedInner](docs/ShipRefine200ResponseDataProducedInner.md)
+ - [ShipRefine201Response](docs/ShipRefine201Response.md)
+ - [ShipRefine201ResponseData](docs/ShipRefine201ResponseData.md)
+ - [ShipRefine201ResponseDataProducedInner](docs/ShipRefine201ResponseDataProducedInner.md)
  - [ShipRefineRequest](docs/ShipRefineRequest.md)
  - [ShipRegistration](docs/ShipRegistration.md)
  - [ShipRequirements](docs/ShipRequirements.md)

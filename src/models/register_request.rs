@@ -13,10 +13,9 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct RegisterRequest {
-    /// The faction you choose determines your headquarters.
     #[serde(rename = "faction")]
-    pub faction: Faction,
-    /// How other agents will see your ships and information.
+    pub faction: crate::models::FactionSymbols,
+    /// Your desired agent symbol. This will be a unique name used to represent your agent, and will be the prefix for your ships.
     #[serde(rename = "symbol")]
     pub symbol: String,
     /// Your email address. This is used if you reserved your call sign between resets.
@@ -25,7 +24,7 @@ pub struct RegisterRequest {
 }
 
 impl RegisterRequest {
-    pub fn new(faction: Faction, symbol: String) -> RegisterRequest {
+    pub fn new(faction: crate::models::FactionSymbols, symbol: String) -> RegisterRequest {
         RegisterRequest {
             faction,
             symbol,
@@ -34,24 +33,4 @@ impl RegisterRequest {
     }
 }
 
-/// The faction you choose determines your headquarters.
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
-pub enum Faction {
-    #[serde(rename = "COSMIC")]
-    Cosmic,
-    #[serde(rename = "VOID")]
-    Void,
-    #[serde(rename = "GALACTIC")]
-    Galactic,
-    #[serde(rename = "QUANTUM")]
-    Quantum,
-    #[serde(rename = "DOMINION")]
-    Dominion,
-}
-
-impl Default for Faction {
-    fn default() -> Faction {
-        Self::Cosmic
-    }
-}
 

@@ -14,15 +14,17 @@
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct TransferCargoRequest {
     #[serde(rename = "tradeSymbol")]
-    pub trade_symbol: String,
+    pub trade_symbol: crate::models::TradeSymbol,
+    /// Amount of units to transfer.
     #[serde(rename = "units")]
     pub units: i32,
+    /// The symbol of the ship to transfer to.
     #[serde(rename = "shipSymbol")]
     pub ship_symbol: String,
 }
 
 impl TransferCargoRequest {
-    pub fn new(trade_symbol: String, units: i32, ship_symbol: String) -> TransferCargoRequest {
+    pub fn new(trade_symbol: crate::models::TradeSymbol, units: i32, ship_symbol: String) -> TransferCargoRequest {
         TransferCargoRequest {
             trade_symbol,
             units,

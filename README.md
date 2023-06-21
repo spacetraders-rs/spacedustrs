@@ -102,10 +102,16 @@ docker run --rm \
 Copy the client-dist/src to src
 
 ```bash
-sudo rm -rf src/apis
-sudo rm -rf src/models
-sudo rm -rf src/lib.rs
 cp -r client-dist/src .
 ```
+
+**Notice:** For the moment, manually check that the content-length middleware fixes (cargo.toml dependencies `async-trait` and `task-local-extensions`, lib.rs `mod middleware`, src/middleware.rs, and src/apis/configuration.rs `reqwest_middleware_builder`) are not being reverted. You will probably need to use at minimum the following:
+
+```bash
+git checkout 34a74b36e341444a8dbe6ee979bb0163cbfe3bb9 src/apis/configuration.rs
+git checkout 34a74b36e341444a8dbe6ee979bb0163cbfe3bb9 src/lib.rs
+```
+
+_Todo:_ Create a better merge strategy - perhaps maintain the content-length-middleware branch and merge it into the local branch after generating a new client?
 
 Update Cargo.toml with any new dependencies, update documentation, tick version, commit changes, and publish to cargo
