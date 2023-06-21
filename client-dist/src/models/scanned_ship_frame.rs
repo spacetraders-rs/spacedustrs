@@ -14,6 +14,7 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ScannedShipFrame {
+    /// The symbol of the frame.
     #[serde(rename = "symbol")]
     pub symbol: String,
 }

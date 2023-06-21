@@ -14,15 +14,19 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShipReactor {
+    /// Symbol of the reactor.
     #[serde(rename = "symbol")]
     pub symbol: Symbol,
+    /// Name of the reactor.
     #[serde(rename = "name")]
     pub name: String,
+    /// Description of the reactor.
     #[serde(rename = "description")]
     pub description: String,
     /// Condition is a range of 0 to 100 where 0 is completely worn out and 100 is brand new.
     #[serde(rename = "condition", skip_serializing_if = "Option::is_none")]
     pub condition: Option<i32>,
+    /// The amount of power provided by this reactor. The more power a reactor provides to the ship, the lower the cooldown it gets when using a module or mount that taxes the ship's power.
     #[serde(rename = "powerOutput")]
     pub power_output: i32,
     #[serde(rename = "requirements")]
@@ -43,7 +47,7 @@ impl ShipReactor {
     }
 }
 
-/// 
+/// Symbol of the reactor.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Symbol {
     #[serde(rename = "REACTOR_SOLAR_I")]

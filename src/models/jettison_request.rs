@@ -14,13 +14,14 @@
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct JettisonRequest {
     #[serde(rename = "symbol")]
-    pub symbol: String,
+    pub symbol: crate::models::TradeSymbol,
+    /// Amount of units to jettison of this good.
     #[serde(rename = "units")]
     pub units: i32,
 }
 
 impl JettisonRequest {
-    pub fn new(symbol: String, units: i32) -> JettisonRequest {
+    pub fn new(symbol: crate::models::TradeSymbol, units: i32) -> JettisonRequest {
         JettisonRequest {
             symbol,
             units,

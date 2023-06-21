@@ -15,6 +15,7 @@
 pub struct CreateSurvey201ResponseData {
     #[serde(rename = "cooldown")]
     pub cooldown: Box<crate::models::Cooldown>,
+    /// Surveys created by this action.
     #[serde(rename = "surveys")]
     pub surveys: Vec<crate::models::Survey>,
 }

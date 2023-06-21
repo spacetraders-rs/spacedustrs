@@ -13,6 +13,7 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ShipRefineRequest {
+    /// The type of good to produce out of the refining process.
     #[serde(rename = "produce")]
     pub produce: Produce,
 }
@@ -25,7 +26,7 @@ impl ShipRefineRequest {
     }
 }
 
-/// 
+/// The type of good to produce out of the refining process.
 #[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
 pub enum Produce {
     #[serde(rename = "IRON")]

@@ -14,11 +14,11 @@
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SystemFaction {
     #[serde(rename = "symbol")]
-    pub symbol: String,
+    pub symbol: crate::models::FactionSymbols,
 }
 
 impl SystemFaction {
-    pub fn new(symbol: String) -> SystemFaction {
+    pub fn new(symbol: crate::models::FactionSymbols) -> SystemFaction {
         SystemFaction {
             symbol,
         }

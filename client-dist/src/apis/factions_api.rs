@@ -61,7 +61,7 @@ pub async fn get_faction(configuration: &configuration::Configuration, faction_s
     }
 }
 
-/// List all discovered factions in the game.
+/// Return a paginated list of all the factions in the game.
 pub async fn get_factions(configuration: &configuration::Configuration, page: Option<i32>, limit: Option<i32>) -> Result<crate::models::GetFactions200Response, Error<GetFactionsError>> {
     let local_var_configuration = configuration;
 

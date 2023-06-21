@@ -5,7 +5,7 @@ All URIs are relative to *https://api.spacetraders.io/v2*
 Method | HTTP request | Description
 ------------- | ------------- | -------------
 [**accept_contract**](ContractsApi.md#accept_contract) | **POST** /my/contracts/{contractId}/accept | Accept Contract
-[**deliver_contract**](ContractsApi.md#deliver_contract) | **POST** /my/contracts/{contractId}/deliver | Deliver Contract
+[**deliver_contract**](ContractsApi.md#deliver_contract) | **POST** /my/contracts/{contractId}/deliver | Deliver Cargo to Contract
 [**fulfill_contract**](ContractsApi.md#fulfill_contract) | **POST** /my/contracts/{contractId}/fulfill | Fulfill Contract
 [**get_contract**](ContractsApi.md#get_contract) | **GET** /my/contracts/{contractId} | Get Contract
 [**get_contracts**](ContractsApi.md#get_contracts) | **GET** /my/contracts | List Contracts
@@ -14,18 +14,17 @@ Method | HTTP request | Description
 
 ## accept_contract
 
-> crate::models::AcceptContract200Response accept_contract(contract_id, content_length)
+> crate::models::AcceptContract200Response accept_contract(contract_id)
 Accept Contract
 
-Accept a contract.
+Accept a contract by ID.   You can only accept contracts that were offered to you, were not accepted yet, and whose deadlines has not passed yet.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**contract_id** | **String** |  | [required] |
-**content_length** | **i32** |  | [required] |[default to 0]
+**contract_id** | **String** | The contract ID to accept. | [required] |
 
 ### Return type
 
@@ -46,16 +45,16 @@ Name | Type | Description  | Required | Notes
 ## deliver_contract
 
 > crate::models::DeliverContract200Response deliver_contract(contract_id, deliver_contract_request)
-Deliver Contract
+Deliver Cargo to Contract
 
-Deliver cargo on a given contract.
+Deliver cargo to a contract.  In order to use this API, a ship must be at the delivery location (denoted in the delivery terms as `destinationSymbol` of a contract) and must have a number of units of a good required by this contract in its cargo.  Cargo that was delivered will be removed from the ship's cargo.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**contract_id** | **String** | The ID of the contract | [required] |
+**contract_id** | **String** | The ID of the contract. | [required] |
 **deliver_contract_request** | Option<[**DeliverContractRequest**](DeliverContractRequest.md)> |  |  |
 
 ### Return type
@@ -76,18 +75,17 @@ Name | Type | Description  | Required | Notes
 
 ## fulfill_contract
 
-> crate::models::FulfillContract200Response fulfill_contract(contract_id, content_length)
+> crate::models::FulfillContract200Response fulfill_contract(contract_id)
 Fulfill Contract
 
-Fulfill a contract
+Fulfill a contract. Can only be used on contracts that have all of their delivery terms fulfilled.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**contract_id** | **String** | The ID of the contract | [required] |
-**content_length** | **i32** |  | [required] |
+**contract_id** | **String** | The ID of the contract to fulfill. | [required] |
 
 ### Return type
 
@@ -140,15 +138,15 @@ Name | Type | Description  | Required | Notes
 > crate::models::GetContracts200Response get_contracts(page, limit)
 List Contracts
 
-List all of your contracts.
+Return a paginated list of all your contracts.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**page** | Option<**i32**> | What entry offset to request |  |
-**limit** | Option<**i32**> | How many entries to return per page |  |
+**page** | Option<**i32**> | What entry offset to request |  |[default to 1]
+**limit** | Option<**i32**> | How many entries to return per page |  |[default to 10]
 
 ### Return type
 

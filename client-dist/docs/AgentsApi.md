@@ -4,14 +4,14 @@ All URIs are relative to *https://api.spacetraders.io/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_my_agent**](AgentsApi.md#get_my_agent) | **GET** /my/agent | My Agent Details
+[**get_my_agent**](AgentsApi.md#get_my_agent) | **GET** /my/agent | Get Agent
 
 
 
 ## get_my_agent
 
 > crate::models::GetMyAgent200Response get_my_agent()
-My Agent Details
+Get Agent
 
 Fetch your agent's details.
 

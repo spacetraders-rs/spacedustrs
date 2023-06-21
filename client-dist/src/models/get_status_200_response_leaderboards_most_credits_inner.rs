@@ -13,14 +13,16 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct GetStatus200ResponseLeaderboardsMostCreditsInner {
+    /// Symbol of the agent.
     #[serde(rename = "agentSymbol")]
     pub agent_symbol: String,
+    /// Amount of credits.
     #[serde(rename = "credits")]
-    pub credits: i32,
+    pub credits: i64,
 }
 
 impl GetStatus200ResponseLeaderboardsMostCreditsInner {
-    pub fn new(agent_symbol: String, credits: i32) -> GetStatus200ResponseLeaderboardsMostCreditsInner {
+    pub fn new(agent_symbol: String, credits: i64) -> GetStatus200ResponseLeaderboardsMostCreditsInner {
         GetStatus200ResponseLeaderboardsMostCreditsInner {
             agent_symbol,
             credits,

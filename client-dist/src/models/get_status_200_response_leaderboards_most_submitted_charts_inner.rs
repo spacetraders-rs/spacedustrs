@@ -13,8 +13,10 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct GetStatus200ResponseLeaderboardsMostSubmittedChartsInner {
+    /// Symbol of the agent.
     #[serde(rename = "agentSymbol")]
     pub agent_symbol: String,
+    /// Amount of charts done by the agent.
     #[serde(rename = "chartCount")]
     pub chart_count: i32,
 }

@@ -14,10 +14,13 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct Chart {
+    /// The symbol of the waypoint.
     #[serde(rename = "waypointSymbol", skip_serializing_if = "Option::is_none")]
     pub waypoint_symbol: Option<String>,
+    /// The agent that submitted the chart for this waypoint.
     #[serde(rename = "submittedBy", skip_serializing_if = "Option::is_none")]
     pub submitted_by: Option<String>,
+    /// The time the chart for this waypoint was submitted.
     #[serde(rename = "submittedOn", skip_serializing_if = "Option::is_none")]
     pub submitted_on: Option<String>,
 }

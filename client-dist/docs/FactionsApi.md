@@ -21,7 +21,7 @@ View the details of a faction.
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**faction_symbol** | **String** | The faction symbol | [required] |[default to CGR]
+**faction_symbol** | **String** | The faction symbol | [required] |
 
 ### Return type
 
@@ -44,15 +44,15 @@ Name | Type | Description  | Required | Notes
 > crate::models::GetFactions200Response get_factions(page, limit)
 List Factions
 
-List all discovered factions in the game.
+Return a paginated list of all the factions in the game.
 
 ### Parameters
 
 
 Name | Type | Description  | Required | Notes
 ------------- | ------------- | ------------- | ------------- | -------------
-**page** | Option<**i32**> | What entry offset to request |  |
-**limit** | Option<**i32**> | How many entries to return per page |  |
+**page** | Option<**i32**> | What entry offset to request |  |[default to 1]
+**limit** | Option<**i32**> | How many entries to return per page |  |[default to 10]
 
 ### Return type
 

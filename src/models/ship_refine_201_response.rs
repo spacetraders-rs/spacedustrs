@@ -12,24 +12,15 @@
 
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-pub struct ShipRefine200ResponseData {
-    #[serde(rename = "cargo")]
-    pub cargo: Box<crate::models::ShipCargo>,
-    #[serde(rename = "cooldown")]
-    pub cooldown: Box<crate::models::Cooldown>,
-    #[serde(rename = "produced")]
-    pub produced: Vec<crate::models::ShipRefine200ResponseDataProducedInner>,
-    #[serde(rename = "consumed")]
-    pub consumed: Vec<crate::models::ShipRefine200ResponseDataProducedInner>,
+pub struct ShipRefine201Response {
+    #[serde(rename = "data")]
+    pub data: Box<crate::models::ShipRefine201ResponseData>,
 }
 
-impl ShipRefine200ResponseData {
-    pub fn new(cargo: crate::models::ShipCargo, cooldown: crate::models::Cooldown, produced: Vec<crate::models::ShipRefine200ResponseDataProducedInner>, consumed: Vec<crate::models::ShipRefine200ResponseDataProducedInner>) -> ShipRefine200ResponseData {
-        ShipRefine200ResponseData {
-            cargo: Box::new(cargo),
-            cooldown: Box::new(cooldown),
-            produced,
-            consumed,
+impl ShipRefine201Response {
+    pub fn new(data: crate::models::ShipRefine201ResponseData) -> ShipRefine201Response {
+        ShipRefine201Response {
+            data: Box::new(data),
         }
     }
 }

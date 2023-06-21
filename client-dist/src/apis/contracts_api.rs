@@ -51,8 +51,8 @@ pub enum GetContractsError {
 }
 
 
-/// Accept a contract.
-pub async fn accept_contract(configuration: &configuration::Configuration, contract_id: &str, content_length: i32) -> Result<crate::models::AcceptContract200Response, Error<AcceptContractError>> {
+/// Accept a contract by ID.   You can only accept contracts that were offered to you, were not accepted yet, and whose deadlines has not passed yet.
+pub async fn accept_contract(configuration: &configuration::Configuration, contract_id: &str) -> Result<crate::models::AcceptContract200Response, Error<AcceptContractError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -63,7 +63,6 @@ pub async fn accept_contract(configuration: &configuration::Configuration, contr
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -83,7 +82,7 @@ pub async fn accept_contract(configuration: &configuration::Configuration, contr
     }
 }
 
-/// Deliver cargo on a given contract.
+/// Deliver cargo to a contract.  In order to use this API, a ship must be at the delivery location (denoted in the delivery terms as `destinationSymbol` of a contract) and must have a number of units of a good required by this contract in its cargo.  Cargo that was delivered will be removed from the ship's cargo.
 pub async fn deliver_contract(configuration: &configuration::Configuration, contract_id: &str, deliver_contract_request: Option<crate::models::DeliverContractRequest>) -> Result<crate::models::DeliverContract200Response, Error<DeliverContractError>> {
     let local_var_configuration = configuration;
 
@@ -115,8 +114,8 @@ pub async fn deliver_contract(configuration: &configuration::Configuration, cont
     }
 }
 
-/// Fulfill a contract
-pub async fn fulfill_contract(configuration: &configuration::Configuration, contract_id: &str, content_length: i32) -> Result<crate::models::FulfillContract200Response, Error<FulfillContractError>> {
+/// Fulfill a contract. Can only be used on contracts that have all of their delivery terms fulfilled.
+pub async fn fulfill_contract(configuration: &configuration::Configuration, contract_id: &str) -> Result<crate::models::FulfillContract200Response, Error<FulfillContractError>> {
     let local_var_configuration = configuration;
 
     let local_var_client = &local_var_configuration.client;
@@ -127,7 +126,6 @@ pub async fn fulfill_contract(configuration: &configuration::Configuration, cont
     if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
         local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
     }
-    local_var_req_builder = local_var_req_builder.header("content-length", content_length.to_string());
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
     };
@@ -178,7 +176,7 @@ pub async fn get_contract(configuration: &configuration::Configuration, contract
     }
 }
 
-/// List all of your contracts.
+/// Return a paginated list of all your contracts.
 pub async fn get_contracts(configuration: &configuration::Configuration, page: Option<i32>, limit: Option<i32>) -> Result<crate::models::GetContracts200Response, Error<GetContractsError>> {
     let local_var_configuration = configuration;
 

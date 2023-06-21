@@ -36,6 +36,7 @@ docs/ExtractResourcesRequest.md
 docs/Extraction.md
 docs/ExtractionYield.md
 docs/Faction.md
+docs/FactionSymbols.md
 docs/FactionTrait.md
 docs/FactionsApi.md
 docs/FleetApi.md
@@ -46,6 +47,7 @@ docs/GetFaction200Response.md
 docs/GetFactions200Response.md
 docs/GetJumpGate200Response.md
 docs/GetMarket200Response.md
+docs/GetMounts200Response.md
 docs/GetMyAgent200Response.md
 docs/GetMyShip200Response.md
 docs/GetMyShipCargo200Response.md
@@ -65,6 +67,9 @@ docs/GetSystem200Response.md
 docs/GetSystemWaypoints200Response.md
 docs/GetSystems200Response.md
 docs/GetWaypoint200Response.md
+docs/InstallMount201Response.md
+docs/InstallMount201ResponseData.md
+docs/InstallMountRequest.md
 docs/Jettison200Response.md
 docs/Jettison200ResponseData.md
 docs/JettisonRequest.md
@@ -91,9 +96,13 @@ docs/PurchaseShip201ResponseData.md
 docs/PurchaseShipRequest.md
 docs/RefuelShip200Response.md
 docs/RefuelShip200ResponseData.md
+docs/RefuelShipRequest.md
 docs/Register201Response.md
 docs/Register201ResponseData.md
 docs/RegisterRequest.md
+docs/RemoveMount201Response.md
+docs/RemoveMount201ResponseData.md
+docs/RemoveMountRequest.md
 docs/ScannedShip.md
 docs/ScannedShipEngine.md
 docs/ScannedShipFrame.md
@@ -112,6 +121,7 @@ docs/ShipEngine.md
 docs/ShipFrame.md
 docs/ShipFuel.md
 docs/ShipFuelConsumed.md
+docs/ShipModificationTransaction.md
 docs/ShipModule.md
 docs/ShipMount.md
 docs/ShipNav.md
@@ -120,9 +130,9 @@ docs/ShipNavRoute.md
 docs/ShipNavRouteWaypoint.md
 docs/ShipNavStatus.md
 docs/ShipReactor.md
-docs/ShipRefine200Response.md
-docs/ShipRefine200ResponseData.md
-docs/ShipRefine200ResponseDataProducedInner.md
+docs/ShipRefine201Response.md
+docs/ShipRefine201ResponseData.md
+docs/ShipRefine201ResponseDataProducedInner.md
 docs/ShipRefineRequest.md
 docs/ShipRegistration.md
 docs/ShipRequirements.md
@@ -188,6 +198,7 @@ src/models/extract_resources_request.rs
 src/models/extraction.rs
 src/models/extraction_yield.rs
 src/models/faction.rs
+src/models/faction_symbols.rs
 src/models/faction_trait.rs
 src/models/fulfill_contract_200_response.rs
 src/models/get_contract_200_response.rs
@@ -196,6 +207,7 @@ src/models/get_faction_200_response.rs
 src/models/get_factions_200_response.rs
 src/models/get_jump_gate_200_response.rs
 src/models/get_market_200_response.rs
+src/models/get_mounts_200_response.rs
 src/models/get_my_agent_200_response.rs
 src/models/get_my_ship_200_response.rs
 src/models/get_my_ship_cargo_200_response.rs
@@ -215,6 +227,9 @@ src/models/get_system_200_response.rs
 src/models/get_system_waypoints_200_response.rs
 src/models/get_systems_200_response.rs
 src/models/get_waypoint_200_response.rs
+src/models/install_mount_201_response.rs
+src/models/install_mount_201_response_data.rs
+src/models/install_mount_request.rs
 src/models/jettison_200_response.rs
 src/models/jettison_200_response_data.rs
 src/models/jettison_request.rs
@@ -242,9 +257,13 @@ src/models/purchase_ship_201_response_data.rs
 src/models/purchase_ship_request.rs
 src/models/refuel_ship_200_response.rs
 src/models/refuel_ship_200_response_data.rs
+src/models/refuel_ship_request.rs
 src/models/register_201_response.rs
 src/models/register_201_response_data.rs
 src/models/register_request.rs
+src/models/remove_mount_201_response.rs
+src/models/remove_mount_201_response_data.rs
+src/models/remove_mount_request.rs
 src/models/scanned_ship.rs
 src/models/scanned_ship_engine.rs
 src/models/scanned_ship_frame.rs
@@ -263,6 +282,7 @@ src/models/ship_engine.rs
 src/models/ship_frame.rs
 src/models/ship_fuel.rs
 src/models/ship_fuel_consumed.rs
+src/models/ship_modification_transaction.rs
 src/models/ship_module.rs
 src/models/ship_mount.rs
 src/models/ship_nav.rs
@@ -271,9 +291,9 @@ src/models/ship_nav_route.rs
 src/models/ship_nav_route_waypoint.rs
 src/models/ship_nav_status.rs
 src/models/ship_reactor.rs
-src/models/ship_refine_200_response.rs
-src/models/ship_refine_200_response_data.rs
-src/models/ship_refine_200_response_data_produced_inner.rs
+src/models/ship_refine_201_response.rs
+src/models/ship_refine_201_response_data.rs
+src/models/ship_refine_201_response_data_produced_inner.rs
 src/models/ship_refine_request.rs
 src/models/ship_registration.rs
 src/models/ship_requirements.rs

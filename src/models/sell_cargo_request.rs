@@ -14,13 +14,14 @@
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct SellCargoRequest {
     #[serde(rename = "symbol")]
-    pub symbol: String,
+    pub symbol: crate::models::TradeSymbol,
+    /// Amounts of units to sell of the selected good.
     #[serde(rename = "units")]
     pub units: i32,
 }
 
 impl SellCargoRequest {
-    pub fn new(symbol: String, units: i32) -> SellCargoRequest {
+    pub fn new(symbol: crate::models::TradeSymbol, units: i32) -> SellCargoRequest {
         SellCargoRequest {
             symbol,
             units,

@@ -14,6 +14,7 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ScannedShipReactor {
+    /// The symbol of the reactor.
     #[serde(rename = "symbol")]
     pub symbol: String,
 }

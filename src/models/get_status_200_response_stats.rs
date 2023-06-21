@@ -13,12 +13,16 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct GetStatus200ResponseStats {
+    /// Number of registered agents in the game.
     #[serde(rename = "agents")]
     pub agents: i32,
+    /// Total number of ships in the game.
     #[serde(rename = "ships")]
     pub ships: i32,
+    /// Total number of systems in the game.
     #[serde(rename = "systems")]
     pub systems: i32,
+    /// Total number of waypoints in the game.
     #[serde(rename = "waypoints")]
     pub waypoints: i32,
 }

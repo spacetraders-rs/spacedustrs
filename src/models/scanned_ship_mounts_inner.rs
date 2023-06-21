@@ -14,6 +14,7 @@
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
 pub struct ScannedShipMountsInner {
+    /// The symbol of the mount.
     #[serde(rename = "symbol")]
     pub symbol: String,
 }
