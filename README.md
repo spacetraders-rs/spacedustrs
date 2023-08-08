@@ -8,13 +8,21 @@ Includes patches for documentation missing from the main API docs
 
 ## Quickstart
 
+You will need both `spacedustrs` and `tokio` in your dependencies.
+
+```
+cargo add spacedustrs
+cargo add tokio --features full
+```
+
 Use the following example to get started.
 
 ```rust
 use spacedust::apis::agents_api::get_my_agent;
 use spacedust::apis::configuration::Configuration;
 use spacedust::apis::default_api::register;
-use spacedust::models::register_request::{Faction, RegisterRequest};
+use spacedust::models::register_request::RegisterRequest;
+use spacedust::models::FactionSymbols;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -22,7 +30,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut conf = Configuration::new();
 
     // Create Register Request
-    let reg_req = RegisterRequest::new(Faction::Cosmic, "<3-14 character string>".to_string());
+    let reg_req = RegisterRequest::new(
+        FactionSymbols::Cosmic,
+        "<3-14 character string>".to_string(),
+    );
 
     // Register Agent
     let register_response = register(&conf, Some(reg_req)).await;
