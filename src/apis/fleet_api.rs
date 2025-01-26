@@ -10,8 +10,8 @@
 
 
 use reqwest;
-
-use crate::apis::ResponseContent;
+use serde::{Deserialize, Serialize};
+use crate::{apis::ResponseContent, models};
 use super::{Error, configuration};
 
 
@@ -64,6 +64,13 @@ pub enum ExtractResourcesError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`extract_resources_with_survey`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ExtractResourcesWithSurveyError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`get_mounts`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -89,6 +96,20 @@ pub enum GetMyShipCargoError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum GetMyShipsError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`get_repair_ship`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetRepairShipError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`get_scrap_ship`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum GetScrapShipError {
     UnknownValue(serde_json::Value),
 }
 
@@ -183,6 +204,20 @@ pub enum RemoveMountError {
     UnknownValue(serde_json::Value),
 }
 
+/// struct for typed errors of method [`repair_ship`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum RepairShipError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`scrap_ship`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum ScrapShipError {
+    UnknownValue(serde_json::Value),
+}
+
 /// struct for typed errors of method [`sell_cargo`]
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
@@ -194,6 +229,13 @@ pub enum SellCargoError {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(untagged)]
 pub enum ShipRefineError {
+    UnknownValue(serde_json::Value),
+}
+
+/// struct for typed errors of method [`siphon_resources`]
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(untagged)]
+pub enum SiphonResourcesError {
     UnknownValue(serde_json::Value),
 }
 
@@ -213,890 +255,1058 @@ pub enum WarpShipError {
 
 
 /// Command a ship to chart the waypoint at its current location.  Most waypoints in the universe are uncharted by default. These waypoints have their traits hidden until they have been charted by a ship.  Charting a waypoint will record your agent as the one who created the chart, and all other agents would also be able to see the waypoint's traits.
-pub async fn create_chart(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateChart201Response, Error<CreateChartError>> {
-    let local_var_configuration = configuration;
+pub async fn create_chart(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::CreateChart201Response, Error<CreateChartError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/chart", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/chart", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<CreateChartError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<CreateChartError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Scan for nearby ships, retrieving information for all ships in range.  Requires a ship to have the `Sensor Array` mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
-pub async fn create_ship_ship_scan(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateShipShipScan201Response, Error<CreateShipShipScanError>> {
-    let local_var_configuration = configuration;
+pub async fn create_ship_ship_scan(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::CreateShipShipScan201Response, Error<CreateShipShipScanError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/scan/ships", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/scan/ships", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<CreateShipShipScanError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<CreateShipShipScanError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Scan for nearby systems, retrieving information on the systems' distance from the ship and their waypoints. Requires a ship to have the `Sensor Array` mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
-pub async fn create_ship_system_scan(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateShipSystemScan201Response, Error<CreateShipSystemScanError>> {
-    let local_var_configuration = configuration;
+pub async fn create_ship_system_scan(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::CreateShipSystemScan201Response, Error<CreateShipSystemScanError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/scan/systems", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/scan/systems", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<CreateShipSystemScanError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<CreateShipSystemScanError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Scan for nearby waypoints, retrieving detailed information on each waypoint in range. Scanning uncharted waypoints will allow you to ignore their uncharted state and will list the waypoints' traits.  Requires a ship to have the `Sensor Array` mount installed to use.  The ship will enter a cooldown after using this function, during which it cannot execute certain actions.
-pub async fn create_ship_waypoint_scan(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateShipWaypointScan201Response, Error<CreateShipWaypointScanError>> {
-    let local_var_configuration = configuration;
+pub async fn create_ship_waypoint_scan(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::CreateShipWaypointScan201Response, Error<CreateShipWaypointScanError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/scan/waypoints", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/scan/waypoints", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<CreateShipWaypointScanError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<CreateShipWaypointScanError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Create surveys on a waypoint that can be extracted such as asteroid fields. A survey focuses on specific types of deposits from the extracted location. When ships extract using this survey, they are guaranteed to procure a high amount of one of the goods in the survey.  In order to use a survey, send the entire survey details in the body of the extract request.  Each survey may have multiple deposits, and if a symbol shows up more than once, that indicates a higher chance of extracting that resource.  Your ship will enter a cooldown after surveying in which it is unable to perform certain actions. Surveys will eventually expire after a period of time or will be exhausted after being extracted several times based on the survey's size. Multiple ships can use the same survey for extraction.  A ship must have the `Surveyor` mount installed in order to use this function.
-pub async fn create_survey(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::CreateSurvey201Response, Error<CreateSurveyError>> {
-    let local_var_configuration = configuration;
+pub async fn create_survey(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::CreateSurvey201Response, Error<CreateSurveyError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/survey", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/survey", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<CreateSurveyError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<CreateSurveyError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Attempt to dock your ship at its current location. Docking will only succeed if your ship is capable of docking at the time of the request.  Docked ships can access elements in their current location, such as the market or a shipyard, but cannot do actions that require the ship to be above surface such as navigating or extracting.  The endpoint is idempotent - successive calls will succeed even if the ship is already docked.
-pub async fn dock_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::DockShip200Response, Error<DockShipError>> {
-    let local_var_configuration = configuration;
+pub async fn dock_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::DockShip200Response, Error<DockShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/dock", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/dock", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<DockShipError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<DockShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
-/// Extract resources from a waypoint that can be extracted, such as asteroid fields, into your ship. Send an optional survey as the payload to target specific yields.  The ship must be in orbit to be able to extract and must have mining equipments installed that can extract goods, such as the `Gas Siphon` mount for gas-based goods or `Mining Laser` mount for ore-based goods.
-pub async fn extract_resources(configuration: &configuration::Configuration, ship_symbol: &str, extract_resources_request: Option<crate::models::ExtractResourcesRequest>) -> Result<crate::models::ExtractResources201Response, Error<ExtractResourcesError>> {
-    let local_var_configuration = configuration;
+/// Extract resources from a waypoint that can be extracted, such as asteroid fields, into your ship. Send an optional survey as the payload to target specific yields.  The ship must be in orbit to be able to extract and must have mining equipments installed that can extract goods, such as the `Gas Siphon` mount for gas-based goods or `Mining Laser` mount for ore-based goods.  The survey property is now deprecated. See the `extract/survey` endpoint for more details.
+pub async fn extract_resources(configuration: &configuration::Configuration, ship_symbol: &str, extract_resources_request: Option<models::ExtractResourcesRequest>) -> Result<models::ExtractResources201Response, Error<ExtractResourcesError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_extract_resources_request = extract_resources_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/extract", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/extract", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&extract_resources_request);
+    req_builder = req_builder.json(&p_extract_resources_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<ExtractResourcesError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<ExtractResourcesError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Use a survey when extracting resources from a waypoint. This endpoint requires a survey as the payload, which allows your ship to extract specific yields.  Send the full survey object as the payload which will be validated according to the signature. If the signature is invalid, or any properties of the survey are changed, the request will fail.
+pub async fn extract_resources_with_survey(configuration: &configuration::Configuration, ship_symbol: &str, survey: Option<models::Survey>) -> Result<models::ExtractResources201Response, Error<ExtractResourcesWithSurveyError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_survey = survey;
+
+    let uri_str = format!("{}/my/ships/{shipSymbol}/extract/survey", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+    req_builder = req_builder.json(&p_survey);
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ExtractResourcesWithSurveyError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Get the mounts installed on a ship.
-pub async fn get_mounts(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::GetMounts200Response, Error<GetMountsError>> {
-    let local_var_configuration = configuration;
+pub async fn get_mounts(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::GetMounts200Response, Error<GetMountsError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/mounts", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/mounts", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<GetMountsError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<GetMountsError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Retrieve the details of a ship under your agent's ownership.
-pub async fn get_my_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::GetMyShip200Response, Error<GetMyShipError>> {
-    let local_var_configuration = configuration;
+pub async fn get_my_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::GetMyShip200Response, Error<GetMyShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<GetMyShipError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<GetMyShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Retrieve the cargo of a ship under your agent's ownership.
-pub async fn get_my_ship_cargo(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::GetMyShipCargo200Response, Error<GetMyShipCargoError>> {
-    let local_var_configuration = configuration;
+pub async fn get_my_ship_cargo(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::GetMyShipCargo200Response, Error<GetMyShipCargoError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/cargo", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/cargo", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<GetMyShipCargoError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<GetMyShipCargoError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Return a paginated list of all of ships under your agent's ownership.
-pub async fn get_my_ships(configuration: &configuration::Configuration, page: Option<i32>, limit: Option<i32>) -> Result<crate::models::GetMyShips200Response, Error<GetMyShipsError>> {
-    let local_var_configuration = configuration;
+pub async fn get_my_ships(configuration: &configuration::Configuration, page: Option<i32>, limit: Option<i32>) -> Result<models::GetMyShips200Response, Error<GetMyShipsError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_page = page;
+    let p_limit = limit;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships", local_var_configuration.base_path);
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_str) = page {
-        local_var_req_builder = local_var_req_builder.query(&[("page", &local_var_str.to_string())]);
+    if let Some(ref param_value) = p_page {
+        req_builder = req_builder.query(&[("page", &param_value.to_string())]);
     }
-    if let Some(ref local_var_str) = limit {
-        local_var_req_builder = local_var_req_builder.query(&[("limit", &local_var_str.to_string())]);
+    if let Some(ref param_value) = p_limit {
+        req_builder = req_builder.query(&[("limit", &param_value.to_string())]);
     }
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<GetMyShipsError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<GetMyShipsError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Get the cost of repairing a ship.
+pub async fn get_repair_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::GetRepairShip200Response, Error<GetRepairShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+
+    let uri_str = format!("{}/my/ships/{shipSymbol}/repair", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<GetRepairShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Get the amount of value that will be returned when scrapping a ship.
+pub async fn get_scrap_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::GetScrapShip200Response, Error<GetScrapShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+
+    let uri_str = format!("{}/my/ships/{shipSymbol}/scrap", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<GetScrapShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Retrieve the details of your ship's reactor cooldown. Some actions such as activating your jump drive, scanning, or extracting resources taxes your reactor and results in a cooldown.  Your ship cannot perform additional actions until your cooldown has expired. The duration of your cooldown is relative to the power consumption of the related modules or mounts for the action taken.  Response returns a 204 status code (no-content) when the ship has no cooldown.
-pub async fn get_ship_cooldown(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::GetShipCooldown200Response, Error<GetShipCooldownError>> {
-    let local_var_configuration = configuration;
+pub async fn get_ship_cooldown(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::GetShipCooldown200Response, Error<GetShipCooldownError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/cooldown", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/cooldown", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<GetShipCooldownError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<GetShipCooldownError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Get the current nav status of a ship.
-pub async fn get_ship_nav(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::GetShipNav200Response, Error<GetShipNavError>> {
-    let local_var_configuration = configuration;
+pub async fn get_ship_nav(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::GetShipNav200Response, Error<GetShipNavError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/nav", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::GET, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/nav", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::GET, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<GetShipNavError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<GetShipNavError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Install a mount on a ship.  In order to install a mount, the ship must be docked and located in a waypoint that has a `Shipyard` trait. The ship also must have the mount to install in its cargo hold.  An installation fee will be deduced by the Shipyard for installing the mount on the ship. 
-pub async fn install_mount(configuration: &configuration::Configuration, ship_symbol: &str, install_mount_request: Option<crate::models::InstallMountRequest>) -> Result<crate::models::InstallMount201Response, Error<InstallMountError>> {
-    let local_var_configuration = configuration;
+pub async fn install_mount(configuration: &configuration::Configuration, ship_symbol: &str, install_mount_request: Option<models::InstallMountRequest>) -> Result<models::InstallMount201Response, Error<InstallMountError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_install_mount_request = install_mount_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/mounts/install", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/mounts/install", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&install_mount_request);
+    req_builder = req_builder.json(&p_install_mount_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<InstallMountError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<InstallMountError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Jettison cargo from your ship's cargo hold.
-pub async fn jettison(configuration: &configuration::Configuration, ship_symbol: &str, jettison_request: Option<crate::models::JettisonRequest>) -> Result<crate::models::Jettison200Response, Error<JettisonError>> {
-    let local_var_configuration = configuration;
+pub async fn jettison(configuration: &configuration::Configuration, ship_symbol: &str, jettison_request: Option<models::JettisonRequest>) -> Result<models::Jettison200Response, Error<JettisonError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_jettison_request = jettison_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/jettison", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/jettison", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&jettison_request);
+    req_builder = req_builder.json(&p_jettison_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<JettisonError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<JettisonError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
-/// Jump your ship instantly to a target system. The ship must be in orbit to use this function. When used while in orbit of a Jump Gate waypoint, any ship can use this command, jumping to the target system's Jump Gate waypoint.  When used elsewhere, jumping requires the ship to have a `Jump Drive` module installed and consumes a unit of antimatter from the ship's cargo. The command will fail if there is no antimatter to consume. When jumping via the `Jump Drive` module, the ship ends up at its largest source of energy in the system, such as a gas planet or a jump gate.
-pub async fn jump_ship(configuration: &configuration::Configuration, ship_symbol: &str, jump_ship_request: Option<crate::models::JumpShipRequest>) -> Result<crate::models::JumpShip200Response, Error<JumpShipError>> {
-    let local_var_configuration = configuration;
+/// Jump your ship instantly to a target connected waypoint. The ship must be in orbit to execute a jump.  A unit of antimatter is purchased and consumed from the market when jumping. The price of antimatter is determined by the market and is subject to change. A ship can only jump to connected waypoints
+pub async fn jump_ship(configuration: &configuration::Configuration, ship_symbol: &str, jump_ship_request: Option<models::JumpShipRequest>) -> Result<models::JumpShip200Response, Error<JumpShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_jump_ship_request = jump_ship_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/jump", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/jump", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&jump_ship_request);
+    req_builder = req_builder.json(&p_jump_ship_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<JumpShipError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<JumpShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Navigate to a target destination. The ship must be in orbit to use this function. The destination waypoint must be within the same system as the ship's current location. Navigating will consume the necessary fuel from the ship's manifest based on the distance to the target waypoint.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at it's destination.  To travel between systems, see the ship's Warp or Jump actions.
-pub async fn navigate_ship(configuration: &configuration::Configuration, ship_symbol: &str, navigate_ship_request: Option<crate::models::NavigateShipRequest>) -> Result<crate::models::NavigateShip200Response, Error<NavigateShipError>> {
-    let local_var_configuration = configuration;
+pub async fn navigate_ship(configuration: &configuration::Configuration, ship_symbol: &str, navigate_ship_request: Option<models::NavigateShipRequest>) -> Result<models::NavigateShip200Response, Error<NavigateShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_navigate_ship_request = navigate_ship_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/navigate", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/navigate", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&navigate_ship_request);
+    req_builder = req_builder.json(&p_navigate_ship_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<NavigateShipError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<NavigateShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
-/// Negotiate a new contract with the HQ.  In order to negotiate a new contract, an agent must not have ongoing or offered contracts over the allowed maximum amount. Currently the maximum contracts an agent can have at a time is 1.  Once a contract is negotiated, it is added to the list of contracts offered to the agent, which the agent can then accept.   The ship must be present at a faction's HQ waypoint to negotiate a contract with that faction.
-pub async fn negotiate_contract(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::NegotiateContract200Response, Error<NegotiateContractError>> {
-    let local_var_configuration = configuration;
+/// Negotiate a new contract with the HQ.  In order to negotiate a new contract, an agent must not have ongoing or offered contracts over the allowed maximum amount. Currently the maximum contracts an agent can have at a time is 1.  Once a contract is negotiated, it is added to the list of contracts offered to the agent, which the agent can then accept.   The ship must be present at any waypoint with a faction present to negotiate a contract with that faction.
+pub async fn negotiate_contract(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::NegotiateContract200Response, Error<NegotiateContractError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/negotiate/contract", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/negotiate/contract", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<NegotiateContractError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<NegotiateContractError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Attempt to move your ship into orbit at its current location. The request will only succeed if your ship is capable of moving into orbit at the time of the request.  Orbiting ships are able to do actions that require the ship to be above surface such as navigating or extracting, but cannot access elements in their current waypoint, such as the market or a shipyard.  The endpoint is idempotent - successive calls will succeed even if the ship is already in orbit.
-pub async fn orbit_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<crate::models::OrbitShip200Response, Error<OrbitShipError>> {
-    let local_var_configuration = configuration;
+pub async fn orbit_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::OrbitShip200Response, Error<OrbitShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/orbit", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/orbit", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<OrbitShipError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<OrbitShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Update the nav configuration of a ship.  Currently only supports configuring the Flight Mode of the ship, which affects its speed and fuel consumption.
-pub async fn patch_ship_nav(configuration: &configuration::Configuration, ship_symbol: &str, patch_ship_nav_request: Option<crate::models::PatchShipNavRequest>) -> Result<crate::models::GetShipNav200Response, Error<PatchShipNavError>> {
-    let local_var_configuration = configuration;
+pub async fn patch_ship_nav(configuration: &configuration::Configuration, ship_symbol: &str, patch_ship_nav_request: Option<models::PatchShipNavRequest>) -> Result<models::GetShipNav200Response, Error<PatchShipNavError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_patch_ship_nav_request = patch_ship_nav_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/nav", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::PATCH, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/nav", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::PATCH, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&patch_ship_nav_request);
+    req_builder = req_builder.json(&p_patch_ship_nav_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<PatchShipNavError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<PatchShipNavError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Purchase cargo from a market.  The ship must be docked in a waypoint that has `Marketplace` trait, and the market must be selling a good to be able to purchase it.  The maximum amount of units of a good that can be purchased in each transaction are denoted by the `tradeVolume` value of the good, which can be viewed by using the Get Market action.  Purchased goods are added to the ship's cargo hold.
-pub async fn purchase_cargo(configuration: &configuration::Configuration, ship_symbol: &str, purchase_cargo_request: Option<crate::models::PurchaseCargoRequest>) -> Result<crate::models::PurchaseCargo201Response, Error<PurchaseCargoError>> {
-    let local_var_configuration = configuration;
+pub async fn purchase_cargo(configuration: &configuration::Configuration, ship_symbol: &str, purchase_cargo_request: Option<models::PurchaseCargoRequest>) -> Result<models::PurchaseCargo201Response, Error<PurchaseCargoError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_purchase_cargo_request = purchase_cargo_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/purchase", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/purchase", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&purchase_cargo_request);
+    req_builder = req_builder.json(&p_purchase_cargo_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<PurchaseCargoError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<PurchaseCargoError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Purchase a ship from a Shipyard. In order to use this function, a ship under your agent's ownership must be in a waypoint that has the `Shipyard` trait, and the Shipyard must sell the type of the desired ship.  Shipyards typically offer ship types, which are predefined templates of ships that have dedicated roles. A template comes with a preset of an engine, a reactor, and a frame. It may also include a few modules and mounts.
-pub async fn purchase_ship(configuration: &configuration::Configuration, purchase_ship_request: Option<crate::models::PurchaseShipRequest>) -> Result<crate::models::PurchaseShip201Response, Error<PurchaseShipError>> {
-    let local_var_configuration = configuration;
+pub async fn purchase_ship(configuration: &configuration::Configuration, purchase_ship_request: Option<models::PurchaseShipRequest>) -> Result<models::PurchaseShip201Response, Error<PurchaseShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_purchase_ship_request = purchase_ship_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships", configuration.base_path);
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships", local_var_configuration.base_path);
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&purchase_ship_request);
+    req_builder = req_builder.json(&p_purchase_ship_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<PurchaseShipError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<PurchaseShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Refuel your ship by buying fuel from the local market.  Requires the ship to be docked in a waypoint that has the `Marketplace` trait, and the market must be selling fuel in order to refuel.  Each fuel bought from the market replenishes 100 units in your ship's fuel.  Ships will always be refuel to their frame's maximum fuel capacity when using this action.
-pub async fn refuel_ship(configuration: &configuration::Configuration, ship_symbol: &str, refuel_ship_request: Option<crate::models::RefuelShipRequest>) -> Result<crate::models::RefuelShip200Response, Error<RefuelShipError>> {
-    let local_var_configuration = configuration;
+pub async fn refuel_ship(configuration: &configuration::Configuration, ship_symbol: &str, refuel_ship_request: Option<models::RefuelShipRequest>) -> Result<models::RefuelShip200Response, Error<RefuelShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_refuel_ship_request = refuel_ship_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/refuel", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/refuel", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&refuel_ship_request);
+    req_builder = req_builder.json(&p_refuel_ship_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<RefuelShipError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<RefuelShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Remove a mount from a ship.  The ship must be docked in a waypoint that has the `Shipyard` trait, and must have the desired mount that it wish to remove installed.  A removal fee will be deduced from the agent by the Shipyard.
-pub async fn remove_mount(configuration: &configuration::Configuration, ship_symbol: &str, remove_mount_request: Option<crate::models::RemoveMountRequest>) -> Result<crate::models::RemoveMount201Response, Error<RemoveMountError>> {
-    let local_var_configuration = configuration;
+pub async fn remove_mount(configuration: &configuration::Configuration, ship_symbol: &str, remove_mount_request: Option<models::RemoveMountRequest>) -> Result<models::RemoveMount201Response, Error<RemoveMountError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_remove_mount_request = remove_mount_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/mounts/remove", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/mounts/remove", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&remove_mount_request);
+    req_builder = req_builder.json(&p_remove_mount_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<RemoveMountError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<RemoveMountError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Repair a ship, restoring the ship to maximum condition. The ship must be docked at a waypoint that has the `Shipyard` trait in order to use this function. To preview the cost of repairing the ship, use the Get action.
+pub async fn repair_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::RepairShip200Response, Error<RepairShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+
+    let uri_str = format!("{}/my/ships/{shipSymbol}/repair", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<RepairShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Scrap a ship, removing it from the game and returning a portion of the ship's value to the agent. The ship must be docked in a waypoint that has the `Shipyard` trait in order to use this function. To preview the amount of value that will be returned, use the Get Ship action.
+pub async fn scrap_ship(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::ScrapShip200Response, Error<ScrapShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+
+    let uri_str = format!("{}/my/ships/{shipSymbol}/scrap", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<ScrapShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Sell cargo in your ship to a market that trades this cargo. The ship must be docked in a waypoint that has the `Marketplace` trait in order to use this function.
-pub async fn sell_cargo(configuration: &configuration::Configuration, ship_symbol: &str, sell_cargo_request: Option<crate::models::SellCargoRequest>) -> Result<crate::models::SellCargo201Response, Error<SellCargoError>> {
-    let local_var_configuration = configuration;
+pub async fn sell_cargo(configuration: &configuration::Configuration, ship_symbol: &str, sell_cargo_request: Option<models::SellCargoRequest>) -> Result<models::SellCargo201Response, Error<SellCargoError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_sell_cargo_request = sell_cargo_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/sell", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/sell", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&sell_cargo_request);
+    req_builder = req_builder.json(&p_sell_cargo_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<SellCargoError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<SellCargoError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Attempt to refine the raw materials on your ship. The request will only succeed if your ship is capable of refining at the time of the request. In order to be able to refine, a ship must have goods that can be refined and have installed a `Refinery` module that can refine it.  When refining, 30 basic goods will be converted into 10 processed goods.
-pub async fn ship_refine(configuration: &configuration::Configuration, ship_symbol: &str, ship_refine_request: Option<crate::models::ShipRefineRequest>) -> Result<crate::models::ShipRefine201Response, Error<ShipRefineError>> {
-    let local_var_configuration = configuration;
+pub async fn ship_refine(configuration: &configuration::Configuration, ship_symbol: &str, ship_refine_request: Option<models::ShipRefineRequest>) -> Result<models::ShipRefine201Response, Error<ShipRefineError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_ship_refine_request = ship_refine_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/refine", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/refine", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&ship_refine_request);
+    req_builder = req_builder.json(&p_ship_refine_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<ShipRefineError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<ShipRefineError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
+    }
+}
+
+/// Siphon gases, such as hydrocarbon, from gas giants.  The ship must be in orbit to be able to siphon and must have siphon mounts and a gas processor installed.
+pub async fn siphon_resources(configuration: &configuration::Configuration, ship_symbol: &str) -> Result<models::SiphonResources201Response, Error<SiphonResourcesError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+
+    let uri_str = format!("{}/my/ships/{shipSymbol}/siphon", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
+
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
+    }
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
+    };
+
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
+
+    let status = resp.status();
+
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
+    } else {
+        let content = resp.text().await?;
+        let entity: Option<SiphonResourcesError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Transfer cargo between ships.  The receiving ship must be in the same waypoint as the transferring ship, and it must able to hold the additional cargo after the transfer is complete. Both ships also must be in the same state, either both are docked or both are orbiting.  The response body's cargo shows the cargo of the transferring ship after the transfer is complete.
-pub async fn transfer_cargo(configuration: &configuration::Configuration, ship_symbol: &str, transfer_cargo_request: Option<crate::models::TransferCargoRequest>) -> Result<crate::models::TransferCargo200Response, Error<TransferCargoError>> {
-    let local_var_configuration = configuration;
+pub async fn transfer_cargo(configuration: &configuration::Configuration, ship_symbol: &str, transfer_cargo_request: Option<models::TransferCargoRequest>) -> Result<models::TransferCargo200Response, Error<TransferCargoError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_transfer_cargo_request = transfer_cargo_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/transfer", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/transfer", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&transfer_cargo_request);
+    req_builder = req_builder.json(&p_transfer_cargo_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<TransferCargoError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<TransferCargoError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 
 /// Warp your ship to a target destination in another system. The ship must be in orbit to use this function and must have the `Warp Drive` module installed. Warping will consume the necessary fuel from the ship's manifest.  The returned response will detail the route information including the expected time of arrival. Most ship actions are unavailable until the ship has arrived at its destination.
-pub async fn warp_ship(configuration: &configuration::Configuration, ship_symbol: &str, navigate_ship_request: Option<crate::models::NavigateShipRequest>) -> Result<crate::models::NavigateShip200Response, Error<WarpShipError>> {
-    let local_var_configuration = configuration;
+pub async fn warp_ship(configuration: &configuration::Configuration, ship_symbol: &str, navigate_ship_request: Option<models::NavigateShipRequest>) -> Result<models::WarpShip200Response, Error<WarpShipError>> {
+    // add a prefix to parameters to efficiently prevent name collisions
+    let p_ship_symbol = ship_symbol;
+    let p_navigate_ship_request = navigate_ship_request;
 
-    let local_var_client = &local_var_configuration.client;
+    let uri_str = format!("{}/my/ships/{shipSymbol}/warp", configuration.base_path, shipSymbol=crate::apis::urlencode(p_ship_symbol));
+    let mut req_builder = configuration.client.request(reqwest::Method::POST, &uri_str);
 
-    let local_var_uri_str = format!("{}/my/ships/{shipSymbol}/warp", local_var_configuration.base_path, shipSymbol=crate::apis::urlencode(ship_symbol));
-    let mut local_var_req_builder = local_var_client.request(reqwest::Method::POST, local_var_uri_str.as_str());
-
-    if let Some(ref local_var_user_agent) = local_var_configuration.user_agent {
-        local_var_req_builder = local_var_req_builder.header(reqwest::header::USER_AGENT, local_var_user_agent.clone());
+    if let Some(ref user_agent) = configuration.user_agent {
+        req_builder = req_builder.header(reqwest::header::USER_AGENT, user_agent.clone());
     }
-    if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
-        local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token.to_owned());
+    if let Some(ref token) = configuration.bearer_access_token {
+        req_builder = req_builder.bearer_auth(token.to_owned());
     };
-    local_var_req_builder = local_var_req_builder.json(&navigate_ship_request);
+    req_builder = req_builder.json(&p_navigate_ship_request);
 
-    let local_var_req = local_var_req_builder.build()?;
-    let local_var_resp = local_var_client.execute(local_var_req).await?;
+    let req = req_builder.build()?;
+    let resp = configuration.client.execute(req).await?;
 
-    let local_var_status = local_var_resp.status();
-    let local_var_content = local_var_resp.text().await?;
+    let status = resp.status();
 
-    if !local_var_status.is_client_error() && !local_var_status.is_server_error() {
-        serde_json::from_str(&local_var_content).map_err(Error::from)
+    if !status.is_client_error() && !status.is_server_error() {
+        let content = resp.text().await?;
+        serde_json::from_str(&content).map_err(Error::from)
     } else {
-        let local_var_entity: Option<WarpShipError> = serde_json::from_str(&local_var_content).ok();
-        let local_var_error = ResponseContent { status: local_var_status, content: local_var_content, entity: local_var_entity };
-        Err(Error::ResponseError(local_var_error))
+        let content = resp.text().await?;
+        let entity: Option<WarpShipError> = serde_json::from_str(&content).ok();
+        Err(Error::ResponseError(ResponseContent { status, content, entity }))
     }
 }
 

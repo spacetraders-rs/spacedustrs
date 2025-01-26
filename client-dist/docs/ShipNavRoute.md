@@ -4,8 +4,8 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**destination** | [**crate::models::ShipNavRouteWaypoint**](ShipNavRouteWaypoint.md) |  | 
-**departure** | [**crate::models::ShipNavRouteWaypoint**](ShipNavRouteWaypoint.md) |  | 
+**destination** | [**models::ShipNavRouteWaypoint**](ShipNavRouteWaypoint.md) |  | 
+**origin** | [**models::ShipNavRouteWaypoint**](ShipNavRouteWaypoint.md) |  | 
 **departure_time** | **String** | The date time of the ship's departure. | 
 **arrival** | **String** | The date time of the ship's arrival. If the ship is in-transit, this is the expected time of arrival. | 
 

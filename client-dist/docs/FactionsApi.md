@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 ## get_faction
 
-> crate::models::GetFaction200Response get_faction(faction_symbol)
+> models::GetFaction200Response get_faction(faction_symbol)
 Get Faction
 
 View the details of a faction.
@@ -25,7 +25,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::GetFaction200Response**](get_faction_200_response.md)
+[**models::GetFaction200Response**](get_faction_200_response.md)
 
 ### Authorization
 
@@ -41,7 +41,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_factions
 
-> crate::models::GetFactions200Response get_factions(page, limit)
+> models::GetFactions200Response get_factions(page, limit)
 List Factions
 
 Return a paginated list of all the factions in the game.
@@ -56,7 +56,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::GetFactions200Response**](get_factions_200_response.md)
+[**models::GetFactions200Response**](get_factions_200_response.md)
 
 ### Authorization
 

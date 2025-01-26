@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**waypoint_symbol** | **String** | The symbol of the waypoint where the transaction took place. | 
+**waypoint_symbol** | **String** | The symbol of the waypoint. | 
 **ship_symbol** | **String** | The symbol of the ship that made the transaction. | 
 **trade_symbol** | **String** | The symbol of the trade good. | 
 **r#type** | **String** | The type of transaction. | 

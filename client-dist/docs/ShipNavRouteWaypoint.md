@@ -5,8 +5,8 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **symbol** | **String** | The symbol of the waypoint. | 
-**r#type** | [**crate::models::WaypointType**](WaypointType.md) |  | 
-**system_symbol** | **String** | The symbol of the system the waypoint is in. | 
+**r#type** | [**models::WaypointType**](WaypointType.md) |  | 
+**system_symbol** | **String** | The symbol of the system. | 
 **x** | **i32** | Position in the universe in the x axis. | 
 **y** | **i32** | Position in the universe in the y axis. | 
 

@@ -14,7 +14,7 @@ Method | HTTP request | Description
 
 ## accept_contract
 
-> crate::models::AcceptContract200Response accept_contract(contract_id)
+> models::AcceptContract200Response accept_contract(contract_id)
 Accept Contract
 
 Accept a contract by ID.   You can only accept contracts that were offered to you, were not accepted yet, and whose deadlines has not passed yet.
@@ -28,7 +28,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::AcceptContract200Response**](accept_contract_200_response.md)
+[**models::AcceptContract200Response**](accept_contract_200_response.md)
 
 ### Authorization
 
@@ -44,7 +44,7 @@ Name | Type | Description  | Required | Notes
 
 ## deliver_contract
 
-> crate::models::DeliverContract200Response deliver_contract(contract_id, deliver_contract_request)
+> models::DeliverContract200Response deliver_contract(contract_id, deliver_contract_request)
 Deliver Cargo to Contract
 
 Deliver cargo to a contract.  In order to use this API, a ship must be at the delivery location (denoted in the delivery terms as `destinationSymbol` of a contract) and must have a number of units of a good required by this contract in its cargo.  Cargo that was delivered will be removed from the ship's cargo.
@@ -59,7 +59,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::DeliverContract200Response**](deliver_contract_200_response.md)
+[**models::DeliverContract200Response**](deliver_contract_200_response.md)
 
 ### Authorization
 
@@ -75,7 +75,7 @@ Name | Type | Description  | Required | Notes
 
 ## fulfill_contract
 
-> crate::models::FulfillContract200Response fulfill_contract(contract_id)
+> models::FulfillContract200Response fulfill_contract(contract_id)
 Fulfill Contract
 
 Fulfill a contract. Can only be used on contracts that have all of their delivery terms fulfilled.
@@ -89,7 +89,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::FulfillContract200Response**](fulfill_contract_200_response.md)
+[**models::FulfillContract200Response**](fulfill_contract_200_response.md)
 
 ### Authorization
 
@@ -105,7 +105,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_contract
 
-> crate::models::GetContract200Response get_contract(contract_id)
+> models::GetContract200Response get_contract(contract_id)
 Get Contract
 
 Get the details of a contract by ID.
@@ -119,7 +119,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::GetContract200Response**](get_contract_200_response.md)
+[**models::GetContract200Response**](get_contract_200_response.md)
 
 ### Authorization
 
@@ -135,7 +135,7 @@ Name | Type | Description  | Required | Notes
 
 ## get_contracts
 
-> crate::models::GetContracts200Response get_contracts(page, limit)
+> models::GetContracts200Response get_contracts(page, limit)
 List Contracts
 
 Return a paginated list of all your contracts.
@@ -150,7 +150,7 @@ Name | Type | Description  | Required | Notes
 
 ### Return type
 
-[**crate::models::GetContracts200Response**](get_contracts_200_response.md)
+[**models::GetContracts200Response**](get_contracts_200_response.md)
 
 ### Authorization
 

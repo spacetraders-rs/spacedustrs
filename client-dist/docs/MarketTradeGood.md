@@ -4,9 +4,11 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**symbol** | **String** | The symbol of the trade good. | 
-**trade_volume** | **i32** | The typical volume flowing through the market for this type of good. The larger the trade volume, the more stable prices will be. | 
-**supply** | **String** | A rough estimate of the total supply of this good in the marketplace. | 
+**symbol** | [**models::TradeSymbol**](TradeSymbol.md) |  | 
+**r#type** | **String** | The type of trade good (export, import, or exchange). | 
+**trade_volume** | **i32** | This is the maximum number of units that can be purchased or sold at this market in a single trade for this good. Trade volume also gives an indication of price volatility. A market with a low trade volume will have large price swings, while high trade volume will be more resilient to price changes. | 
+**supply** | [**models::SupplyLevel**](SupplyLevel.md) |  | 
+**activity** | Option<[**models::ActivityLevel**](ActivityLevel.md)> |  | [optional]
 **purchase_price** | **i32** | The price at which this good can be purchased from the market. | 
 **sell_price** | **i32** | The price at which this good can be sold to the market. | 
 
