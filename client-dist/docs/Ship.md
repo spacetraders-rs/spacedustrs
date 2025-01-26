@@ -5,16 +5,17 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **symbol** | **String** | The globally unique identifier of the ship in the following format: `[AGENT_SYMBOL]-[HEX_ID]` | 
-**registration** | [**crate::models::ShipRegistration**](ShipRegistration.md) |  | 
-**nav** | [**crate::models::ShipNav**](ShipNav.md) |  | 
-**crew** | [**crate::models::ShipCrew**](ShipCrew.md) |  | 
-**frame** | [**crate::models::ShipFrame**](ShipFrame.md) |  | 
-**reactor** | [**crate::models::ShipReactor**](ShipReactor.md) |  | 
-**engine** | [**crate::models::ShipEngine**](ShipEngine.md) |  | 
-**modules** | [**Vec<crate::models::ShipModule>**](ShipModule.md) | Modules installed in this ship. | 
-**mounts** | [**Vec<crate::models::ShipMount>**](ShipMount.md) | Mounts installed in this ship. | 
-**cargo** | [**crate::models::ShipCargo**](ShipCargo.md) |  | 
-**fuel** | [**crate::models::ShipFuel**](ShipFuel.md) |  | 
+**registration** | [**models::ShipRegistration**](ShipRegistration.md) |  | 
+**nav** | [**models::ShipNav**](ShipNav.md) |  | 
+**crew** | [**models::ShipCrew**](ShipCrew.md) |  | 
+**frame** | [**models::ShipFrame**](ShipFrame.md) |  | 
+**reactor** | [**models::ShipReactor**](ShipReactor.md) |  | 
+**engine** | [**models::ShipEngine**](ShipEngine.md) |  | 
+**cooldown** | [**models::Cooldown**](Cooldown.md) |  | 
+**modules** | [**Vec<models::ShipModule>**](ShipModule.md) | Modules installed in this ship. | 
+**mounts** | [**Vec<models::ShipMount>**](ShipMount.md) | Mounts installed in this ship. | 
+**cargo** | [**models::ShipCargo**](ShipCargo.md) |  | 
+**fuel** | [**models::ShipFuel**](ShipFuel.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

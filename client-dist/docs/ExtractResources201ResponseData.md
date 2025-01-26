@@ -4,9 +4,10 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**cooldown** | [**crate::models::Cooldown**](Cooldown.md) |  | 
-**extraction** | [**crate::models::Extraction**](Extraction.md) |  | 
-**cargo** | [**crate::models::ShipCargo**](ShipCargo.md) |  | 
+**cooldown** | [**models::Cooldown**](Cooldown.md) |  | 
+**extraction** | [**models::Extraction**](Extraction.md) |  | 
+**cargo** | [**models::ShipCargo**](ShipCargo.md) |  | 
+**events** | [**Vec<models::ExtractResources201ResponseDataEventsInner>**](extract_resources_201_response_data_events_inner.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

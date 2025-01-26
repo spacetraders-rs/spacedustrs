@@ -4,7 +4,7 @@
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**symbol** | [**crate::models::TradeSymbol**](TradeSymbol.md) |  | 
+**symbol** | [**models::TradeSymbol**](TradeSymbol.md) |  | 
 **name** | **String** | The name of the good. | 
 **description** | **String** | The description of the good. | 
 
